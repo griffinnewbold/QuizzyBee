@@ -1,0 +1,608 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */; };
+		4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E3F22CD05C6200F6AC55 /* ContentView.swift */; };
+		4208E3F52CD05C6300F6AC55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4208E3F42CD05C6300F6AC55 /* Assets.xcassets */; };
+		4208E3F82CD05C6300F6AC55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4208E3F72CD05C6300F6AC55 /* Preview Assets.xcassets */; };
+		4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E3F92CD05C6300F6AC55 /* Persistence.swift */; };
+		4208E3FD2CD05C6300F6AC55 /* quizzybee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4208E3FB2CD05C6300F6AC55 /* quizzybee.xcdatamodeld */; };
+		4208E4072CD05C6300F6AC55 /* quizzybeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4062CD05C6300F6AC55 /* quizzybeeTests.swift */; };
+		4208E4112CD05C6300F6AC55 /* quizzybeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */; };
+		4208E4132CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4208E4032CD05C6300F6AC55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4208E3E52CD05C6200F6AC55 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4208E3EC2CD05C6200F6AC55;
+			remoteInfo = quizzybee;
+		};
+		4208E40D2CD05C6300F6AC55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4208E3E52CD05C6200F6AC55 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4208E3EC2CD05C6200F6AC55;
+			remoteInfo = quizzybee;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4208E3ED2CD05C6200F6AC55 /* quizzybee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = quizzybee.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeApp.swift; sourceTree = "<group>"; };
+		4208E3F22CD05C6200F6AC55 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4208E3F42CD05C6300F6AC55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4208E3F72CD05C6300F6AC55 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4208E3F92CD05C6300F6AC55 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		4208E3FC2CD05C6300F6AC55 /* quizzybee.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = quizzybee.xcdatamodel; sourceTree = "<group>"; };
+		4208E4022CD05C6300F6AC55 /* quizzybeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4208E4062CD05C6300F6AC55 /* quizzybeeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeTests.swift; sourceTree = "<group>"; };
+		4208E40C2CD05C6300F6AC55 /* quizzybeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITests.swift; sourceTree = "<group>"; };
+		4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4208E3EA2CD05C6200F6AC55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4208E3FF2CD05C6300F6AC55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4208E4092CD05C6300F6AC55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4208E3E42CD05C6200F6AC55 = {
+			isa = PBXGroup;
+			children = (
+				4208E3EF2CD05C6200F6AC55 /* quizzybee */,
+				4208E4052CD05C6300F6AC55 /* quizzybeeTests */,
+				4208E40F2CD05C6300F6AC55 /* quizzybeeUITests */,
+				4208E3EE2CD05C6200F6AC55 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4208E3EE2CD05C6200F6AC55 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4208E3ED2CD05C6200F6AC55 /* quizzybee.app */,
+				4208E4022CD05C6300F6AC55 /* quizzybeeTests.xctest */,
+				4208E40C2CD05C6300F6AC55 /* quizzybeeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4208E3EF2CD05C6200F6AC55 /* quizzybee */ = {
+			isa = PBXGroup;
+			children = (
+				4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */,
+				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
+				4208E3F42CD05C6300F6AC55 /* Assets.xcassets */,
+				4208E3F92CD05C6300F6AC55 /* Persistence.swift */,
+				4208E3FB2CD05C6300F6AC55 /* quizzybee.xcdatamodeld */,
+				4208E3F62CD05C6300F6AC55 /* Preview Content */,
+			);
+			path = quizzybee;
+			sourceTree = "<group>";
+		};
+		4208E3F62CD05C6300F6AC55 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				4208E3F72CD05C6300F6AC55 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4208E4052CD05C6300F6AC55 /* quizzybeeTests */ = {
+			isa = PBXGroup;
+			children = (
+				4208E4062CD05C6300F6AC55 /* quizzybeeTests.swift */,
+			);
+			path = quizzybeeTests;
+			sourceTree = "<group>";
+		};
+		4208E40F2CD05C6300F6AC55 /* quizzybeeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */,
+				4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */,
+			);
+			path = quizzybeeUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4208E3EC2CD05C6200F6AC55 /* quizzybee */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4208E4162CD05C6300F6AC55 /* Build configuration list for PBXNativeTarget "quizzybee" */;
+			buildPhases = (
+				4208E3E92CD05C6200F6AC55 /* Sources */,
+				4208E3EA2CD05C6200F6AC55 /* Frameworks */,
+				4208E3EB2CD05C6200F6AC55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = quizzybee;
+			productName = quizzybee;
+			productReference = 4208E3ED2CD05C6200F6AC55 /* quizzybee.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4208E4012CD05C6300F6AC55 /* quizzybeeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4208E4192CD05C6300F6AC55 /* Build configuration list for PBXNativeTarget "quizzybeeTests" */;
+			buildPhases = (
+				4208E3FE2CD05C6300F6AC55 /* Sources */,
+				4208E3FF2CD05C6300F6AC55 /* Frameworks */,
+				4208E4002CD05C6300F6AC55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4208E4042CD05C6300F6AC55 /* PBXTargetDependency */,
+			);
+			name = quizzybeeTests;
+			productName = quizzybeeTests;
+			productReference = 4208E4022CD05C6300F6AC55 /* quizzybeeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4208E40B2CD05C6300F6AC55 /* quizzybeeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4208E41C2CD05C6300F6AC55 /* Build configuration list for PBXNativeTarget "quizzybeeUITests" */;
+			buildPhases = (
+				4208E4082CD05C6300F6AC55 /* Sources */,
+				4208E4092CD05C6300F6AC55 /* Frameworks */,
+				4208E40A2CD05C6300F6AC55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4208E40E2CD05C6300F6AC55 /* PBXTargetDependency */,
+			);
+			name = quizzybeeUITests;
+			productName = quizzybeeUITests;
+			productReference = 4208E40C2CD05C6300F6AC55 /* quizzybeeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4208E3E52CD05C6200F6AC55 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					4208E3EC2CD05C6200F6AC55 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					4208E4012CD05C6300F6AC55 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 4208E3EC2CD05C6200F6AC55;
+					};
+					4208E40B2CD05C6300F6AC55 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 4208E3EC2CD05C6200F6AC55;
+					};
+				};
+			};
+			buildConfigurationList = 4208E3E82CD05C6200F6AC55 /* Build configuration list for PBXProject "quizzybee" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4208E3E42CD05C6200F6AC55;
+			productRefGroup = 4208E3EE2CD05C6200F6AC55 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4208E3EC2CD05C6200F6AC55 /* quizzybee */,
+				4208E4012CD05C6300F6AC55 /* quizzybeeTests */,
+				4208E40B2CD05C6300F6AC55 /* quizzybeeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4208E3EB2CD05C6200F6AC55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4208E3F82CD05C6300F6AC55 /* Preview Assets.xcassets in Resources */,
+				4208E3F52CD05C6300F6AC55 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4208E4002CD05C6300F6AC55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4208E40A2CD05C6300F6AC55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4208E3E92CD05C6200F6AC55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */,
+				4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */,
+				4208E3FD2CD05C6300F6AC55 /* quizzybee.xcdatamodeld in Sources */,
+				4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4208E3FE2CD05C6300F6AC55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4208E4072CD05C6300F6AC55 /* quizzybeeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4208E4082CD05C6300F6AC55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4208E4112CD05C6300F6AC55 /* quizzybeeUITests.swift in Sources */,
+				4208E4132CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4208E4042CD05C6300F6AC55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4208E3EC2CD05C6200F6AC55 /* quizzybee */;
+			targetProxy = 4208E4032CD05C6300F6AC55 /* PBXContainerItemProxy */;
+		};
+		4208E40E2CD05C6300F6AC55 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4208E3EC2CD05C6200F6AC55 /* quizzybee */;
+			targetProxy = 4208E40D2CD05C6300F6AC55 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		4208E4142CD05C6300F6AC55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4208E4152CD05C6300F6AC55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4208E4172CD05C6300F6AC55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"quizzybee/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "w4995-vulture.quizzybee";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4208E4182CD05C6300F6AC55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"quizzybee/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "w4995-vulture.quizzybee";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4208E41A2CD05C6300F6AC55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "w4995-vulture.quizzybeeTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quizzybee.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/quizzybee";
+			};
+			name = Debug;
+		};
+		4208E41B2CD05C6300F6AC55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "w4995-vulture.quizzybeeTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quizzybee.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/quizzybee";
+			};
+			name = Release;
+		};
+		4208E41D2CD05C6300F6AC55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "w4995-vulture.quizzybeeUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = quizzybee;
+			};
+			name = Debug;
+		};
+		4208E41E2CD05C6300F6AC55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "w4995-vulture.quizzybeeUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = quizzybee;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4208E3E82CD05C6200F6AC55 /* Build configuration list for PBXProject "quizzybee" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4208E4142CD05C6300F6AC55 /* Debug */,
+				4208E4152CD05C6300F6AC55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4208E4162CD05C6300F6AC55 /* Build configuration list for PBXNativeTarget "quizzybee" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4208E4172CD05C6300F6AC55 /* Debug */,
+				4208E4182CD05C6300F6AC55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4208E4192CD05C6300F6AC55 /* Build configuration list for PBXNativeTarget "quizzybeeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4208E41A2CD05C6300F6AC55 /* Debug */,
+				4208E41B2CD05C6300F6AC55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4208E41C2CD05C6300F6AC55 /* Build configuration list for PBXNativeTarget "quizzybeeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4208E41D2CD05C6300F6AC55 /* Debug */,
+				4208E41E2CD05C6300F6AC55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		4208E3FB2CD05C6300F6AC55 /* quizzybee.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				4208E3FC2CD05C6300F6AC55 /* quizzybee.xcdatamodel */,
+			);
+			currentVersion = 4208E3FC2CD05C6300F6AC55 /* quizzybee.xcdatamodel */;
+			path = quizzybee.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 4208E3E52CD05C6200F6AC55 /* Project object */;
+}
