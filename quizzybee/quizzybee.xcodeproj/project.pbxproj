@@ -16,7 +16,6 @@
 		4208E4072CD05C6300F6AC55 /* quizzybeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4062CD05C6300F6AC55 /* quizzybeeTests.swift */; };
 		4208E4112CD05C6300F6AC55 /* quizzybeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */; };
 		4208E4132CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */; };
-		423F63C22CDD5088004978B9 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 423F63C12CDD5088004978B9 /* Dashboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +48,6 @@
 		4208E40C2CD05C6300F6AC55 /* quizzybeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITests.swift; sourceTree = "<group>"; };
 		4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		423F63C12CDD5088004978B9 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,8 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */,
-				423F63BD2CDD4C15004978B9 /* Views */,
-				423F63BE2CDD4C4A004978B9 /* Model */,
+				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
 				4208E3F42CD05C6300F6AC55 /* Assets.xcassets */,
 				4208E3F92CD05C6300F6AC55 /* Persistence.swift */,
 				4208E3FB2CD05C6300F6AC55 /* quizzybee.xcdatamodeld */,
@@ -134,22 +131,6 @@
 				4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */,
 			);
 			path = quizzybeeUITests;
-			sourceTree = "<group>";
-		};
-		423F63BD2CDD4C15004978B9 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				423F63C12CDD5088004978B9 /* Dashboard.swift */,
-				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		423F63BE2CDD4C4A004978B9 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -284,7 +265,6 @@
 			files = (
 				4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */,
 				4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */,
-				423F63C22CDD5088004978B9 /* Dashboard.swift in Sources */,
 				4208E3FD2CD05C6300F6AC55 /* quizzybee.xcdatamodeld in Sources */,
 				4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */,
 			);
