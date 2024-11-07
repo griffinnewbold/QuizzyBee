@@ -17,6 +17,9 @@
 		4208E4112CD05C6300F6AC55 /* quizzybeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */; };
 		4208E4132CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */; };
 		428B7EEF2CDD579D000ED1A8 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EEE2CDD579D000ED1A8 /* Dashboard.swift */; };
+		428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */; };
+		428B7EF82CDD5DC0000ED1A8 /* UserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF72CDD5DC0000ED1A8 /* UserImage.swift */; };
+		428B7EFB2CDD5EE7000ED1A8 /* fakebee.png in Resources */ = {isa = PBXBuildFile; fileRef = 428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +53,9 @@
 		4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITests.swift; sourceTree = "<group>"; };
 		4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		428B7EEE2CDD579D000ED1A8 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
+		428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorToHex.swift; sourceTree = "<group>"; };
+		428B7EF72CDD5DC0000ED1A8 /* UserImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImage.swift; sourceTree = "<group>"; };
+		428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fakebee.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +109,7 @@
 				4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */,
 				428B7EEC2CDD5768000ED1A8 /* Views */,
 				428B7EED2CDD576E000ED1A8 /* Model */,
+				428B7EF92CDD5EB4000ED1A8 /* Resources */,
 				4208E3F42CD05C6300F6AC55 /* Assets.xcassets */,
 				4208E3F92CD05C6300F6AC55 /* Persistence.swift */,
 				4208E3FB2CD05C6300F6AC55 /* quizzybee.xcdatamodeld */,
@@ -141,6 +148,7 @@
 			children = (
 				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
 				428B7EEE2CDD579D000ED1A8 /* Dashboard.swift */,
+				428B7EF72CDD5DC0000ED1A8 /* UserImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -148,8 +156,17 @@
 		428B7EED2CDD576E000ED1A8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		428B7EF92CDD5EB4000ED1A8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,7 +233,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					4208E3EC2CD05C6200F6AC55 = {
 						CreatedOnToolsVersion = 15.4;
@@ -256,6 +273,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428B7EFB2CDD5EE7000ED1A8 /* fakebee.png in Resources */,
 				4208E3F82CD05C6300F6AC55 /* Preview Assets.xcassets in Resources */,
 				4208E3F52CD05C6300F6AC55 /* Assets.xcassets in Resources */,
 			);
@@ -285,7 +303,9 @@
 				4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */,
 				4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */,
 				428B7EEF2CDD579D000ED1A8 /* Dashboard.swift in Sources */,
+				428B7EF82CDD5DC0000ED1A8 /* UserImage.swift in Sources */,
 				4208E3FD2CD05C6300F6AC55 /* quizzybee.xcdatamodeld in Sources */,
+				428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */,
 				4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -501,7 +521,6 @@
 		4208E41A2CD05C6300F6AC55 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -520,7 +539,6 @@
 		4208E41B2CD05C6300F6AC55 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -539,7 +557,6 @@
 		4208E41D2CD05C6300F6AC55 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -556,7 +573,6 @@
 		4208E41E2CD05C6300F6AC55 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

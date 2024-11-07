@@ -8,8 +8,22 @@
 import SwiftUI
 
 struct Dashboard: View {
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            Color(hex:"7B7B7B").ignoresSafeArea()
+            HStack {
+                UserImage()
+                    
+                Spacer()
+                
+                Text("Hello, newbee!")
+                    .font(.title)
+                
+                Text("Now I'm here.")
+            }
+            
+        }
     }
 }
 
