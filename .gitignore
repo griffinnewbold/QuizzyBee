@@ -10,7 +10,6 @@
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -119,6 +118,25 @@ fastlane/test_output
 iOSInjectionProject/
 
 ### Xcode ###
+# Xcode
+DerivedData/
+Build/
+*.xcworkspace
+!default.xcworkspace
+xcuserdata/
+*.moved-aside
+*.xcuserstate
+# Temporary files
+*.swp
+*.lock
+*.xcscmblueprint
+
+# Bundler
+/.bundle
+
+# Other
+*.DS_Store
+./gitlab
 
 ## Xcode 8 and earlier
 
