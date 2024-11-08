@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		131079442CDD538F00880CDF /* QuizViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131079432CDD538900880CDF /* QuizViews.swift */; };
+		09D129062CDBE23300C3BDBB /* newCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D129052CDBE23300C3BDBB /* newCardView.swift */; };
 		4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */; };
 		4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E3F22CD05C6200F6AC55 /* ContentView.swift */; };
 		4208E3F52CD05C6300F6AC55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4208E3F42CD05C6300F6AC55 /* Assets.xcassets */; };
@@ -41,7 +43,8 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXFileReference section */
+		131079432CDD538900880CDF /* QuizViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViews.swift; sourceTree = "<group>"; };
+		09D129052CDBE23300C3BDBB /* newCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newCardView.swift; sourceTree = "<group>"; };
 		4208E3ED2CD05C6200F6AC55 /* quizzybee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = quizzybee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeApp.swift; sourceTree = "<group>"; };
 		4208E3F22CD05C6200F6AC55 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -110,6 +113,7 @@
 		4208E3EF2CD05C6200F6AC55 /* quizzybee */ = {
 			isa = PBXGroup;
 			children = (
+				131079432CDD538900880CDF /* QuizViews.swift */,
 				4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */,
 				428B7EEC2CDD5768000ED1A8 /* Views */,
 				428B7EED2CDD576E000ED1A8 /* Model */,
@@ -307,6 +311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */,
+				131079442CDD538F00880CDF /* QuizViews.swift in Sources */,
 				4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */,
 				428B7EEF2CDD579D000ED1A8 /* dashboardView.swift in Sources */,
 				428B7EF82CDD5DC0000ED1A8 /* userImage.swift in Sources */,
@@ -315,6 +320,7 @@
 				428B7F272CDDC6DF000ED1A8 /* quizView.swift in Sources */,
 				428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */,
 				4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */,
+				09D129062CDBE23300C3BDBB /* newCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
