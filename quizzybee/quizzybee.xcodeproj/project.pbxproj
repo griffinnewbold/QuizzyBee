@@ -18,6 +18,12 @@
 		4208E4072CD05C6300F6AC55 /* quizzybeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4062CD05C6300F6AC55 /* quizzybeeTests.swift */; };
 		4208E4112CD05C6300F6AC55 /* quizzybeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */; };
 		4208E4132CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */; };
+		428B7EEF2CDD579D000ED1A8 /* dashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EEE2CDD579D000ED1A8 /* dashboardView.swift */; };
+		428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */; };
+		428B7EF82CDD5DC0000ED1A8 /* userImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF72CDD5DC0000ED1A8 /* userImage.swift */; };
+		428B7EFB2CDD5EE7000ED1A8 /* fakebee.png in Resources */ = {isa = PBXBuildFile; fileRef = 428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */; };
+		428B7F272CDDC6DF000ED1A8 /* quizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7F262CDDC6DF000ED1A8 /* quizView.swift */; };
+		428B7F292CDDC7DA000ED1A8 /* newCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7F282CDDC7DA000ED1A8 /* newCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +57,12 @@
 		4208E40C2CD05C6300F6AC55 /* quizzybeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITests.swift; sourceTree = "<group>"; };
 		4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		428B7EEE2CDD579D000ED1A8 /* dashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dashboardView.swift; sourceTree = "<group>"; };
+		428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorToHex.swift; sourceTree = "<group>"; };
+		428B7EF72CDD5DC0000ED1A8 /* userImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userImage.swift; sourceTree = "<group>"; };
+		428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fakebee.png; sourceTree = "<group>"; };
+		428B7F262CDDC6DF000ED1A8 /* quizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizView.swift; sourceTree = "<group>"; };
+		428B7F282CDDC7DA000ED1A8 /* newCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +115,9 @@
 			children = (
 				131079432CDD538900880CDF /* QuizViews.swift */,
 				4208E3F02CD05C6200F6AC55 /* quizzybeeApp.swift */,
-				09D129052CDBE23300C3BDBB /* newCardView.swift */,
-				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
+				428B7EEC2CDD5768000ED1A8 /* Views */,
+				428B7EED2CDD576E000ED1A8 /* Model */,
+				428B7EF92CDD5EB4000ED1A8 /* Resources */,
 				4208E3F42CD05C6300F6AC55 /* Assets.xcassets */,
 				4208E3F92CD05C6300F6AC55 /* Persistence.swift */,
 				4208E3FB2CD05C6300F6AC55 /* quizzybee.xcdatamodeld */,
@@ -136,6 +149,34 @@
 				4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */,
 			);
 			path = quizzybeeUITests;
+			sourceTree = "<group>";
+		};
+		428B7EEC2CDD5768000ED1A8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
+				428B7EEE2CDD579D000ED1A8 /* dashboardView.swift */,
+				428B7EF72CDD5DC0000ED1A8 /* userImage.swift */,
+				428B7F262CDDC6DF000ED1A8 /* quizView.swift */,
+				428B7F282CDDC7DA000ED1A8 /* newCardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		428B7EED2CDD576E000ED1A8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		428B7EF92CDD5EB4000ED1A8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,6 +283,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428B7EFB2CDD5EE7000ED1A8 /* fakebee.png in Resources */,
 				4208E3F82CD05C6300F6AC55 /* Preview Assets.xcassets in Resources */,
 				4208E3F52CD05C6300F6AC55 /* Assets.xcassets in Resources */,
 			);
@@ -271,7 +313,12 @@
 				4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */,
 				131079442CDD538F00880CDF /* QuizViews.swift in Sources */,
 				4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */,
+				428B7EEF2CDD579D000ED1A8 /* dashboardView.swift in Sources */,
+				428B7EF82CDD5DC0000ED1A8 /* userImage.swift in Sources */,
 				4208E3FD2CD05C6300F6AC55 /* quizzybee.xcdatamodeld in Sources */,
+				428B7F292CDDC7DA000ED1A8 /* newCardView.swift in Sources */,
+				428B7F272CDDC6DF000ED1A8 /* quizView.swift in Sources */,
+				428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */,
 				4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */,
 				09D129062CDBE23300C3BDBB /* newCardView.swift in Sources */,
 			);
