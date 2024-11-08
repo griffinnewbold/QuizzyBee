@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-struct Dashboard: View {
+struct dashboardView: View {
     
     var body: some View {
         ZStack {
             Color(hex:"7B7B7B").ignoresSafeArea()
             HStack {
-                UserImage()
-                    
-                Spacer()
+                userImage()
                 
                 Text("Hello, newbee!")
-                    .font(.title)
+                    .font(.largeTitle)
+                    .foregroundColor(Color(hex: "FFFFFF"))
+                    .bold()
                 
-                Text("Now I'm here.")
+                
             }
             
         }
@@ -28,5 +28,5 @@ struct Dashboard: View {
 }
 
 #Preview {
-    Dashboard()
+    dashboardView()
 }

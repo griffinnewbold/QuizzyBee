@@ -16,10 +16,12 @@
 		4208E4072CD05C6300F6AC55 /* quizzybeeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4062CD05C6300F6AC55 /* quizzybeeTests.swift */; };
 		4208E4112CD05C6300F6AC55 /* quizzybeeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */; };
 		4208E4132CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */; };
-		428B7EEF2CDD579D000ED1A8 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EEE2CDD579D000ED1A8 /* Dashboard.swift */; };
+		428B7EEF2CDD579D000ED1A8 /* dashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EEE2CDD579D000ED1A8 /* dashboardView.swift */; };
 		428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */; };
-		428B7EF82CDD5DC0000ED1A8 /* UserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF72CDD5DC0000ED1A8 /* UserImage.swift */; };
+		428B7EF82CDD5DC0000ED1A8 /* userImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7EF72CDD5DC0000ED1A8 /* userImage.swift */; };
 		428B7EFB2CDD5EE7000ED1A8 /* fakebee.png in Resources */ = {isa = PBXBuildFile; fileRef = 428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */; };
+		428B7F272CDDC6DF000ED1A8 /* quizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7F262CDDC6DF000ED1A8 /* quizView.swift */; };
+		428B7F292CDDC7DA000ED1A8 /* newCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428B7F282CDDC7DA000ED1A8 /* newCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,10 +54,12 @@
 		4208E40C2CD05C6300F6AC55 /* quizzybeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4208E4102CD05C6300F6AC55 /* quizzybeeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITests.swift; sourceTree = "<group>"; };
 		4208E4122CD05C6300F6AC55 /* quizzybeeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizzybeeUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		428B7EEE2CDD579D000ED1A8 /* Dashboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dashboard.swift; sourceTree = "<group>"; };
+		428B7EEE2CDD579D000ED1A8 /* dashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dashboardView.swift; sourceTree = "<group>"; };
 		428B7EF52CDD5B38000ED1A8 /* ColorToHex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorToHex.swift; sourceTree = "<group>"; };
-		428B7EF72CDD5DC0000ED1A8 /* UserImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImage.swift; sourceTree = "<group>"; };
+		428B7EF72CDD5DC0000ED1A8 /* userImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userImage.swift; sourceTree = "<group>"; };
 		428B7EFA2CDD5EE7000ED1A8 /* fakebee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fakebee.png; sourceTree = "<group>"; };
+		428B7F262CDDC6DF000ED1A8 /* quizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quizView.swift; sourceTree = "<group>"; };
+		428B7F282CDDC7DA000ED1A8 /* newCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = newCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,8 +151,10 @@
 			isa = PBXGroup;
 			children = (
 				4208E3F22CD05C6200F6AC55 /* ContentView.swift */,
-				428B7EEE2CDD579D000ED1A8 /* Dashboard.swift */,
-				428B7EF72CDD5DC0000ED1A8 /* UserImage.swift */,
+				428B7EEE2CDD579D000ED1A8 /* dashboardView.swift */,
+				428B7EF72CDD5DC0000ED1A8 /* userImage.swift */,
+				428B7F262CDDC6DF000ED1A8 /* quizView.swift */,
+				428B7F282CDDC7DA000ED1A8 /* newCardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -302,9 +308,11 @@
 			files = (
 				4208E3FA2CD05C6300F6AC55 /* Persistence.swift in Sources */,
 				4208E3F32CD05C6200F6AC55 /* ContentView.swift in Sources */,
-				428B7EEF2CDD579D000ED1A8 /* Dashboard.swift in Sources */,
-				428B7EF82CDD5DC0000ED1A8 /* UserImage.swift in Sources */,
+				428B7EEF2CDD579D000ED1A8 /* dashboardView.swift in Sources */,
+				428B7EF82CDD5DC0000ED1A8 /* userImage.swift in Sources */,
 				4208E3FD2CD05C6300F6AC55 /* quizzybee.xcdatamodeld in Sources */,
+				428B7F292CDDC7DA000ED1A8 /* newCardView.swift in Sources */,
+				428B7F272CDDC6DF000ED1A8 /* quizView.swift in Sources */,
 				428B7EF62CDD5B38000ED1A8 /* ColorToHex.swift in Sources */,
 				4208E3F12CD05C6200F6AC55 /* quizzybeeApp.swift in Sources */,
 			);

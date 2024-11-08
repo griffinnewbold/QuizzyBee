@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-struct UserImage: View {
+struct userImage: View {
     var body: some View {
         Image("fakebee")
             .resizable()
             .scaledToFit()
-            .frame(width: 100, height: 100)
+            .frame(width: 50, height: 50)
             .clipShape(Circle())
             .overlay {
-                Circle().stroke(.black, lineWidth: 4)
+                Circle().stroke(.black, lineWidth: 2)
             }
-            .shadow(radius: 7)
+            .shadow(radius: 4)
     }
 }
 
 #Preview {
-    UserImage()
+    userImage()
 }
