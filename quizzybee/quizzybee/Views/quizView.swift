@@ -1,8 +1,8 @@
 //
-//  QuizViews.swift
+//  quizView.swift
 //  quizzybee
 //
-//  Created by Tommy Lam on 11/7/24.
+//  Created by 李雨欣 on 2024/11/8.
 //
 
 import SwiftUI
@@ -190,13 +190,9 @@ struct ResultsView: View {
             .padding(.horizontal)
         }
     }
+    
 }
 
-// Preview provider
-struct QuizView_Previews: PreviewProvider {
-    static var previews: some View {
-        quizView()
-    }
+#Preview {
+    quizView()
 }
-
-
