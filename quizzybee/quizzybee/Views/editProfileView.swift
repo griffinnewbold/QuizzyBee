@@ -1,5 +1,5 @@
 //
-//  editProfile.swift
+//  editProfileView.swift
 //  quizzybee
 //
 //  Created by 李雨欣 on 2024/11/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct editProfile: View {
+struct editProfileView: View {
     @Binding var value: String
     let label: String
     let isSecure: Bool
@@ -42,7 +42,3 @@ struct editProfile: View {
         }
     }
 }
-
-//#Preview {
-//    editProfile()
-//}

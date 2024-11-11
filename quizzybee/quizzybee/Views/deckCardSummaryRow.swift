@@ -11,24 +11,27 @@ struct deckCardSummaryRow: View {
     var deckCard: DeckCardSummary
     
     var body: some View {
-        VStack {
-            HStack {
-                Text(deckCard.name)
-                    .font(.system(size:14))
-                    .bold()
-                Spacer()
-            }
-            HStack {
-                Text("cards: ")
-                    .font(.system(size:10))
-                
-                Text("\(deckCard.number)")
-                    .font(.system(size:10))
-                    .foregroundColor(.blue)
-                
-                Spacer()
+        NavigationLink(destination: deckCardDetailView(title: deckCard.name)) {
+            VStack {
+                HStack {
+                    Text(deckCard.name)
+                        .font(.system(size:14))
+                        .bold()
+                    Spacer()
+                }
+                HStack {
+                    Text("cards: ")
+                        .font(.system(size:10))
+                    
+                    Text("\(deckCard.number)")
+                        .font(.system(size:10))
+                        .foregroundColor(.blue)
+                    
+                    Spacer()
+                }
             }
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 

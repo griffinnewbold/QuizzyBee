@@ -48,7 +48,7 @@ struct profileRow: View {
         )
         .padding(.horizontal)
         .sheet(isPresented: $isEditing) {
-            editProfile(value: $value, label: label, isSecure: isSecure)
+            editProfileView(value: $value, label: label, isSecure: isSecure)
         }
     }
 }

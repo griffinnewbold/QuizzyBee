@@ -10,7 +10,7 @@ import SwiftUI
 struct headerForDashboard: View {
     var body: some View {
         HStack {
-            NavigationLink(destination: userProfile()) {
+            NavigationLink(destination: userProfileView()) {
                 userImage(size: 50)
             }
             .buttonStyle(PlainButtonStyle())

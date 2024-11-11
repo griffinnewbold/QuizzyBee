@@ -1,5 +1,5 @@
 //
-//  userProfile.swift
+//  userProfileView.swift
 //  quizzybee
 //
 //  Created by 李雨欣 on 2024/11/10.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct userProfile: View {
+struct userProfileView: View {
     // user consent the use of AI
     @AppStorage("allow AI") var allowAI = false
     @Environment(\.dismiss) var dismiss
@@ -50,5 +50,5 @@ struct userProfile: View {
 }
 
 #Preview {
-    userProfile()
+    userProfileView()
 }
