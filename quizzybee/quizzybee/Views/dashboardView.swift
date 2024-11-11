@@ -24,27 +24,33 @@ struct dashboardView: View {
     }
     
     var body: some View {
-        ZStack {
-            Color(hex:"7B7B7B").ignoresSafeArea()
-            VStack {
-                headerForDashboard()
+        NavigationStack {
+            ZStack {
+                Color(hex:"7B7B7B").ignoresSafeArea()
                 
-                searchBar(searchText: $searchText,
-                          placeholder: "search deck...",
-                          onSubmit: {
-                    if !searchText.isEmpty && filteredDecks.isEmpty {
-                        noResults = true
-                    }
-                })
-                
-                deckCardSummaryList(targetDecks: filteredDecks)
-            }
-            .alert("No Results", isPresented: $noResults) {
-                Button("OK", role: .cancel) {
-                    noResults = false
+                VStack(spacing: 0) {
+                    headerForDashboard().padding(.bottom, 50)
+                    
+                    searchBar(searchText: $searchText,
+                              placeholder: "search deck...",
+                              onSubmit: {
+                        if !searchText.isEmpty && filteredDecks.isEmpty {
+                            noResults = true
+                        }
+                    }).padding(.bottom, 50)
+                    
+                    deckCardSummaryList(targetDecks: filteredDecks)
+                    
+                    addNewCard().padding(.bottom, 30)
                 }
-            } message: {
-                Text("No decks found matching '\(searchText)'")
+                .alert("No Results", isPresented: $noResults) {
+                    Button("OK", role: .cancel) {
+                        noResults = false
+                    }
+                } message: {
+                    Text("No decks found matching '\(searchText)'")
+                }
+                
             }
         }
     }

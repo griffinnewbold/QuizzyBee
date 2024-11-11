@@ -10,7 +10,10 @@ import SwiftUI
 struct headerForDashboard: View {
     var body: some View {
         HStack {
-            userImage()
+            NavigationLink(destination: userProfile()) {
+                userImage(size: 50)
+            }
+            .buttonStyle(PlainButtonStyle())
                 
             Text("Hello, newbee!")
                 .font(.largeTitle)
