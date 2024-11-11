@@ -26,7 +26,7 @@ struct dashboardView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(hex:"7B7B7B").ignoresSafeArea()
+                dashboardBackgroundView()
                 
                 VStack(spacing: 0) {
                     headerForDashboard().padding(.bottom, 50)
