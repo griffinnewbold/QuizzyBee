@@ -2,7 +2,7 @@
 //  quizView.swift
 //  quizzybee
 //
-//  Created by 李雨欣 on 2024/11/8.
+//  Created by Tommy on 2024/11/8.
 //
 
 import SwiftUI

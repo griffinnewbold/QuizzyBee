@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct userImage: View {
+    let size: CGFloat
+    
     var body: some View {
         Image("UserImage")
             .resizable()
             .scaledToFit()
-            .frame(width: 50, height: 50)
+            .frame(width: size, height: size)
             .clipShape(Circle())
             .overlay {
                 Circle().stroke(.black, lineWidth: 2)
@@ -22,5 +24,5 @@ struct userImage: View {
 }
 
 #Preview {
-    userImage()
+    userImage(size: 50)
 }
