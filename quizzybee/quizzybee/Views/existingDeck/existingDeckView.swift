@@ -8,16 +8,15 @@
 import SwiftUI
 
 struct existingDeckView: View {
+    let title: String
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
     @State private var showAnswer = false
-    
-    let questions = [
+    @State private var questions = [
         "What is the correct way to declare a variable of type integer in Java?",
         "Which access modifier makes a variable accessible only within its own class?"
     ]
-    
-    let answers = [
+    @State private var answers = [
         "Integer x = 10;",
         "private"
     ]
@@ -37,7 +36,7 @@ struct existingDeckView: View {
                                 .padding()
                         }
                         Spacer()
-                        Text("Intro to Java")
+                        Text(title)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.black)
@@ -52,13 +51,19 @@ struct existingDeckView: View {
                     }
                     .padding(.horizontal)
                     
+                    //search keyword search bar
                     HStack {
                         HStack {
                             TextField("Search keyword", text: $searchText)
                                 .padding(.leading)
                             Spacer()
                             Button(action: {
-                                //search button
+                                if !searchText.isEmpty {
+                                    if let index = questions.firstIndex(where: { $0.localizedCaseInsensitiveContains(searchText) }) {
+                                        currentQuestionIndex = index
+                                        showAnswer = false
+                                    }
+                                }
                             }) {
                                 Image(systemName: "magnifyingglass")
                                     .foregroundColor(.gray)
@@ -71,6 +76,7 @@ struct existingDeckView: View {
                         .padding(.horizontal)
                     }
                     
+                    //flashcards
                     HStack {
                         Button(action: {
                             if currentQuestionIndex > 0 {
@@ -112,6 +118,7 @@ struct existingDeckView: View {
                         }
                     }
                     
+                    //flashcards page
                     HStack(spacing: 8) {
                         ForEach(questions.indices, id: \..self) { index in
                             Circle()
@@ -128,8 +135,8 @@ struct existingDeckView: View {
                     .cornerRadius(100)
                     .padding(.horizontal)
                     
-                    //link to newCardView
-                    NavigationLink(destination: newCardView()) {
+                    //click plus will link to addNewCardView
+                    NavigationLink(destination: existingNewCardView(questions: $questions, answers: $answers)) {
                         HStack {
                             Spacer()
                             Image(systemName: "plus")
@@ -143,11 +150,27 @@ struct existingDeckView: View {
                     }
                     .padding(.horizontal)
                     
+                    //click Start Review will link to StartReview
+                    NavigationLink(destination: reviewView(questions: $questions, answers: $answers)) {
+                        HStack {
+                            Spacer()
+                            Text("Start Review")
+                                .foregroundColor(.black)
+                                .font(.headline)
+                            Spacer()
+                        }
+                        .padding()
+                        .frame(height: 60)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                    }
+                    .padding(.horizontal)
+                    
                     //click Start Review will link to quizView
                     NavigationLink(destination: quizView()) {
                         HStack {
                             Spacer()
-                            Text("Start Review")
+                            Text("Start Quiz")
                                 .foregroundColor(.black)
                                 .font(.headline)
                             Spacer()
@@ -165,8 +188,9 @@ struct existingDeckView: View {
             }
         }
     }
+    
 }
 
 #Preview {
-    existingDeckView()
+    existingDeckView(title: "Intro to Java")
 }

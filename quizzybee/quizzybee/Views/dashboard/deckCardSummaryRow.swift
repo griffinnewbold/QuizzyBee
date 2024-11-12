@@ -11,7 +11,7 @@ struct deckCardSummaryRow: View {
     var deckCard: DeckCardSummary
     
     var body: some View {
-        NavigationLink(destination: deckCardDetailView(title: deckCard.name)) {
+        NavigationLink(destination: existingDeckView(title: deckCard.name)) {
             VStack {
                 HStack {
                     Text(deckCard.name)
