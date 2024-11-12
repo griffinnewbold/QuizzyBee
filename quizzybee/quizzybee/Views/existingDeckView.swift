@@ -9,6 +9,7 @@ import SwiftUI
 
 struct existingDeckView: View {
     let title: String
+    @Environment(\.dismiss) private var dismiss
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
     @State private var showAnswer = false
@@ -136,7 +137,7 @@ struct existingDeckView: View {
                     .padding(.horizontal)
                     
                     //click plus will link to addNewCardView
-                    NavigationLink(destination: existingNewCardView(questions: $questions, answers: $answers)) {
+                    NavigationLink(destination: newCardView()) {
                         HStack {
                             Spacer()
                             Image(systemName: "plus")
@@ -186,6 +187,7 @@ struct existingDeckView: View {
                 }
                 .padding(.vertical)
             }
+            .navigationBarHidden(true)
         }
     }
     
