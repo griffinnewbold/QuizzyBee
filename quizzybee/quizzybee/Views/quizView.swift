@@ -14,10 +14,12 @@ struct QuizQuestion {
 }
 
 struct quizView: View {
+    @Environment(\.presentationMode) var presentationMode
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: Int? = nil
     @State private var showResults = false
     @State private var score = 0
+    @State private var shouldNavigateBack = false
     
     let questions = [
         // sample questions
@@ -51,13 +53,18 @@ struct quizView: View {
                     .ignoresSafeArea()
                 
                 if showResults {
-                    ResultsView(score: score, totalQuestions: questions.count) {
-                        // Reset quiz
-                        currentQuestionIndex = 0
-                        selectedAnswer = nil
-                        showResults = false
-                        score = 0
-                    }
+                    ResultsView(
+                        score: score,
+                        totalQuestions: questions.count,
+                        onNewQuiz: {  // Make sure this closure is included
+                            // Reset quiz
+                            currentQuestionIndex = 0
+                            selectedAnswer = nil
+                            showResults = false
+                            score = 0
+                        },
+                        shouldNavigateBack: $shouldNavigateBack
+                    )
                 } else {
                     VStack(spacing: 20) {
                         // Progress indicator
@@ -66,6 +73,9 @@ struct quizView: View {
                                 if currentQuestionIndex > 0 {
                                     currentQuestionIndex -= 1
                                     selectedAnswer = nil
+                                }else {
+                                    // Return to deck when on first question
+                                    presentationMode.wrappedValue.dismiss()
                                 }
                             }) {
                                 Image(systemName: "chevron.left")
@@ -136,6 +146,11 @@ struct quizView: View {
             }
             .navigationBarHidden(true)
         }
+        .onChange(of: shouldNavigateBack) { oldValue, newValue in
+            if newValue {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
     
     private func backgroundColor(for index: Int) -> Color {
@@ -159,6 +174,7 @@ struct ResultsView: View {
     let score: Int
     let totalQuestions: Int
     let onNewQuiz: () -> Void
+    @Binding var shouldNavigateBack: Bool
     
     var body: some View {
         VStack(spacing: 20) {
@@ -179,7 +195,7 @@ struct ResultsView: View {
                 .cornerRadius(10)
                 
                 Button("Return to Deck") {
-                    // Handle return to deck action
+                    shouldNavigateBack = true
                 }
                 .font(.system(size: 16, weight: .medium))
                 .padding()
@@ -190,7 +206,6 @@ struct ResultsView: View {
             .padding(.horizontal)
         }
     }
-    
 }
 
 #Preview {
