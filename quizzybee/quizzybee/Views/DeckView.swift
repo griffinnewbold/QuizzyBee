@@ -28,7 +28,7 @@ struct DeckView: View {
                 VStack(spacing: 30) {
                     HStack {
                         Button(action: {
-                            //return to Dashboard button?
+                            //return to Dashboard button
                         }) {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.white)
@@ -135,7 +135,7 @@ struct DeckView: View {
                     .padding(.horizontal)
                     
                     //click plus will link to addNewCardView
-                    NavigationLink(destination: AddNewCardView(questions: $questions, answers: $answers)) {
+                    NavigationLink(destination: newCardView()) {
                         HStack {
                             Spacer()
                             Image(systemName: "plus")
@@ -184,169 +184,6 @@ struct DeckView: View {
                     Spacer()
                 }
                 .padding(.vertical)
-            }
-        }
-    }
-}
-
-//AddNewCardView
-struct AddNewCardView: View {
-    @Binding var questions: [String]
-    @Binding var answers: [String]
-    @State private var newQuestion = ""
-    @State private var newAnswer = ""
-    @Environment(\.presentationMode) var presentationMode
-    @State private var shouldNavigateToRateNewCard = false
-    
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                Text("Add New Flashcard")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                
-                VStack(spacing: 20) {
-                    TextField("Type or hand write your question...", text: $newQuestion)
-                        .padding()
-                        .frame(width: 300, height: 280)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                    
-                    TextField("Type or hand write your answer...", text: $newAnswer)
-                        .padding()
-                        .frame(width: 300, height: 280)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                }
-                
-                Button(action: {
-                    if !newQuestion.isEmpty && !newAnswer.isEmpty {
-                        questions.append(newQuestion)
-                        answers.append(newAnswer)
-                        shouldNavigateToRateNewCard = true
-                    }
-                }) {
-                    HStack {
-                        Spacer()
-                        Text("Save to Deck")
-                            .foregroundColor(.white)
-                            .font(.headline)
-                        Spacer()
-                    }
-                    .padding()
-                    .frame(height: 60)
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-            }
-            .background(Color.yellow.edgesIgnoringSafeArea(.all))
-            .navigationDestination(isPresented: $shouldNavigateToRateNewCard) {
-                RateNewCardView(question: newQuestion, answer: newAnswer)
-                    .navigationBarBackButtonHidden(true)
-            }
-        }
-    }
-}
-
-//RateNewCardView
-struct RateNewCardView: View {
-    @Environment(\.presentationMode) var presentationMode
-    let question: String
-    let answer: String
-    @State private var isFlipped = false
-    
-    var body: some View {
-        ZStack {
-            Color.yellow.edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Text("Rate New Flashcard")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding()
-                
-                Spacer()
-                
-                ZStack {
-                    if isFlipped {
-                        Text(answer)
-                            .font(.title)
-                            .frame(width: 300, height: 200)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .padding()
-                            .onTapGesture {
-                                withAnimation {
-                                    isFlipped.toggle()
-                                }
-                            }
-                    } else {
-                        Text(question)
-                            .font(.title)
-                            .frame(width: 300, height: 200)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                            .padding()
-                            .onTapGesture {
-                                withAnimation {
-                                    isFlipped.toggle()
-                                }
-                            }
-                    }
-                }
-                
-                Text("How hard was this question?")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .padding()
-                
-                VStack(spacing: 20) {
-                    Button(action: {
-                        // Handle Easy button action
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Easy")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: 100, height: 50)
-                            .background(Color.green)
-                            .cornerRadius(10)
-                    }
-                    
-                    Button(action: {
-                        // Handle Medium button action
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Medium")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: 100, height: 50)
-                            .background(Color.orange)
-                            .cornerRadius(10)
-                    }
-                    
-                    Button(action: {
-                        // Handle Hard button action
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Hard")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: 100, height: 50)
-                            .background(Color.red)
-                            .cornerRadius(10)
-                    }
-                }
-                .padding()
-                
-                Spacer()
             }
         }
     }
@@ -419,7 +256,53 @@ struct StartReviewView: View {
             .cornerRadius(100)
             .padding(.horizontal)
             
+            
+            Text("How hard was this question?")
+                .font(.headline)
+                .fontWeight(.bold)
+                .padding()
+            
+            VStack(spacing: 20) {
+                Button(action: {
+                    // Handle Easy button action
+                }) {
+                    Text("Easy")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 100, height: 50)
+                        .background(Color.green)
+                        .cornerRadius(10)
+                }
+                
+                Button(action: {
+                    // Handle Medium button action
+                }) {
+                    Text("Medium")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 100, height: 50)
+                        .background(Color.orange)
+                        .cornerRadius(10)
+                }
+                
+                Button(action: {
+                    // Handle Hard button action
+                }) {
+                    Text("Hard")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 100, height: 50)
+                        .background(Color.red)
+                        .cornerRadius(10)
+                }
+            }
+            .padding()
+            
             Spacer()
+            
         }
         .padding(.vertical)
         .background(Color.yellow.edgesIgnoringSafeArea(.all))
