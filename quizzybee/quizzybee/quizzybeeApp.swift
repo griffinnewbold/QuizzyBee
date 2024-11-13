@@ -2,7 +2,7 @@
 //  quizzybeeApp.swift
 //  quizzybee
 //
-//  Created by 李雨欣 on 2024/10/28.
+//  Created by 李雨欣 on 2024/11/8.
 //
 
 import SwiftUI
@@ -13,8 +13,7 @@ struct quizzybeeApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            LoginView()
         }
     }
 }

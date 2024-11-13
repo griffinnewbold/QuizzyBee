@@ -2,7 +2,7 @@
 //  quizzybeeUITestsLaunchTests.swift
 //  quizzybeeUITests
 //
-//  Created by 李雨欣 on 2024/10/28.
+//  Created by 李雨欣 on 2024/11/8.
 //
 
 import XCTest
@@ -17,6 +17,7 @@ final class quizzybeeUITestsLaunchTests: XCTestCase {
         continueAfterFailure = false
     }
 
+    @MainActor
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launch()

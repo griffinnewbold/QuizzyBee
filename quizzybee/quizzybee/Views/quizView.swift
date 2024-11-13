@@ -1,8 +1,8 @@
 //
-//  QuizViews.swift
+//  quizView.swift
 //  quizzybee
 //
-//  Created by Tommy Lam on 11/7/24.
+//  Created by Tommy on 2024/11/8.
 //
 
 import SwiftUI
@@ -13,7 +13,7 @@ struct QuizQuestion {
     let correctAnswer: Int
 }
 
-struct QuizView: View {
+struct quizView: View {
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: Int? = nil
     @State private var showResults = false
@@ -190,11 +190,9 @@ struct ResultsView: View {
             .padding(.horizontal)
         }
     }
+    
 }
 
-// Preview provider
-struct QuizView_Previews: PreviewProvider {
-    static var previews: some View {
-        QuizView()
-    }
+#Preview {
+    quizView()
 }

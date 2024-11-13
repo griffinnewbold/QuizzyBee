@@ -2,7 +2,7 @@
 //  Persistence.swift
 //  quizzybee
 //
-//  Created by 李雨欣 on 2024/10/28.
+//  Created by 李雨欣 on 2024/11/8.
 //
 
 import CoreData
@@ -10,7 +10,8 @@ import CoreData
 struct PersistenceController {
     static let shared = PersistenceController()
 
-    static var preview: PersistenceController = {
+    @MainActor
+    static let preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
         for _ in 0..<10 {
@@ -28,10 +29,10 @@ struct PersistenceController {
         return result
     }()
 
-    let container: NSPersistentContainer
+    let container: NSPersistentCloudKitContainer
 
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "quizzybee")
+        container = NSPersistentCloudKitContainer(name: "quizzybee")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         }

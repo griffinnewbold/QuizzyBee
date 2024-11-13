@@ -2,7 +2,7 @@
 //  newCardView.swift
 //  quizzybee
 //
-//  Created by maddie on 11/6/24.
+//  Created by Madeleine on 2024/11/8.
 //
 
 import SwiftUI
@@ -11,6 +11,7 @@ struct Flashcard {
     var frontText: String
     var backText: String
 }
+
 
 struct newCardView: View {
     @Environment(\.presentationMode) var presentationMode
@@ -59,7 +60,7 @@ struct newCardView: View {
                     }
                     
                     Spacer()
-
+                    
                     VStack(spacing: 20) {
                         VStack(alignment: .leading) {
                             Text("Question (Front)")
@@ -76,7 +77,7 @@ struct newCardView: View {
                                     .shadow(radius: 5)
                                     .frame(width: 240, height: 120)
                                 
-
+                                
                                 if flashcards[currentCardIndex].frontText.isEmpty {
                                     Text("Question here...")
                                         .foregroundColor(.gray)
@@ -87,7 +88,7 @@ struct newCardView: View {
                             }
                         }
                         
-
+                        
                         VStack(alignment: .leading) {
                             Text("Answer (Back)")
                                 .font(.headline)
@@ -131,7 +132,7 @@ struct newCardView: View {
                 
                 Spacer()
                 
-
+                
                 Button(action: {
                     saveFlashcards()
                 }) {
@@ -149,12 +150,13 @@ struct newCardView: View {
         }
     }
     
-
+    
     func saveFlashcards() {
         print("Saving flashcards: \(flashcards)")
         // add saving logic here (database)
         // to be implemented
     }
+    
 }
 
 #Preview {

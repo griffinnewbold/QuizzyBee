@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4208E3EC2CD05C6200F6AC55"
+               BlueprintIdentifier = "42A239BE2CDDD27D0055333F"
                BuildableName = "quizzybee.app"
                BlueprintName = "quizzybee"
                ReferencedContainer = "container:quizzybee.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4208E3EC2CD05C6200F6AC55"
+            BlueprintIdentifier = "42A239BE2CDDD27D0055333F"
             BuildableName = "quizzybee.app"
             BlueprintName = "quizzybee"
             ReferencedContainer = "container:quizzybee.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4208E3EC2CD05C6200F6AC55"
+            BlueprintIdentifier = "42A239BE2CDDD27D0055333F"
             BuildableName = "quizzybee.app"
             BlueprintName = "quizzybee"
             ReferencedContainer = "container:quizzybee.xcodeproj">
