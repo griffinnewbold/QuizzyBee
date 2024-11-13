@@ -20,67 +20,104 @@ struct TopShape: Shape {
 }
 
 struct LoginView: View {
+    @StateObject private var authViewModel = AuthViewModel()
+    
     @State private var email = ""
     @State private var password = ""
-    
+    @State private var showError = false
+    @State private var navigateToRegister = false
+
     var body: some View {
-        ZStack {
-            Color.gray.ignoresSafeArea()
-            TopShape()
-                .fill(Color.yellow)
-                .rotationEffect(.degrees(180))
-                .offset(y: -350)
-                .ignoresSafeArea(edges: .top)
-            
-            VStack {
-                Spacer().frame(height: 80)
+        NavigationView {
+            ZStack {
+                Color.gray.ignoresSafeArea()
+                TopShape()
+                    .fill(Color.yellow)
+                    .rotationEffect(.degrees(180))
+                    .offset(y: -350)
+                    .ignoresSafeArea(edges: .top)
                 
-                Text("Login Today!")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .offset(x: -75)
-                
-                Spacer()
-                
-                VStack(spacing: 20) {
-                    CustomTextField(placeholder: "Email:", text: $email)
-                    SecureField("Password:", text: $password)
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                }
-                .padding(.horizontal, 20)
-                
-                Button(action: {
-                    print("login clicked \(email) and \(password) entered.")
-                }) {
-                    Text("Login")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.yellow)
-                        .foregroundColor(.black)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                }
-                .padding(.horizontal, 50)
-                .padding(.top, 20)
-                
-                Spacer()
-                
-                HStack {
-                    Text("Not Registered Yet?")
+                VStack {
+                    Spacer().frame(height: 80)
+                    
+                    Text("Login Today!")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .offset(x: -75)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 20) {
+                        CustomTextField(placeholder: "Email:", text: $email)
+                        SecureField("Password:", text: $password)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
+                    }
+                    .padding(.horizontal, 20)
                     
                     Button(action: {
-                        print("placehold navigate to register page")
+                        loginUser()
+                        print("the user has successfully logged in")
+                        // TODO: add navigation logic to dashboard based on user
                     }) {
-                        Text("Register")
-                            .foregroundColor(.yellow)
-                            .underline()
+                        Text("Login")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.yellow)
+                            .foregroundColor(.black)
+                            .cornerRadius(10)
+                            .shadow(radius: 5)
                     }
+                    .padding(.horizontal, 50)
+                    .padding(.top, 20)
+                    
+                    if showError, let errorMessage = authViewModel.errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .padding(.top, 10)
+                    }
+                    
+                    Spacer()
+                    
+                    HStack {
+                        Text("Not Registered Yet?")
+                        
+                        NavigationLink(destination: RegisterView(), isActive: $navigateToRegister) {
+                            Button(action: {
+                                navigateToRegister = true
+                            }) {
+                                Text("Register")
+                                    .foregroundColor(.yellow)
+                                    .underline()
+                            }
+                        }
+                    }
+                    .padding(.bottom, 20)
                 }
-                .padding(.bottom, 20)
             }
+        }
+        .navigationBarBackButtonHidden(true)
+    }
+    
+    // MARK: - Login User by Calling AuthViewModel
+    private func loginUser() {
+        guard !email.isEmpty, !password.isEmpty else {
+            authViewModel.errorMessage = "Please enter all fields."
+            showError = true
+            return
+        }
+        
+        authViewModel.logIn(email: email, password: password)
+        
+        if let errorMessage = authViewModel.errorMessage {
+            showError = true
+            print("Error: \(errorMessage)")
+        } else {
+            showError = false
+            email = ""
+            password = ""
         }
     }
 }
