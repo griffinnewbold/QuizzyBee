@@ -11,6 +11,7 @@ import Firebase
 @main
 struct quizzybeeApp: App {
     
+    //sets up firebase to be used
     init() {
         FirebaseApp.configure()
     }
