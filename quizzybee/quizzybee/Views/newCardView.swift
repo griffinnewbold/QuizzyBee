@@ -1,7 +1,6 @@
 //
 //  newCardView.swift
 //  quizzybee
-//
 //  Created by Madeleine on 2024/11/8.
 //
 
@@ -12,16 +11,15 @@ struct Flashcard {
     var backText: String
 }
 
-
 struct newCardView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var currentCardIndex = 0
     @State private var flashcards = [
         Flashcard(frontText: "", backText: ""),
-        Flashcard(frontText: "", backText: ""),
         Flashcard(frontText: "", backText: "")
     ]
+    @State private var deckTitle = "New Deck Title" // Add a state for the deck title
     
     var body: some View {
         ZStack {
@@ -37,11 +35,21 @@ struct newCardView: View {
                             .font(.title)
                             .foregroundColor(.black)
                     }
+                    
                     Spacer()
-                    Text("{New Deck Title}")
-                        .font(.title)
-                        .bold()
-                        .foregroundColor(.black)
+                    
+                    ZStack(alignment: .trailing) {
+                        TextField("Enter Deck Title", text: $deckTitle)
+                            .font(.title)
+                            .bold()
+                            .foregroundColor(.black)
+                            .multilineTextAlignment(.center)
+                        
+                        Image(systemName: "pencil")
+                            .foregroundColor(.black)
+                            .offset(x: -50)
+                    }
+                    
                     Spacer()
                 }
                 .padding()
@@ -75,19 +83,17 @@ struct newCardView: View {
                                     .background(Color.white)
                                     .cornerRadius(10)
                                     .shadow(radius: 5)
-                                    .frame(width: 240, height: 120)
-                                
+                                    .frame(width: 300, height: 160)
                                 
                                 if flashcards[currentCardIndex].frontText.isEmpty {
                                     Text("Question here...")
                                         .foregroundColor(.gray)
                                         .padding(10)
-                                        .frame(width: 240, height: 120, alignment: .topLeading)
+                                        .frame(width: 300, height: 160, alignment: .topLeading)
                                         .opacity(0.6)
                                 }
                             }
                         }
-                        
                         
                         VStack(alignment: .leading) {
                             Text("Answer (Back)")
@@ -102,14 +108,13 @@ struct newCardView: View {
                                     .background(Color.white)
                                     .cornerRadius(10)
                                     .shadow(radius: 5)
-                                    .frame(width: 240, height: 120)
-                                
+                                    .frame(width: 300, height: 160)
                                 
                                 if flashcards[currentCardIndex].backText.isEmpty {
                                     Text("Answer here...")
                                         .foregroundColor(.gray)
                                         .padding(10)
-                                        .frame(width: 240, height: 120, alignment: .topLeading)
+                                        .frame(width: 300, height: 160, alignment: .topLeading)
                                         .opacity(0.6)
                                 }
                             }
@@ -132,7 +137,6 @@ struct newCardView: View {
                 
                 Spacer()
                 
-                
                 Button(action: {
                     saveFlashcards()
                 }) {
@@ -150,13 +154,11 @@ struct newCardView: View {
         }
     }
     
-    
     func saveFlashcards() {
         print("Saving flashcards: \(flashcards)")
         // add saving logic here (database)
         // to be implemented
     }
-    
 }
 
 #Preview {

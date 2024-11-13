@@ -1,0 +1,18 @@
+# Xcode
+DerivedData/
+Build/
+*.xcworkspace
+!default.xcworkspace
+xcuserdata/
+*.moved-aside
+*.xcuserstate
+# Temporary files
+*.swp
+*.lock
+*.xcscmblueprint
+
+# Bundler
+/.bundle
+
+# Other
+*.DS_Store
