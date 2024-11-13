@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct quizzybeeApp: App {
-    let persistenceController = PersistenceController.shared
-
+    
+    init() {
+        FirebaseApp.configure()
+    }
+    
     var body: some Scene {
         WindowGroup {
             LoginView()
