@@ -168,7 +168,8 @@ struct existingDeckView: View {
                     .padding(.horizontal)
                     
                     //click Start Review will link to quizView
-                    NavigationLink(destination: quizView()) {
+                    NavigationLink(destination: quizView()
+                        .navigationBarBackButtonHidden(true)) {
                         HStack {
                             Spacer()
                             Text("Start Quiz")
