@@ -1,13 +1,15 @@
 //
-//  DeckView.swift
+//  existingDeckView.swift
 //  quizzybee
 //
-//  Created by ChiaPeng Wu on 11/9/24.
+//  Created by Chiapeng Wu on 2024/11/12.
 //
 
 import SwiftUI
 
-struct DeckView: View {
+struct existingDeckView: View {
+    let title: String
+    @Environment(\.dismiss) private var dismiss
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
     @State private var showAnswer = false
@@ -28,14 +30,14 @@ struct DeckView: View {
                 VStack(spacing: 30) {
                     HStack {
                         Button(action: {
-                            //return to Dashboard button
+                            //return to Dashboard button?
                         }) {
                             Image(systemName: "chevron.left")
                                 .foregroundColor(.white)
                                 .padding()
                         }
                         Spacer()
-                        Text("Intro to Java")
+                        Text(title)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.black)
@@ -57,14 +59,14 @@ struct DeckView: View {
                                 .padding(.leading)
                             Spacer()
                             Button(action: {
-                            if !searchText.isEmpty {
-                                if let index = questions.firstIndex(where: { $0.localizedCaseInsensitiveContains(searchText) }) {
-                                    currentQuestionIndex = index
-                                    showAnswer = false
+                                if !searchText.isEmpty {
+                                    if let index = questions.firstIndex(where: { $0.localizedCaseInsensitiveContains(searchText) }) {
+                                        currentQuestionIndex = index
+                                        showAnswer = false
+                                    }
                                 }
-                            }
-                        }) {
-                            Image(systemName: "magnifyingglass")
+                            }) {
+                                Image(systemName: "magnifyingglass")
                                     .foregroundColor(.gray)
                                     .padding(.trailing)
                             }
@@ -150,7 +152,7 @@ struct DeckView: View {
                     .padding(.horizontal)
                     
                     //click Start Review will link to StartReview
-                    NavigationLink(destination: StartReviewView(questions: $questions, answers: $answers)) {
+                    NavigationLink(destination: reviewView(questions: $questions, answers: $answers)) {
                         HStack {
                             Spacer()
                             Text("Start Review")
@@ -185,132 +187,12 @@ struct DeckView: View {
                 }
                 .padding(.vertical)
             }
+            .navigationBarHidden(true)
         }
     }
+    
 }
 
-//StartReviewView
-struct StartReviewView: View {
-    @Binding var questions: [String]
-    @Binding var answers: [String]
-    @State private var currentQuestionIndex = 0
-    @State private var showAnswer = false
-
-    var body: some View {
-        VStack(spacing: 30) {
-            Spacer()
-            HStack {
-                Button(action: {
-                    if currentQuestionIndex > 0 {
-                        currentQuestionIndex -= 1
-                        showAnswer = false
-                    }
-                }) {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.black)
-                        .padding()
-                }
-                
-                VStack {
-                    Text(showAnswer ? answers[currentQuestionIndex] : questions[currentQuestionIndex])
-                        .fontWeight(.bold)
-                        .multilineTextAlignment(.center)
-                        .padding()
-                        .font(.title3)
-                        .foregroundColor(.black)
-                }
-                .frame(maxWidth: .infinity, minHeight: 200)
-                .padding()
-                .background(Color.white)
-                .cornerRadius(10)
-                .padding(.horizontal)
-                .onTapGesture {
-                    showAnswer.toggle()
-                }
-                
-                Button(action: {
-                    if currentQuestionIndex < questions.count - 1 {
-                        currentQuestionIndex += 1
-                        showAnswer = false
-                    }
-                }) {
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.black)
-                        .padding()
-                }
-            }
-            
-            HStack(spacing: 8) {
-                ForEach(questions.indices, id: \..self) { index in
-                    Circle()
-                        .fill(index == currentQuestionIndex ? Color.black : Color.gray)
-                        .frame(width: 10, height: 10)
-                        .onTapGesture {
-                            currentQuestionIndex = index
-                            showAnswer = false
-                        }
-                }
-            }
-            .padding()
-            .background(Color.white)
-            .cornerRadius(100)
-            .padding(.horizontal)
-            
-            
-            Text("How hard was this question?")
-                .font(.headline)
-                .fontWeight(.bold)
-                .padding()
-            
-            VStack(spacing: 20) {
-                Button(action: {
-                    // Handle Easy button action
-                }) {
-                    Text("Easy")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 100, height: 50)
-                        .background(Color.green)
-                        .cornerRadius(10)
-                }
-                
-                Button(action: {
-                    // Handle Medium button action
-                }) {
-                    Text("Medium")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 100, height: 50)
-                        .background(Color.orange)
-                        .cornerRadius(10)
-                }
-                
-                Button(action: {
-                    // Handle Hard button action
-                }) {
-                    Text("Hard")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 100, height: 50)
-                        .background(Color.red)
-                        .cornerRadius(10)
-                }
-            }
-            .padding()
-            
-            Spacer()
-            
-        }
-        .padding(.vertical)
-        .background(Color.yellow.edgesIgnoringSafeArea(.all))
-    }
-}
-
-struct DeckView_Previews: PreviewProvider {
-    static var previews: some View {
-        DeckView()
-    }
+#Preview {
+    existingDeckView(title: "Intro to Java")
 }
