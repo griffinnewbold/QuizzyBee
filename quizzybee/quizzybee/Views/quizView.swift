@@ -73,6 +73,9 @@ struct quizView: View {
                                 if currentQuestionIndex > 0 {
                                     currentQuestionIndex -= 1
                                     selectedAnswer = nil
+                                }else {
+                                    // Return to deck when on first question
+                                    presentationMode.wrappedValue.dismiss()
                                 }
                             }) {
                                 Image(systemName: "chevron.left")
