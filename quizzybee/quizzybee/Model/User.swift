@@ -5,15 +5,6 @@
 //  Created by Griffin C Newbold on 11/13/24.
 //
 
-
-//
-//  User.swift
-//  quizzybee
-//
-//  Created by Griffin C Newbold on 11/13/24.
-//
-
-
 import Foundation
 
 struct User: Codable {
@@ -21,9 +12,9 @@ struct User: Codable {
     var fullName: String
     var email: String
     var createdAt: Double
-    var sets: [Set]
+    var sets: [String: Set]
     
-    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [Set] = []) {
+    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:]) {
         self.userID = userID
         self.fullName = fullName
         self.email = email
@@ -31,20 +22,33 @@ struct User: Codable {
         self.sets = sets
     }
     
+    // Convert User to a dictionary
     func toDictionary() -> [String: Any] {
-        let setsArray = sets.map { set -> [String: Any] in
-            let wordsArray = set.words.map { word -> [String: Any] in
-                return ["id": word.id, "term": word.term, "definition": word.definition]
-            }
-            return ["id": set.id, "title": set.title, "words": wordsArray]
-        }
-        
+        let setsDict = sets.mapValues { $0.toDictionary() }
         return [
             "userID": userID,
             "fullName": fullName,
             "email": email,
-            "sets": setsArray,
             "createdAt": createdAt,
+            "sets": setsDict
         ]
     }
+    
+    // Initialize User from a dictionary
+    init?(dictionary: [String: Any]) {
+        guard let userID = dictionary["userID"] as? String,
+              let fullName = dictionary["fullName"] as? String,
+              let email = dictionary["email"] as? String,
+              let createdAt = dictionary["createdAt"] as? Double,
+              let setsDict = dictionary["sets"] as? [String: [String: Any]] else {
+            return nil
+        }
+        
+        self.userID = userID
+        self.fullName = fullName
+        self.email = email
+        self.createdAt = createdAt
+        self.sets = setsDict.compactMapValues { Set(dictionary: $0) }
+    }
 }
+
