@@ -1,11 +1,3 @@
-//
-//  AuthViewModel.swift
-//  quizzybee
-//
-//  Created by Griffin C Newbold on 11/13/24.
-//
-
-
 import SwiftUI
 import FirebaseAuth
 import FirebaseDatabase
@@ -27,7 +19,6 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-
     // MARK: - Sign Up Function with Completion Handler
     func signUp(email: String, password: String, name: String, completion: @escaping (Bool) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
@@ -36,7 +27,7 @@ class AuthViewModel: ObservableObject {
                 completion(false)
                 return
             }
-               
+            
             guard let firebaseUser = result?.user else {
                 completion(false)
                 return
@@ -50,40 +41,40 @@ class AuthViewModel: ObservableObject {
                     Word(term: "Quizzybee", definition: "Your go-to quiz app")
                 ]
             )
-               
+            
             let newUser = User(
-               userID: firebaseUser.uid,
-               fullName: name,
-               email: email,
-               createdAt: Date().timeIntervalSince1970,
-               sets: [defaultSet]
+                userID: firebaseUser.uid,
+                fullName: name,
+                email: email,
+                createdAt: Date().timeIntervalSince1970,
+                sets: [defaultSet.id: defaultSet]
             )
-               
-           // Save the user details to Firebase
-           self?.saveUserDetails(newUser) { success in
-               if success {
-                   self?.user = newUser
-                   self?.isLoggedIn = true
-                   completion(true)
-               } else {
-                   completion(false)
-               }
-           }
+            
+            
+            self?.saveUserDetails(newUser) { success in
+                if success {
+                    self?.user = newUser
+                    self?.isLoggedIn = true
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            }
         }
     }
-       
-   // MARK: - Save User Details to Firebase
-   private func saveUserDetails(_ user: User, completion: @escaping (Bool) -> Void) {
-       let userDictionary = user.toDictionary()
-       dbRef.child("users").child(user.userID).setValue(userDictionary) { error, _ in
-           if let error = error {
-               print("Error saving user details: \(error.localizedDescription)")
-               completion(false)
-           } else {
-               completion(true)
-           }
-       }
-   }
+    
+    // MARK: - Save User Details to Firebase
+    private func saveUserDetails(_ user: User, completion: @escaping (Bool) -> Void) {
+        let userDictionary = user.toDictionary()
+        dbRef.child("users").child(user.userID).setValue(userDictionary) { error, _ in
+            if let error = error {
+                print("Error saving user details: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
     
     // MARK: - Log In Function
     func logIn(email: String, password: String) {
@@ -95,8 +86,8 @@ class AuthViewModel: ObservableObject {
             
             guard let firebaseUser = result?.user else { return }
             
+            // Fetch user details from Firebase
             self?.fetchUser(withID: firebaseUser.uid)
-            
             self?.isLoggedIn = true
         }
     }
@@ -109,16 +100,13 @@ class AuthViewModel: ObservableObject {
                 return
             }
             
-            do {
-                let jsonData = try JSONSerialization.data(withJSONObject: value)
-                let fetchedUser = try JSONDecoder().decode(User.self, from: jsonData)
+            // Convert the snapshot dictionary to a User object
+            if let user = User(dictionary: value) {
                 DispatchQueue.main.async {
-                    self?.user = fetchedUser
-                    print("logged in user:")
-                    print(fetchedUser)
+                    self?.user = user
+                    print("Logged in user:", user)
                 }
-            } catch {
-                print("Error decoding user: \(error.localizedDescription)")
+            } else {
                 self?.errorMessage = "Failed to decode user data."
             }
         }
