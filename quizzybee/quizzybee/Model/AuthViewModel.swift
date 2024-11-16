@@ -122,4 +122,29 @@ class AuthViewModel: ObservableObject {
             self.errorMessage = error.localizedDescription
         }
     }
+    
+    // MARK: Update Profile
+    func updateUserProfile(_ updatedUser: User) {
+        saveUserDetails(updatedUser) { [weak self] success in
+            if success {
+                self?.user = updatedUser
+            }
+        }
+    }
+
+    func updatePassword(_ newPassword: String, completion: @escaping (Bool, String?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else {
+            completion(false, "No user logged in")
+            return
+        }
+        
+        currentUser.updatePassword(to: newPassword) { error in
+            if let error = error {
+                completion(false, error.localizedDescription)
+            } else {
+                completion(true, nil)
+            }
+        }
+    }
+    
 }

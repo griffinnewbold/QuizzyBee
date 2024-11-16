@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct userProfileView: View {
-    // user consent the use of AI
+    @EnvironmentObject var authViewModel: AuthViewModel
+    // MARK: user consent the use of AI
     @AppStorage("allow AI") var allowAI = false
     @Environment(\.dismiss) var dismiss
     
@@ -24,6 +25,14 @@ struct userProfileView: View {
                         Text("Back to Dashboard").foregroundColor(.white)
                     }
                     Spacer()
+                    
+                    // MARK: add a logout button
+                    Button(action: {
+                        authViewModel.logOut()
+                    }) {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .foregroundColor(.white)
+                    }
                 }
                 .padding(.bottom, 30)
                 
@@ -50,5 +59,21 @@ struct userProfileView: View {
 }
 
 #Preview {
-    userProfileView()
+    let mockAuthViewModel = AuthViewModel()
+    
+    mockAuthViewModel.user = User(
+        userID: "preview-id",
+        fullName: "Preview User",
+        email: "preview@example.com",
+        createdAt: Date().timeIntervalSince1970,
+        sets: [:]
+    )
+    
+    return ZStack {
+        Color(hex: "7B7B7B").ignoresSafeArea()
+        
+        userProfileView()
+            .environmentObject(mockAuthViewModel)
+    }
+    
 }

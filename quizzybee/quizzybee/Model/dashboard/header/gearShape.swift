@@ -16,6 +16,6 @@ struct gearShape: View {
     }
 }
 
-#Preview {
-    gearShape()
-}
+//#Preview {
+//    gearShape()
+//}
