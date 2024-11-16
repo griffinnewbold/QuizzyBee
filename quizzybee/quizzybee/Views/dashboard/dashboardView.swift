@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct dashboardView: View {
-    
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var searchText = ""
     @State private var noResults = false
-    @State var allDecks: [DeckCardSummary] = decks
+    @State private var allDecks: [Set] = []
     
-    var filteredDecks: [DeckCardSummary] {
+    var filteredDecks: [Set] {
         if searchText.isEmpty {
             return allDecks
         } else {
             return allDecks.filter { deck in
-                deck.name.localizedCaseInsensitiveContains(searchText)
+                deck.title.localizedCaseInsensitiveContains(searchText)
             }
         }
     }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct editProfileView: View {
+struct editProfile: View {
     @Binding var value: String
     let label: String
     let isSecure: Bool
