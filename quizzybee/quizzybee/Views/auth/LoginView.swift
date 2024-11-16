@@ -26,6 +26,7 @@ struct LoginView: View {
     @State private var password = ""
     @State private var showError = false
     @State private var navigateToRegister = false
+    @State private var navigateToDashboard = false
 
     var body: some View {
         NavigationView {
@@ -60,7 +61,6 @@ struct LoginView: View {
                     Button(action: {
                         loginUser()
                         print("the user has successfully logged in")
-                        // TODO: add navigation logic to dashboard based on user
                     }) {
                         Text("Login")
                             .frame(maxWidth: .infinity)
@@ -72,6 +72,15 @@ struct LoginView: View {
                     }
                     .padding(.horizontal, 50)
                     .padding(.top, 20)
+                    
+                    // MARK: Nav to dashboard
+                    NavigationLink(
+                        destination: dashboardView()
+                            .environmentObject(authViewModel),
+                        isActive: $navigateToDashboard
+                    ) {
+                        EmptyView()
+                    }
                     
                     if showError, let errorMessage = authViewModel.errorMessage {
                         Text(errorMessage)
@@ -116,6 +125,7 @@ struct LoginView: View {
             print("Error: \(errorMessage)")
         } else {
             showError = false
+            navigateToDashboard = true
             email = ""
             password = ""
         }
