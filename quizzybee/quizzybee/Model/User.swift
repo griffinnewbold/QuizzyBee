@@ -22,6 +22,14 @@ struct User: Codable {
         self.sets = sets
     }
     
+    init() {
+        self.userID = ""
+        self.email = ""
+        self.fullName = ""
+        self.createdAt = 0.0
+        self.sets = [:]
+    }
+    
     // Convert User to a dictionary
     func toDictionary() -> [String: Any] {
         let setsDict = sets.mapValues { $0.toDictionary() }
