@@ -1,27 +1,27 @@
 //
 //  newCardView.swift
 //  quizzybee
-//
 //  Created by Madeleine on 2024/11/8.
 //
 
 import SwiftUI
+import FirebaseDatabase
+import FirebaseAuth
 
 struct Flashcard {
     var frontText: String
     var backText: String
 }
 
-
 struct newCardView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var currentCardIndex = 0
-    @State private var flashcards = [
-        Flashcard(frontText: "", backText: ""),
-        Flashcard(frontText: "", backText: ""),
-        Flashcard(frontText: "", backText: "")
+    @State private var words = [
+        Word(term: "", definition: "")
     ]
+    @State private var deckTitle = "New Deck Title"
+    @State private var set = Set(title: "")
     
     var body: some View {
         ZStack {
@@ -37,11 +37,21 @@ struct newCardView: View {
                             .font(.title)
                             .foregroundColor(.black)
                     }
+                    
                     Spacer()
-                    Text("{New Deck Title}")
-                        .font(.title)
-                        .bold()
-                        .foregroundColor(.black)
+                    
+                    ZStack(alignment: .trailing) {
+                        TextField("Enter Deck Title", text: $deckTitle)
+                            .font(.title)
+                            .bold()
+                            .foregroundColor(.black)
+                            .multilineTextAlignment(.center)
+                        
+                        Image(systemName: "pencil")
+                            .foregroundColor(.black)
+                            .offset(x: -50)
+                    }
+                    
                     Spacer()
                 }
                 .padding()
@@ -68,26 +78,24 @@ struct newCardView: View {
                                 .foregroundColor(.black)
                             
                             ZStack {
-                                TextEditor(text: $flashcards[currentCardIndex].frontText)
+                                TextEditor(text: $words[currentCardIndex].term)
                                     .font(.body)
                                     .foregroundColor(.black)
                                     .padding(10)
                                     .background(Color.white)
                                     .cornerRadius(10)
                                     .shadow(radius: 5)
-                                    .frame(width: 240, height: 120)
+                                    .frame(width: 300, height: 160)
                                 
-                                
-                                if flashcards[currentCardIndex].frontText.isEmpty {
+                                if words[currentCardIndex].term.isEmpty {
                                     Text("Question here...")
                                         .foregroundColor(.gray)
                                         .padding(10)
-                                        .frame(width: 240, height: 120, alignment: .topLeading)
+                                        .frame(width: 300, height: 160, alignment: .topLeading)
                                         .opacity(0.6)
                                 }
                             }
                         }
-                        
                         
                         VStack(alignment: .leading) {
                             Text("Answer (Back)")
@@ -95,21 +103,20 @@ struct newCardView: View {
                                 .foregroundColor(.black)
                             
                             ZStack {
-                                TextEditor(text: $flashcards[currentCardIndex].backText)
+                                TextEditor(text: $words[currentCardIndex].definition)
                                     .font(.body)
                                     .foregroundColor(.black)
                                     .padding(10)
                                     .background(Color.white)
                                     .cornerRadius(10)
                                     .shadow(radius: 5)
-                                    .frame(width: 240, height: 120)
+                                    .frame(width: 300, height: 160)
                                 
-                                
-                                if flashcards[currentCardIndex].backText.isEmpty {
+                                if words[currentCardIndex].definition.isEmpty {
                                     Text("Answer here...")
                                         .foregroundColor(.gray)
                                         .padding(10)
-                                        .frame(width: 240, height: 120, alignment: .topLeading)
+                                        .frame(width: 300, height: 160, alignment: .topLeading)
                                         .opacity(0.6)
                                 }
                             }
@@ -119,9 +126,11 @@ struct newCardView: View {
                     Spacer()
                     
                     Button(action: {
-                        if currentCardIndex < flashcards.count - 1 {
-                            currentCardIndex += 1
+                        if currentCardIndex == words.count - 1 {
+                            let newWord = Word(term: "", definition: "")
+                            words.append(newWord)
                         }
+                        currentCardIndex += 1
                     }) {
                         Image(systemName: "arrow.right.circle.fill")
                             .font(.largeTitle)
@@ -132,9 +141,10 @@ struct newCardView: View {
                 
                 Spacer()
                 
-                
                 Button(action: {
-                    saveFlashcards()
+                    set.title = deckTitle
+                    set.words = words
+                    saveSetForCurrentUser(set: set)
                 }) {
                     Text("Save Deck")
                         .font(.headline)
@@ -150,13 +160,39 @@ struct newCardView: View {
         }
     }
     
-    
-    func saveFlashcards() {
-        print("Saving flashcards: \(flashcards)")
-        // add saving logic here (database)
-        // to be implemented
+    func saveSetForCurrentUser(set: Set) {
+        if let user = Auth.auth().currentUser {
+            let userID = user.uid
+            saveSetForUser(userID: userID, set: set)
+        } else {
+            print("User not logged in.")
+        }
     }
     
+    func saveSetForUser(userID: String, set: Set) {
+        let ref = Database.database().reference()
+        let userSetsRef = ref.child("users").child(userID).child("sets").child(set.id)
+        
+        let setDictionary: [String: Any] = [
+            "id": set.id,
+            "title": set.title,
+            "words": set.words.map { word in
+                return [
+                    "id": word.id,
+                    "term": word.term,
+                    "definition": word.definition
+                ]
+            }
+        ]
+        
+        userSetsRef.setValue(setDictionary) { error, _ in
+            if let error = error {
+                print("Error saving set to Firebase: \(error)")
+            } else {
+                print("Successfully saved set to Firebase.")
+            }
+        }
+    }
 }
 
 #Preview {
