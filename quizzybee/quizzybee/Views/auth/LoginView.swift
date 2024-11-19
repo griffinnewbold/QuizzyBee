@@ -96,14 +96,6 @@ struct LoginView: View {
                     }
                     .padding(.bottom, 20)
                 }
-                
-                // Navigation link to dashboard view
-                NavigationLink(
-                    destination: dashboardView(user: loggedInUser ?? User()),
-                    isActive: $navigateToDashboard
-                ) {
-                    EmptyView()
-                }
             }
         }
         .navigationBarBackButtonHidden(true)

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct profileList: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    // default is ******
     @State private var currentPassword: String = "******"
     
     var body: some View {
@@ -55,14 +56,5 @@ struct profileList: View {
 }
 
 #Preview {
-    let mockAuthViewModel = AuthViewModel()
-        mockAuthViewModel.user = User(
-            userID: "preview-id",
-            fullName: "Preview User",
-            email: "preview@example.com",
-            createdAt: Date().timeIntervalSince1970,
-            sets: [:]
-        )
-        
-    return profileList().environmentObject(mockAuthViewModel)
+    profileList().environmentObject(AuthViewModel())
 }

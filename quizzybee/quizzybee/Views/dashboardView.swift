@@ -41,10 +41,6 @@ struct dashboardView: View {
                     })
                     .padding(.bottom, 50)
                     
-                    Text("Welcome, \(user.fullName)")
-                        .font(.title)
-                        .padding()
-                    
                     deckCardSummaryList(targetDecks: filteredDecks)
                     
                     addNewCard()
@@ -62,5 +58,6 @@ struct dashboardView: View {
 }
 
 #Preview {
-    dashboardView(user: User(userID: "sampleID", fullName: "Sample User", email: "sample@example.com"))
+    dashboardView()
+        .environmentObject(AuthViewModel())
 }
