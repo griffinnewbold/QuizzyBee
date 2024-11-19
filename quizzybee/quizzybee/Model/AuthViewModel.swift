@@ -76,38 +76,46 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Log In Function
-    func logIn(email: String, password: String) {
+    // MARK: - Log In Function with Completion Handler
+    func logIn(email: String, password: String, completion: @escaping (User?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             if let error = error {
                 self?.errorMessage = error.localizedDescription
+                completion(nil)
                 return
             }
             
-            guard let firebaseUser = result?.user else { return }
+            guard let firebaseUser = result?.user else {
+                completion(nil)
+                return
+            }
             
             // Fetch user details from Firebase
-            self?.fetchUser(withID: firebaseUser.uid)
-            self?.isLoggedIn = true
+            self?.fetchUser(withID: firebaseUser.uid) { fetchedUser in
+                if let user = fetchedUser {
+                    self?.user = user
+                    self?.isLoggedIn = true
+                    completion(user)
+                } else {
+                    self?.errorMessage = "Failed to fetch user details."
+                    completion(nil)
+                }
+            }
         }
     }
     
     // MARK: - Fetch User from Firebase
-    func fetchUser(withID userID: String) {
-        dbRef.child("users").child(userID).observeSingleEvent(of: .value) { [weak self] snapshot in
+    private func fetchUser(withID userID: String, completion: @escaping (User?) -> Void) {
+        dbRef.child("users").child(userID).observeSingleEvent(of: .value) { snapshot in
             guard let value = snapshot.value as? [String: Any] else {
-                self?.errorMessage = "Failed to fetch user data."
+                completion(nil)
                 return
             }
             
-            // Convert the snapshot dictionary to a User object
             if let user = User(dictionary: value) {
-                DispatchQueue.main.async {
-                    self?.user = user
-                    print("Logged in user:", user)
-                }
+                completion(user)
             } else {
-                self?.errorMessage = "Failed to decode user data."
+                completion(nil)
             }
         }
     }

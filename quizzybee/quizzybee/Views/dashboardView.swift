@@ -29,7 +29,8 @@ struct dashboardView: View {
                 dashboardBackgroundView()
                 
                 VStack(spacing: 0) {
-                    headerForDashboard().padding(.bottom, 50)
+                    headerForDashboard()
+                        .padding(.bottom, 50)
                     
                     searchBar(searchText: $searchText,
                               placeholder: "search deck...",
@@ -37,25 +38,29 @@ struct dashboardView: View {
                         if !searchText.isEmpty && filteredDecks.isEmpty {
                             noResults = true
                         }
-                    }).padding(.bottom, 50)
+                    })
+                    .padding(.bottom, 50)
+                    
+                    Text("Welcome, \(user.fullName)")
+                        .font(.title)
+                        .padding()
                     
                     deckCardSummaryList(targetDecks: filteredDecks)
                     
-                    addNewCard().padding(.bottom, 30)
+                    addNewCard()
+                        .padding(.bottom, 30)
                 }
                 .alert("No Results", isPresented: $noResults) {
-                    Button("OK", role: .cancel) {
-                        noResults = false
-                    }
+                    Button("OK", role: .cancel) { noResults = false }
                 } message: {
                     Text("No decks found matching '\(searchText)'")
                 }
-                
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    dashboardView()
+    dashboardView(user: User(userID: "sampleID", fullName: "Sample User", email: "sample@example.com"))
 }

@@ -21,15 +21,14 @@ struct TopShape: Shape {
 
 struct LoginView: View {
     @StateObject private var authViewModel = AuthViewModel()
-    
     @State private var email = ""
     @State private var password = ""
     @State private var showError = false
-    @State private var navigateToRegister = false
     @State private var navigateToDashboard = false
+    @State private var loggedInUser: User?
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color.gray.ignoresSafeArea()
                 TopShape()
@@ -58,10 +57,7 @@ struct LoginView: View {
                     }
                     .padding(.horizontal, 20)
                     
-                    Button(action: {
-                        loginUser()
-                        print("the user has successfully logged in")
-                    }) {
+                    Button(action: loginUser) {
                         Text("Login")
                             .frame(maxWidth: .infinity)
                             .padding()
@@ -92,18 +88,21 @@ struct LoginView: View {
                     
                     HStack {
                         Text("Not Registered Yet?")
-                        
-                        NavigationLink(destination: RegisterView(), isActive: $navigateToRegister) {
-                            Button(action: {
-                                navigateToRegister = true
-                            }) {
-                                Text("Register")
-                                    .foregroundColor(.yellow)
-                                    .underline()
-                            }
+                        NavigationLink(destination: RegisterView()) {
+                            Text("Register")
+                                .foregroundColor(.yellow)
+                                .underline()
                         }
                     }
                     .padding(.bottom, 20)
+                }
+                
+                // Navigation link to dashboard view
+                NavigationLink(
+                    destination: dashboardView(user: loggedInUser ?? User()),
+                    isActive: $navigateToDashboard
+                ) {
+                    EmptyView()
                 }
             }
         }
@@ -118,19 +117,17 @@ struct LoginView: View {
             return
         }
         
-        authViewModel.logIn(email: email, password: password)
-        
-        if let errorMessage = authViewModel.errorMessage {
-            showError = true
-            print("Error: \(errorMessage)")
-        } else {
-            showError = false
-            navigateToDashboard = true
-            email = ""
-            password = ""
+        authViewModel.logIn(email: email, password: password) { user in
+            if let user = user {
+                self.loggedInUser = user
+                self.navigateToDashboard = true
+            } else {
+                self.showError = true
+            }
         }
     }
 }
+
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
