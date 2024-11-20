@@ -12,6 +12,7 @@ struct profileRow: View {
     @Binding var value: String
     var isSecure: Bool = false
     @State private var isEditing = false
+    @State private var isPasswordVisible = false
     
     var body: some View {
         HStack {
@@ -21,8 +22,23 @@ struct profileRow: View {
                     .font(.system(size: 14))
                 
                 if isSecure {
-                    Text(String(repeating: "•", count: value.count))
-                        .font(.system(size: 16))
+                    // MARK: Allow user to choose the visibility of their password
+                    HStack {
+                        if isPasswordVisible {
+                            Text(value)
+                                .font(.system(size: 16))
+                        } else {
+                            Text(String(repeating: "•", count: value.count))
+                                .font(.system(size: 16))
+                        }
+                        
+                        Button(action: {
+                            isPasswordVisible.toggle()
+                        }) {
+                            Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                                .foregroundColor(.gray)
+                        }
+                    }
                 } else {
                     Text(value)
                         .font(.system(size: 16))
@@ -48,12 +64,12 @@ struct profileRow: View {
         )
         .padding(.horizontal)
         .sheet(isPresented: $isEditing) {
-            editProfileView(value: $value, label: label, isSecure: isSecure)
+            editProfile(value: $value, label: label, isSecure: isSecure)
         }
     }
 }
 
-#Preview {
-    // constant, no-editable binding
-    profileRow(label: "Full Name", value: .constant("New Bee"))
-}
+//#Preview {
+//    // constant, no-editable binding
+//    profileRow(label: "Full Name", value: .constant("New Bee"))
+//}

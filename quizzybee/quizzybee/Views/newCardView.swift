@@ -22,6 +22,7 @@ struct newCardView: View {
     ]
     @State private var deckTitle = "New Deck Title"
     @State private var set = Set(title: "")
+    @State private var navigateToDashboard = false
     
     var body: some View {
         ZStack {
@@ -145,6 +146,7 @@ struct newCardView: View {
                     set.title = deckTitle
                     set.words = words
                     saveSetForCurrentUser(set: set)
+                    navigateToDashboard = true
                 }) {
                     Text("Save Deck")
                         .font(.headline)
@@ -156,6 +158,10 @@ struct newCardView: View {
                         .padding(.horizontal)
                 }
                 .padding(.bottom, 20)
+                .navigationDestination(isPresented: $navigateToDashboard) {
+                    dashboardView()
+                        .navigationBarBackButtonHidden(true)
+                }
             }
         }
     }
