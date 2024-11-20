@@ -1,6 +1,7 @@
 //
 //  newCardView.swift
 //  quizzybee
+//
 //  Created by Madeleine on 2024/11/8.
 //
 
@@ -11,6 +12,7 @@ import FirebaseAuth
 struct Flashcard {
     var frontText: String
     var backText: String
+    var color: String
 }
 
 struct newCardView: View {
@@ -18,11 +20,11 @@ struct newCardView: View {
     
     @State private var currentCardIndex = 0
     @State private var words = [
-        Word(term: "", definition: "")
+        Word(term: "", definition: "", color: "#FFFFFF") // Default white color
     ]
     @State private var deckTitle = "New Deck Title"
     @State private var set = Set(title: "")
-    @State private var navigateToDashboard = false
+    @State private var showingColorPicker = false
     
     var body: some View {
         ZStack {
@@ -30,6 +32,7 @@ struct newCardView: View {
                 .ignoresSafeArea()
             
             VStack {
+                // Navigation Bar
                 HStack {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
@@ -59,7 +62,9 @@ struct newCardView: View {
                 
                 Spacer()
                 
+                // Main Card Editor
                 HStack {
+                    // Previous Card Button
                     Button(action: {
                         if currentCardIndex > 0 {
                             currentCardIndex -= 1
@@ -73,62 +78,67 @@ struct newCardView: View {
                     Spacer()
                     
                     VStack(spacing: 20) {
+                        // Term (Front)
                         VStack(alignment: .leading) {
                             Text("Question (Front)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                             
-                            ZStack {
-                                TextEditor(text: $words[currentCardIndex].term)
-                                    .font(.body)
-                                    .foregroundColor(.black)
-                                    .padding(10)
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                                    .shadow(radius: 5)
-                                    .frame(width: 300, height: 160)
-                                
-                                if words[currentCardIndex].term.isEmpty {
-                                    Text("Question here...")
-                                        .foregroundColor(.gray)
-                                        .padding(10)
-                                        .frame(width: 300, height: 160, alignment: .topLeading)
-                                        .opacity(0.6)
-                                }
-                            }
+                            TextEditor(text: $words[currentCardIndex].term)
+                                .font(.body)
+                                .foregroundColor(.black)  // Text color
+                                .padding(10)
+                                .background(Color(hex: words[currentCardIndex].color))  // Card background color
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                                .frame(width: 300, height: 160)
+                                .overlay(
+                                    Group {
+                                        if words[currentCardIndex].term.isEmpty {
+                                            Text("Question here...")
+                                                .foregroundColor(.gray)
+                                                .padding(20)
+                                                .frame(width: 300, height: 160, alignment: .topLeading)
+                                                .opacity(0.6)
+                                        }
+                                    }
+                                )
                         }
                         
+                        // Definition (Back)
                         VStack(alignment: .leading) {
                             Text("Answer (Back)")
                                 .font(.headline)
                                 .foregroundColor(.black)
                             
-                            ZStack {
-                                TextEditor(text: $words[currentCardIndex].definition)
-                                    .font(.body)
-                                    .foregroundColor(.black)
-                                    .padding(10)
-                                    .background(Color.white)
-                                    .cornerRadius(10)
-                                    .shadow(radius: 5)
-                                    .frame(width: 300, height: 160)
-                                
-                                if words[currentCardIndex].definition.isEmpty {
-                                    Text("Answer here...")
-                                        .foregroundColor(.gray)
-                                        .padding(10)
-                                        .frame(width: 300, height: 160, alignment: .topLeading)
-                                        .opacity(0.6)
-                                }
-                            }
+                            TextEditor(text: $words[currentCardIndex].definition)
+                                .font(.body)
+                                .foregroundColor(.black)  // Text color
+                                .padding(10)
+                                .background(Color(hex: words[currentCardIndex].color))  // Card background color
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                                .frame(width: 300, height: 160)
+                                .overlay(
+                                    Group {
+                                        if words[currentCardIndex].definition.isEmpty {
+                                            Text("Answer here...")
+                                                .foregroundColor(.gray)
+                                                .padding(20)
+                                                .frame(width: 300, height: 160, alignment: .topLeading)
+                                                .opacity(0.6)
+                                        }
+                                    }
+                                )
                         }
                     }
                     
                     Spacer()
                     
+                    // Next Card Button
                     Button(action: {
                         if currentCardIndex == words.count - 1 {
-                            let newWord = Word(term: "", definition: "")
+                            let newWord = Word(term: "", definition: "", color: "#FFFFFF") // Default color
                             words.append(newWord)
                         }
                         currentCardIndex += 1
@@ -141,28 +151,72 @@ struct newCardView: View {
                 .padding()
                 
                 Spacer()
+
+                // Change Card Color Button
+                Button(action: {
+                    // Toggle the visibility of the color picker
+                    showingColorPicker.toggle()
+                }) {
+                    Text("Change Card Color")
+                        .font(.headline)
+                        .padding()
+                        .frame(maxWidth: 300)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .padding(.horizontal)
+                }
+                .padding(.bottom, 10)
                 
+                // Save Deck Button (Moved here)
                 Button(action: {
                     set.title = deckTitle
                     set.words = words
                     saveSetForCurrentUser(set: set)
-                    navigateToDashboard = true
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Save Deck")
                         .font(.headline)
                         .padding()
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: 300)
                         .background(Color.green)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                         .padding(.horizontal)
                 }
                 .padding(.bottom, 20)
-                .navigationDestination(isPresented: $navigateToDashboard) {
-                    dashboardView()
-                        .navigationBarBackButtonHidden(true)
-                }
+                
             }
+        }
+        .sheet(isPresented: $showingColorPicker) {
+            // Color Picker Sheet
+            VStack {
+                Text("Pick a Color for the Card Background")
+                    .font(.headline)
+                    .foregroundColor(.black)
+                    .padding(.bottom, 8)
+                
+                ColorPicker("Select Color", selection: Binding(
+                    get: {
+                        Color(hex: words[currentCardIndex].color)
+                    },
+                    set: { newColor in
+                        words[currentCardIndex].color = newColor.toHex() ?? "#FFFFFF"
+                    }
+                ))
+                .padding()
+                
+                Button("Done") {
+                    // Close the color picker sheet
+                    showingColorPicker = false
+                }
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+                .padding(.top)
+            }
+            .padding()
         }
     }
     
@@ -186,7 +240,8 @@ struct newCardView: View {
                 return [
                     "id": word.id,
                     "term": word.term,
-                    "definition": word.definition
+                    "definition": word.definition,
+                    "color": word.color
                 ]
             }
         ]

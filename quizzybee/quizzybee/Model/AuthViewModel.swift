@@ -37,8 +37,8 @@ class AuthViewModel: ObservableObject {
                 id: UUID().uuidString,
                 title: "Getting Started",
                 words: [
-                    Word(term: "Welcome", definition: "A word to greet new users"),
-                    Word(term: "Quizzybee", definition: "Your go-to quiz app")
+                    Word(term: "Welcome", definition: "A word to greet new users", color: "#FFFFFF"),
+                    Word(term: "Quizzybee", definition: "Your go-to quiz app", color: "#FFFFFF")
                 ]
             )
             
