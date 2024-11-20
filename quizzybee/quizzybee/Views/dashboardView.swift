@@ -13,6 +13,13 @@ struct dashboardView: View {
     @State private var noResults = false
     @State private var allDecks: [Set] = []
     
+    private func loadDecks() {
+        authViewModel.fetchUserSets { sets in
+            
+            self.allDecks = sets
+        }
+    }
+    
     var filteredDecks: [Set] {
         if searchText.isEmpty {
             return allDecks
@@ -30,7 +37,7 @@ struct dashboardView: View {
                 
                 VStack(spacing: 0) {
                     headerForDashboard()
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 120)
                     
                     searchBar(searchText: $searchText,
                               placeholder: "search deck...",
@@ -54,6 +61,12 @@ struct dashboardView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            loadDecks()
+        }
+        .onChange(of: authViewModel.user?.sets) {
+            loadDecks()
+        }
     }
 }
 

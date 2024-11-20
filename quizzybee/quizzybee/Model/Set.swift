@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Set: Codable, Identifiable {
+struct Set: Codable, Identifiable, Equatable {
     var id: String
     var title: String
     var words: [Word]

@@ -60,11 +60,11 @@ struct userProfileView: View {
     }
 }
 
-#Preview {
-    return ZStack {
-        Color(hex: "7B7B7B").ignoresSafeArea()
-        
-        userProfileView()
-            .environmentObject(AuthViewModel())
-    }
-}
+//#Preview {
+//    return ZStack {
+//        Color(hex: "7B7B7B").ignoresSafeArea()
+//        
+//        userProfileView()
+//            .environmentObject(AuthViewModel())
+//    }
+//}

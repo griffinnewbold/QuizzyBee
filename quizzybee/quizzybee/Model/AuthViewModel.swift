@@ -155,4 +155,30 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    // MARK: Fetch user sets for dashboard display
+    func fetchUserSets(completion: @escaping ([Set]) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+        
+        dbRef.child("users").child(userId).child("sets").observeSingleEvent(of: .value) { snapshot in
+            
+            var sets: [Set] = []
+            
+            for child in snapshot.children {
+                guard let snapshot = child as? DataSnapshot,
+                      let setValue = snapshot.value as? [String: Any] else { continue }
+                
+                if let set = Set(dictionary: setValue) {
+                    sets.append(set)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completion(sets)
+            }
+        }
+    }
+    
 }

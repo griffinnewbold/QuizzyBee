@@ -16,7 +16,7 @@ struct headerForDashboard: View {
                 userImage(size: 50)
             }
             .buttonStyle(PlainButtonStyle())
-                
+            
             if let userName = authViewModel.user?.fullName, !userName.isEmpty {
                 Text("Hello, \(userName)!")
                     .font(.largeTitle)
@@ -28,13 +28,12 @@ struct headerForDashboard: View {
                     .foregroundColor(Color(hex: "FFFFFF"))
                     .bold()
             }
-                
+            
             gearShape()
-                
         }
     }
 }
 
-//#Preview {
-//    headerForDashboard()
-//}
+#Preview {
+    headerForDashboard().environmentObject(AuthViewModel())
+}
