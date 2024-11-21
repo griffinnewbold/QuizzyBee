@@ -92,6 +92,7 @@ struct existingDeckView: View {
                                 .padding()
                                 .font(.title3)
                                 .foregroundColor(.black)
+                            
                         }
                         .frame(maxWidth: .infinity, minHeight: 200)
                         .padding()
