@@ -111,8 +111,7 @@ struct existingDeckView: View {
                             }
                             
                             VStack {
-                                Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available"
-                                                : questions[safe: currentQuestionIndex] ?? "No question available")
+                                Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available":questions[safe: currentQuestionIndex] ?? "No question available")
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
@@ -162,7 +161,7 @@ struct existingDeckView: View {
                     
                     // Action Buttons
                     VStack(spacing: 10) {
-                        NavigationLink(destination: newCardView().navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: newCardView(existingDeckID: set.id).navigationBarBackButtonHidden(true)) {
                             HStack {
                                 Spacer()
                                 Image(systemName: "plus")
