@@ -156,7 +156,7 @@ struct newCardView: View {
                 .padding()
                 
                 Spacer()
-                
+
                 // Change Card Color Button
                 Button(action: {
                     // Toggle the visibility of the color picker
@@ -194,9 +194,11 @@ struct newCardView: View {
                         .padding(.horizontal)
                 }
                 .padding(.bottom, 20)
+                
             }
         }
         .sheet(isPresented: $showingColorPicker) {
+            // Color Picker Sheet
             VStack {
                 Text("Pick a Color for the Card Background")
                     .font(.headline)
