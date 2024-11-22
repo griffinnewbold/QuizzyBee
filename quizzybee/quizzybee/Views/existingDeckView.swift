@@ -168,8 +168,12 @@ struct existingDeckView: View {
                     .padding(.horizontal)
                     
                     //click Start Review will link to quizView
-                    NavigationLink(destination: quizView()
-                        .navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: quizView(
+                        deckTitle: title,
+                        apiKey: "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",
+                        questions: $questions,
+                        answers: $answers
+                    )) {
                         HStack {
                             Spacer()
                             Text("Start Quiz")
