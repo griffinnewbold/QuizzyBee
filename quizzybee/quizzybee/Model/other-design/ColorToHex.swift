@@ -34,4 +34,14 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
+    func toHex() -> String? {
+        guard let components = cgColor?.components, components.count >= 3 else { return nil }
+        let r = components[0]
+        let g = components[1]
+        let b = components[2]
+        return String(format: "#%02lX%02lX%02lX",
+                      lround(Double(r * 255)),
+                      lround(Double(g * 255)),
+                      lround(Double(b * 255)))
+    }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct existingDeckView: View {
-    let title: String
+    let set: Set
     @Environment(\.dismiss) private var dismiss
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
@@ -37,7 +37,7 @@ struct existingDeckView: View {
                                 .padding()
                         }
                         Spacer()
-                        Text(title)
+                        Text(set.title)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.black)
@@ -199,5 +199,12 @@ struct existingDeckView: View {
 }
 
 #Preview {
-    existingDeckView(title: "Intro to Java")
+    existingDeckView(set: Set(
+        id: "1",
+        title: "Intro to Java",
+        words: [
+            Word(term: "Class", definition: "A blueprint for creating objects"),
+            Word(term: "Object", definition: "An instance of a class")
+        ]
+    ))
 }

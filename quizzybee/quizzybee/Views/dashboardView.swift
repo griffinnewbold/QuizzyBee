@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct dashboardView: View {
-    var user: User
-    
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var searchText = ""
     @State private var noResults = false
-    @State var allDecks: [DeckCardSummary] = decks
+    @State private var allDecks: [Set] = []
     
-    var filteredDecks: [DeckCardSummary] {
+    private func loadDecks() {
+        authViewModel.fetchUserSets { sets in
+            
+            self.allDecks = sets
+        }
+    }
+    
+    var filteredDecks: [Set] {
         if searchText.isEmpty {
             return allDecks
         } else {
             return allDecks.filter { deck in
-                deck.name.localizedCaseInsensitiveContains(searchText)
+                deck.title.localizedCaseInsensitiveContains(searchText)
             }
         }
     }
@@ -31,7 +37,7 @@ struct dashboardView: View {
                 
                 VStack(spacing: 0) {
                     headerForDashboard()
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 120)
                     
                     searchBar(searchText: $searchText,
                               placeholder: "search deck...",
@@ -41,10 +47,6 @@ struct dashboardView: View {
                         }
                     })
                     .padding(.bottom, 50)
-                    
-                    Text("Welcome, \(user.fullName)")
-                        .font(.title)
-                        .padding()
                     
                     deckCardSummaryList(targetDecks: filteredDecks)
                     
@@ -59,9 +61,16 @@ struct dashboardView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            loadDecks()
+        }
+        .onChange(of: authViewModel.user?.sets) {
+            loadDecks()
+        }
     }
 }
 
 #Preview {
-    dashboardView(user: User(userID: "sampleID", fullName: "Sample User", email: "sample@example.com"))
+    dashboardView()
+        .environmentObject(AuthViewModel())
 }

@@ -37,8 +37,8 @@ class AuthViewModel: ObservableObject {
                 id: UUID().uuidString,
                 title: "Getting Started",
                 words: [
-                    Word(term: "Welcome", definition: "A word to greet new users"),
-                    Word(term: "Quizzybee", definition: "Your go-to quiz app")
+                    Word(term: "Welcome", definition: "A word to greet new users", color: "#FFFFFF"),
+                    Word(term: "Quizzybee", definition: "Your go-to quiz app", color: "#FFFFFF")
                 ]
             )
             
@@ -130,4 +130,55 @@ class AuthViewModel: ObservableObject {
             self.errorMessage = error.localizedDescription
         }
     }
+    
+    // MARK: Update Profile
+    func updateUserProfile(_ updatedUser: User) {
+        saveUserDetails(updatedUser) { [weak self] success in
+            if success {
+                self?.user = updatedUser
+            }
+        }
+    }
+
+    func updatePassword(_ newPassword: String, completion: @escaping (Bool, String?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else {
+            completion(false, "No user logged in")
+            return
+        }
+        
+        currentUser.updatePassword(to: newPassword) { error in
+            if let error = error {
+                completion(false, error.localizedDescription)
+            } else {
+                completion(true, nil)
+            }
+        }
+    }
+    
+    // MARK: Fetch user sets for dashboard display
+    func fetchUserSets(completion: @escaping ([Set]) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion([])
+            return
+        }
+        
+        dbRef.child("users").child(userId).child("sets").observeSingleEvent(of: .value) { snapshot in
+            
+            var sets: [Set] = []
+            
+            for child in snapshot.children {
+                guard let snapshot = child as? DataSnapshot,
+                      let setValue = snapshot.value as? [String: Any] else { continue }
+                
+                if let set = Set(dictionary: setValue) {
+                    sets.append(set)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                completion(sets)
+            }
+        }
+    }
+    
 }
