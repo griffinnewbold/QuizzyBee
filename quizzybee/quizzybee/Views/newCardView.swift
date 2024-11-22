@@ -159,6 +159,7 @@ struct newCardView: View {
                 
                 // Change Card Color Button
                 Button(action: {
+                    // Toggle the visibility of the color picker
                     showingColorPicker.toggle()
                 }) {
                     Text("Change Card Color")
@@ -172,7 +173,7 @@ struct newCardView: View {
                 }
                 .padding(.bottom, 10)
                 
-                // Save Button
+                // Save Deck Button (Moved here)
                 Button(action: {
                     if existingDeckID == nil {
                         set.title = deckTitle
@@ -183,7 +184,7 @@ struct newCardView: View {
                     }
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text(existingDeckID == nil ? "Save Deck" : "Add to this Deck")
+                    Text(existingDeckID == nil ? "Save Deck" : "Add to this Deck")// change while add card to existing deck
                         .font(.headline)
                         .padding()
                         .frame(maxWidth: 300)
@@ -213,6 +214,7 @@ struct newCardView: View {
                 .padding()
                 
                 Button("Done") {
+                    // Close the color picker sheet
                     showingColorPicker = false
                 }
                 .padding()
