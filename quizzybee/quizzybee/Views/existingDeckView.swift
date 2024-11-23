@@ -8,17 +8,19 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import Network
 
 struct existingDeckView: View {
     let set: Set
     @Environment(\.presentationMode) var presentationMode
-    
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
     @State private var showAnswer = false
     @State private var questions: [String] = []
     @State private var answers: [String] = []
-    @State private var isLoading = true // Track loading state
+    @State private var isLoading = true
+    @State private var showNetworkAlert = false 
+    @State private var allowNavigation = false
 
     var body: some View {
         NavigationView {
@@ -111,7 +113,7 @@ struct existingDeckView: View {
                             }
                             
                             VStack {
-                                Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available":questions[safe: currentQuestionIndex] ?? "No question available")
+                                Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available" : questions[safe: currentQuestionIndex] ?? "No question available")
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
@@ -161,7 +163,9 @@ struct existingDeckView: View {
                     
                     // Action Buttons
                     VStack(spacing: 10) {
-                        NavigationLink(destination: newCardView(existingDeckID: set.id).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(
+                            destination: newCardView(existingDeckID: set.id).navigationBarBackButtonHidden(true)
+                        ) {
                             HStack {
                                 Spacer()
                                 Image(systemName: "plus")
@@ -190,11 +194,19 @@ struct existingDeckView: View {
                         }
                         .padding(.horizontal)
                         
-                        NavigationLink(destination: quizView(
-                            deckTitle: set.title,
-                            apiKey: "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",
-                            questions: $questions,
-                            answers: $answers).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(
+                            destination: quizView(
+                                deckTitle: set.title,
+                                apiKey: "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",
+                                questions: $questions,
+                                answers: $answers
+                            ).navigationBarBackButtonHidden(true),
+                            isActive: $allowNavigation
+                        ) {
+                            EmptyView()
+                        }
+
+                        Button(action: startQuizWithNetworkCheck) {
                             HStack {
                                 Spacer()
                                 Text("Start Quiz")
@@ -217,6 +229,42 @@ struct existingDeckView: View {
                 isLoading = true
                 fetchFlashcards(forSet: set)
             }
+            .alert("Network Error", isPresented: $showNetworkAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("There is a network issue. Please try again later.")
+            }
+        }
+    }
+
+    // MARK: - Start Quiz with Network Check
+    private func startQuizWithNetworkCheck() {
+        isNetworkAvailable { isConnected in
+            if isConnected {
+                allowNavigation = true
+            } else {
+                // Show alert
+                showNetworkAlert = true
+            }
+        }
+    }
+    
+    private func isNetworkAvailable(completion: @escaping (Bool) -> Void) {
+        let monitor = NWPathMonitor()
+        let queue = DispatchQueue.global(qos: .background)
+        monitor.start(queue: queue)
+
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                if path.isExpensive {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            } else {
+                completion(false)
+            }
+            monitor.cancel()
         }
     }
 
@@ -233,7 +281,7 @@ struct existingDeckView: View {
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
         
         userSetRef.observeSingleEvent(of: .value) { snapshot in
-            defer { self.isLoading = false } // Ensure loading state stops
+            defer { self.isLoading = false }
             
             guard let wordsArray = snapshot.value as? [[String: Any]] else {
                 print("No flashcards found for this set or invalid format.")

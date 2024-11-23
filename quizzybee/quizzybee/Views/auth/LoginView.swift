@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Network
+import Foundation
 
 struct TopShape: Shape {
     func path(in rect: CGRect) -> Path {
@@ -24,8 +26,8 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var showError = false
-    @State private var navigateToDashboard = false
-    @State private var loggedInUser: User?
+    @State private var showNetworkAlert = false // For network alert
+    @State private var navigateToDashboard = false // For navigation
 
     var body: some View {
         NavigationStack {
@@ -69,15 +71,6 @@ struct LoginView: View {
                     .padding(.horizontal, 50)
                     .padding(.top, 20)
                     
-                    // MARK: Nav to dashboard
-                    NavigationLink(
-                        destination: dashboardView()
-                            .environmentObject(authViewModel),
-                        isActive: $navigateToDashboard
-                    ) {
-                        EmptyView()
-                    }
-                    
                     if showError, let errorMessage = authViewModel.errorMessage {
                         Text(errorMessage)
                             .foregroundColor(.red)
@@ -97,10 +90,19 @@ struct LoginView: View {
                     .padding(.bottom, 20)
                 }
             }
+            .alert("Network Error", isPresented: $showNetworkAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("There is a network issue. Please try again later.")
+            }
+            .navigationDestination(isPresented: $navigateToDashboard) {
+                dashboardView()
+                    .environmentObject(authViewModel)
+            }
         }
         .navigationBarBackButtonHidden(true)
     }
-    
+
     // MARK: - Login User by Calling AuthViewModel
     private func loginUser() {
         guard !email.isEmpty, !password.isEmpty else {
@@ -109,16 +111,43 @@ struct LoginView: View {
             return
         }
         
-        authViewModel.logIn(email: email, password: password) { user in
-            if let user = user {
-                self.loggedInUser = user
-                self.navigateToDashboard = true
+        isNetworkAvailable { isConnected in
+            if isConnected {
+                authViewModel.logIn(email: email, password: password) { user in
+                    if let user = user {
+                        self.navigateToDashboard = true
+                    } else {
+                        self.showError = true
+                    }
+                }
             } else {
-                self.showError = true
+                showNetworkAlert = true
             }
         }
     }
+
+
+    
+    private func isNetworkAvailable(completion: @escaping (Bool) -> Void) {
+        let monitor = NWPathMonitor()
+        let queue = DispatchQueue.global(qos: .background)
+        monitor.start(queue: queue)
+
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                if path.isExpensive {
+                    completion(false)
+                } else {
+                    completion(true)
+                }
+            } else {
+                completion(false)
+            }
+            monitor.cancel()
+        }
+    }
 }
+
 
 
 struct LoginView_Previews: PreviewProvider {
