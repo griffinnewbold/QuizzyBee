@@ -23,7 +23,7 @@ struct existingDeckView: View {
     // text-to-speech
     @StateObject private var speech = textToSpeech()
     @State private var isPlaying = false
-
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -224,20 +224,20 @@ struct existingDeckView: View {
                             deckTitle: set.title,
                             apiKey: "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",
                             questions: $questions,
-                            answers: $answers).navigationBarBackButtonHidden(true)) {
-                            HStack {
-                                Spacer()
-                                Text("Start Quiz")
-                                    .foregroundColor(.black)
-                                    .font(.headline)
-                                Spacer()
+                            answers: $answers)) {
+                                HStack {
+                                    Spacer()
+                                    Text("Start Quiz")
+                                        .foregroundColor(.black)
+                                        .font(.headline)
+                                    Spacer()
+                                }
+                                .padding()
+                                .frame(height: 60)
+                                .background(Color.white)
+                                .cornerRadius(10)
                             }
-                            .padding()
-                            .frame(height: 60)
-                            .background(Color.white)
-                            .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
+                            .padding(.horizontal)
                     }
                 }
                 .padding(.vertical)
@@ -249,7 +249,7 @@ struct existingDeckView: View {
             }
         }
     }
-
+    
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
         guard let user = Auth.auth().currentUser else {
