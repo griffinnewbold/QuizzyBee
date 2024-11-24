@@ -26,6 +26,8 @@ struct newCardView: View {
     @State private var set = Set(title: "")
     @State private var showingColorPicker = false
     
+    var existingDeckID: String? // Optional parameter for the existing deck ID
+    
     var body: some View {
         ZStack {
             Color.yellow
@@ -50,10 +52,13 @@ struct newCardView: View {
                             .bold()
                             .foregroundColor(.black)
                             .multilineTextAlignment(.center)
+                            .disabled(existingDeckID != nil) // Disable title editing for existing decks
                         
-                        Image(systemName: "pencil")
-                            .foregroundColor(.black)
-                            .offset(x: -50)
+                        if existingDeckID == nil {
+                            Image(systemName: "pencil")
+                                .foregroundColor(.black)
+                                .offset(x: -50)
+                        }
                     }
                     
                     Spacer()
@@ -170,12 +175,16 @@ struct newCardView: View {
                 
                 // Save Deck Button (Moved here)
                 Button(action: {
-                    set.title = deckTitle
-                    set.words = words
-                    saveSetForCurrentUser(set: set)
+                    if existingDeckID == nil {
+                        set.title = deckTitle
+                        set.words = words
+                        saveSetForCurrentUser(set: set)
+                    } else {
+                        appendCardsToExistingDeck()
+                    }
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text("Save Deck")
+                    Text(existingDeckID == nil ? "Save Deck" : "Add to this Deck")// change while add card to existing deck
                         .font(.headline)
                         .padding()
                         .frame(maxWidth: 300)
@@ -251,6 +260,43 @@ struct newCardView: View {
                 print("Error saving set to Firebase: \(error)")
             } else {
                 print("Successfully saved set to Firebase.")
+            }
+        }
+    }
+    
+    func appendCardsToExistingDeck() {
+        guard let user = Auth.auth().currentUser, let existingDeckID = existingDeckID else { return }
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let wordsRef = ref.child("users").child(userID).child("sets").child(existingDeckID).child("words")
+        
+        wordsRef.observeSingleEvent(of: .value) { snapshot in
+            // Retrieve existing words
+            var updatedWords = [[String: Any]]()
+            if let existingWords = snapshot.value as? [[String: Any]] {
+                updatedWords = existingWords
+            }
+            
+            // Prepare new words
+            let newWords = words.map { word in
+                return [
+                    "id": UUID().uuidString, // Generate a unique ID for each word
+                    "term": word.term,
+                    "definition": word.definition,
+                    "color": word.color
+                ]
+            }
+            
+            // Append new words to existing words
+            updatedWords.append(contentsOf: newWords)
+            
+            // Save back to Firebase
+            wordsRef.setValue(updatedWords) { error, _ in
+                if let error = error {
+                    print("Error appending cards to deck: \(error)")
+                } else {
+                    print("Successfully added new cards to the existing deck.")
+                }
             }
         }
     }
