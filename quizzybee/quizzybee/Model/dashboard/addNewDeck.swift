@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct addNewCard: View {
+struct addNewDeck: View {
     @State private var addNewDeck = false
     
     var body: some View {
@@ -38,5 +38,5 @@ struct addNewCard: View {
 }
 
 #Preview {
-    addNewCard()
+    addNewDeck()
 }
