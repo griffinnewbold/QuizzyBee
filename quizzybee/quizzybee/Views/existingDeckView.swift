@@ -19,6 +19,10 @@ struct existingDeckView: View {
     @State private var questions: [String] = []
     @State private var answers: [String] = []
     @State private var isLoading = true // Track loading state
+    
+    // text-to-speech
+    @StateObject private var speech = textToSpeech()
+    @State private var isPlaying = false
 
     var body: some View {
         NavigationView {
@@ -117,6 +121,26 @@ struct existingDeckView: View {
                                     .padding()
                                     .font(.title3)
                                     .foregroundColor(.black)
+                                
+                                // MARK: text to speech
+                                Button(action: {
+                                    let textToSpeak = showAnswer ?
+                                    (answers[safe: currentQuestionIndex] ?? "") :
+                                    (questions[safe: currentQuestionIndex] ?? "")
+                                    isPlaying.toggle()
+                                    if isPlaying {
+                                        speech.speak(textToSpeak)
+                                    } else {
+                                        speech.stop()
+                                    }
+                                }) {
+                                    Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
+                                        .foregroundColor(.black)
+                                        .padding(8)
+                                        .background(Color.gray.opacity(0.2))
+                                        .clipShape(Circle())
+                                }
+                                
                             }
                             .frame(maxWidth: .infinity, minHeight: 200)
                             .padding()
@@ -125,6 +149,12 @@ struct existingDeckView: View {
                             .padding(.horizontal)
                             .onTapGesture {
                                 showAnswer.toggle()
+                                isPlaying = false
+                                speech.stop()
+                            }
+                            .onChange(of: currentQuestionIndex) { _ in
+                                isPlaying = false
+                                speech.stop()
                             }
                             
                             Button(action: {
@@ -259,12 +289,12 @@ extension Collection {
     }
 }
 
-#Preview {
-    existingDeckView(set: Set(
-        id: "1",
-        title: "Intro to Java",
-        words: [
-            Word(term: "", definition: "", color: "#FFFFFF")
-        ]
-    ))
-}
+//#Preview {
+//    existingDeckView(set: Set(
+//        id: "1",
+//        title: "Intro to Java",
+//        words: [
+//            Word(term: "", definition: "", color: "#FFFFFF")
+//        ]
+//    ))
+//}
