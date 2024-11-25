@@ -19,12 +19,19 @@ struct existingDeckView: View {
     @State private var questions: [String] = []
     @State private var answers: [String] = []
     @State private var isLoading = true // Track loading state
-
+    
+    // Text-to-speech
+    @StateObject private var speech = textToSpeech()
+    @State private var isPlaying = false
+    
+    @State private var selectedQuestion: String = "" // Added to hold the question for editing
+    @State private var selectedAnswer: String = ""   // Added to hold the answer for editing
+    @State private var showEditView = false         // Toggle to show editCardView
+    
     var body: some View {
         NavigationView {
             ZStack {
-                Color.yellow
-                    .edgesIgnoringSafeArea(.all)
+                Color.yellow.edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 30) {
                     // Top Bar
@@ -42,11 +49,19 @@ struct existingDeckView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.black)
                         Spacer()
+                        //Edit current flashcard
                         Button(action: {
-                            // Settings action
+                            if let question = questions[safe: currentQuestionIndex],
+                               let answer = answers[safe: currentQuestionIndex] {
+                                selectedQuestion = question
+                                selectedAnswer = answer
+                                // Show editCurrentCardView
+                                showEditView = true
+                            }
                         }) {
-                            Image(systemName: "gearshape")
-                                .foregroundColor(.white)
+                            Text("Edit")
+                                .foregroundColor(.blue)
+                                .font(.headline)
                                 .padding()
                         }
                     }
@@ -111,12 +126,31 @@ struct existingDeckView: View {
                             }
                             
                             VStack {
-                                Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available":questions[safe: currentQuestionIndex] ?? "No question available")
+                                Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available" : questions[safe: currentQuestionIndex] ?? "No question available")
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
                                     .font(.title3)
                                     .foregroundColor(.black)
+                                
+                                // Text-to-speech
+                                Button(action: {
+                                    let textToSpeak = showAnswer ?
+                                    (answers[safe: currentQuestionIndex] ?? "") :
+                                    (questions[safe: currentQuestionIndex] ?? "")
+                                    isPlaying.toggle()
+                                    if isPlaying {
+                                        speech.speak(textToSpeak)
+                                    } else {
+                                        speech.stop()
+                                    }
+                                }) {
+                                    Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
+                                        .foregroundColor(.black)
+                                        .padding(8)
+                                        .background(Color.gray.opacity(0.2))
+                                        .clipShape(Circle())
+                                }
                             }
                             .frame(maxWidth: .infinity, minHeight: 200)
                             .padding()
@@ -125,6 +159,12 @@ struct existingDeckView: View {
                             .padding(.horizontal)
                             .onTapGesture {
                                 showAnswer.toggle()
+                                isPlaying = false
+                                speech.stop()
+                            }
+                            .onChange(of: currentQuestionIndex) { _ in
+                                isPlaying = false
+                                speech.stop()
                             }
                             
                             Button(action: {
@@ -217,6 +257,20 @@ struct existingDeckView: View {
                 isLoading = true
                 fetchFlashcards(forSet: set)
             }
+            .sheet(isPresented: $showEditView) {
+                editCurrentCardView(
+                    question: $selectedQuestion,
+                    answer: $selectedAnswer,
+                    deckID: set.id,
+                    flashcardIndex: currentQuestionIndex,
+                    onSave: { updatedQuestion, updatedAnswer in
+                        updateFlashcard(question: updatedQuestion, answer: updatedAnswer)
+                    },
+                    onDelete: {
+                        deleteFlashcard()
+                    }
+                )
+            }
         }
     }
 
@@ -250,6 +304,56 @@ struct existingDeckView: View {
             }
         }
     }
+    
+    // Function to update a flashcard
+    func updateFlashcard(question: String, answer: String) {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+        
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let flashcardRef = ref.child("users").child(userID).child("sets").child(set.id).child("words").child("\(currentQuestionIndex)")
+        
+        flashcardRef.updateChildValues(["term": question, "definition": answer]) { error, _ in
+            if let error = error {
+                print("Error updating flashcard: \(error.localizedDescription)")
+            } else {
+                print("Flashcard updated successfully.")
+                questions[currentQuestionIndex] = question
+                answers[currentQuestionIndex] = answer
+            }
+        }
+    }
+
+    // Function to delete a flashcard
+    func deleteFlashcard() {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+        
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let flashcardRef = ref.child("users").child(userID).child("sets").child(set.id).child("words").child("\(currentQuestionIndex)")
+        
+        flashcardRef.removeValue { error, _ in
+            if let error = error {
+                print("Error deleting flashcard: \(error.localizedDescription)")
+            } else {
+                print("Flashcard deleted successfully.")
+                questions.remove(at: currentQuestionIndex)
+                answers.remove(at: currentQuestionIndex)
+                
+                // Adjust the index to prevent out-of-bounds errors
+                if currentQuestionIndex >= questions.count {
+                    currentQuestionIndex = max(0, questions.count - 1)
+                }
+            }
+        }
+    }
+
 }
 
 // Prevent crashes due to out-of-bounds array access
@@ -259,12 +363,12 @@ extension Collection {
     }
 }
 
-#Preview {
-    existingDeckView(set: Set(
-        id: "1",
-        title: "Intro to Java",
-        words: [
-            Word(term: "", definition: "", color: "#FFFFFF")
-        ]
-    ))
-}
+//#Preview {
+//    existingDeckView(set: Set(
+//        id: "1",
+//        title: "Intro to Java",
+//        words: [
+//            Word(term: "", definition: "", color: "#FFFFFF")
+//        ]
+//    ))
+//}
