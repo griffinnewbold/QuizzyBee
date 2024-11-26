@@ -13,6 +13,10 @@ struct reviewView: View {
     @State private var currentQuestionIndex = 0
     @State private var showAnswer = false
     
+    // text-to-speech
+    @StateObject private var speech = textToSpeech()
+    @State private var isPlaying = false
+    
     var body: some View {
         VStack(spacing: 30) {
             Spacer()
@@ -35,6 +39,25 @@ struct reviewView: View {
                         .padding()
                         .font(.title3)
                         .foregroundColor(.black)
+                    
+                    // MARK: text to speech
+                    Button(action: {
+                        let textToSpeak = showAnswer ?
+                        (answers[safe: currentQuestionIndex] ?? "") :
+                        (questions[safe: currentQuestionIndex] ?? "")
+                        isPlaying.toggle()
+                        if isPlaying {
+                            speech.speak(textToSpeak)
+                        } else {
+                            speech.stop()
+                        }
+                    }) {
+                        Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
+                            .foregroundColor(.black)
+                            .padding(8)
+                            .background(Color.gray.opacity(0.2))
+                            .clipShape(Circle())
+                    }
                 }
                 .frame(maxWidth: .infinity, minHeight: 200)
                 .padding()
@@ -43,6 +66,8 @@ struct reviewView: View {
                 .padding(.horizontal)
                 .onTapGesture {
                     showAnswer.toggle()
+                    isPlaying = false
+                    speech.stop()
                 }
                 
                 Button(action: {
@@ -77,6 +102,10 @@ struct reviewView: View {
         }
         .padding(.vertical)
         .background(Color.yellow.edgesIgnoringSafeArea(.all))
+        .onChange(of: currentQuestionIndex) { _ in
+            isPlaying = false
+            speech.stop()
+        }
     }
     
 }

@@ -50,7 +50,7 @@ struct dashboardView: View {
                     
                     deckCardSummaryList(targetDecks: filteredDecks)
                     
-                    addNewCard()
+                    addNewDeck()
                         .padding(.bottom, 30)
                 }
                 .alert("No Results", isPresented: $noResults) {
