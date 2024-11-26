@@ -202,9 +202,7 @@ struct existingDeckView: View {
                     
                     // Action Buttons
                     VStack(spacing: 10) {
-                        NavigationLink(
-                            destination: newCardView(existingDeckID: set.id).navigationBarBackButtonHidden(true)
-                        ) {
+                        NavigationLink(destination: newCardView(existingDeckID: set.id).navigationBarBackButtonHidden(true)) {
                             HStack {
                                 Spacer()
                                 Image(systemName: "plus")
@@ -233,19 +231,11 @@ struct existingDeckView: View {
                         }
                         .padding(.horizontal)
                         
-                        NavigationLink(
-                            destination: quizView(
-                                deckTitle: set.title,
-                                apiKey: "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",
-                                questions: $questions,
-                                answers: $answers
-                            ).navigationBarBackButtonHidden(true),
-                            isActive: $allowNavigation
-                        ) {
-                            EmptyView()
-                        }
-
-                        Button(action: startQuizWithNetworkCheck) {
+                        NavigationLink(destination: quizView(
+                            deckTitle: set.title,
+                            apiKey: "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",
+                            questions: $questions,
+                            answers: $answers).navigationBarBackButtonHidden(true)) {
                             HStack {
                                 Spacer()
                                 Text("Start Quiz")
@@ -283,6 +273,7 @@ struct existingDeckView: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     // Function to Fetch Flashcards from Firebase
@@ -298,7 +289,7 @@ struct existingDeckView: View {
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
         
         userSetRef.observeSingleEvent(of: .value) { snapshot in
-            defer { self.isLoading = false }
+            defer { self.isLoading = false } // Ensure loading state stops
             
             guard let wordsArray = snapshot.value as? [[String: Any]] else {
                 print("No flashcards found for this set or invalid format.")

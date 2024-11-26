@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Network
 import Foundation
 
 struct TopShape: Shape {
@@ -23,6 +22,7 @@ struct TopShape: Shape {
 
 struct LoginView: View {
     @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     @State private var email = ""
     @State private var password = ""
     @State private var showError = false
@@ -111,39 +111,16 @@ struct LoginView: View {
             return
         }
         
-        isNetworkAvailable { isConnected in
-            if isConnected {
-                authViewModel.logIn(email: email, password: password) { user in
-                    if let user = user {
-                        self.navigateToDashboard = true
-                    } else {
-                        self.showError = true
-                    }
-                }
-            } else {
-                showNetworkAlert = true
-            }
-        }
-    }
-
-
-    
-    private func isNetworkAvailable(completion: @escaping (Bool) -> Void) {
-        let monitor = NWPathMonitor()
-        let queue = DispatchQueue.global(qos: .background)
-        monitor.start(queue: queue)
-
-        monitor.pathUpdateHandler = { path in
-            if path.status == .satisfied {
-                if path.isExpensive {
-                    completion(false)
+        if networkMonitor.isConnected {
+            authViewModel.logIn(email: email, password: password) { user in
+                if let user = user {
+                    self.navigateToDashboard = true
                 } else {
-                    completion(true)
+                    self.showError = true
                 }
-            } else {
-                completion(false)
             }
-            monitor.cancel()
+        } else {
+            showNetworkAlert = true
         }
     }
 }
