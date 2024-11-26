@@ -273,6 +273,7 @@ struct existingDeckView: View {
                 )
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
 
     // Function to Fetch Flashcards from Firebase

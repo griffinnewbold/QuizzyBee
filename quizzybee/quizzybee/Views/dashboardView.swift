@@ -9,9 +9,12 @@ import SwiftUI
 
 struct dashboardView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     @State private var searchText = ""
     @State private var noResults = false
     @State private var allDecks: [Set] = []
+    @State private var showNetworkAlert: Bool = false
+    
     
     private func loadDecks() {
         authViewModel.fetchUserSets { sets in
@@ -59,13 +62,27 @@ struct dashboardView: View {
                     Text("No decks found matching '\(searchText)'")
                 }
             }
+            .alert("Network Error", isPresented: $showNetworkAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("There is a network issue. Please try again later.")
+            }
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            loadDecks()
+            if networkMonitor.isConnected {
+                loadDecks()
+            } else {
+                showNetworkAlert = true
+            }
+            
         }
         .onChange(of: authViewModel.user?.sets) {
-            loadDecks()
+            if networkMonitor.isConnected {
+                loadDecks()
+            } else {
+                showNetworkAlert = true
+            }
         }
     }
 }
