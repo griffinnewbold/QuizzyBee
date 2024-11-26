@@ -40,7 +40,7 @@ struct existingDeckView: View {
                             presentationMode.wrappedValue.dismiss()
                         }) {
                             Image(systemName: "chevron.left")
-                                .foregroundColor(.white)
+                                .foregroundColor(.black)
                                 .padding()
                         }
                         Spacer()
@@ -60,7 +60,7 @@ struct existingDeckView: View {
                             }
                         }) {
                             Text("Edit")
-                                .foregroundColor(.blue)
+                                .foregroundColor(.black)
                                 .font(.headline)
                                 .padding()
                         }
@@ -206,20 +206,8 @@ struct existingDeckView: View {
                             HStack {
                                 Spacer()
                                 Image(systemName: "plus")
-                                    .foregroundColor(.blue)
-                                Spacer()
-                            }
-                            .padding()
-                            .frame(height: 60)
-                            .background(Color.white.opacity(0.7))
-                            .cornerRadius(10)
-                        }
-                        .padding(.horizontal)
-                        
-                        NavigationLink(destination: reviewView(questions: $questions, answers: $answers)) {
-                            HStack {
-                                Spacer()
-                                Text("Start Review")
+                                    .foregroundColor(.black)
+                                Text("Add Card Manually")
                                     .foregroundColor(.black)
                                     .font(.headline)
                                 Spacer()
@@ -231,14 +219,14 @@ struct existingDeckView: View {
                         }
                         .padding(.horizontal)
                         
-                        NavigationLink(destination: quizView(
-                            deckTitle: set.title,
-                            apiKey: "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",
-                            questions: $questions,
-                            answers: $answers).navigationBarBackButtonHidden(true)) {
+                        Button(action: {
+                            addCardViaAI()
+                        }) {
                             HStack {
                                 Spacer()
-                                Text("Start Quiz")
+                                Image(systemName: "plus")
+                                    .foregroundColor(.black)
+                                Text("Add Card via AI")
                                     .foregroundColor(.black)
                                     .font(.headline)
                                 Spacer()
@@ -247,9 +235,45 @@ struct existingDeckView: View {
                             .frame(height: 60)
                             .background(Color.white)
                             .cornerRadius(10)
+                        }
+                        .padding(.horizontal)
+                        
+                        HStack(spacing: 10) {
+                            NavigationLink(destination: reviewView(questions: $questions, answers: $answers)) {
+                                HStack {
+                                    Spacer()
+                                    Text("Review")
+                                        .foregroundColor(.black)
+                                        .font(.headline)
+                                    Spacer()
+                                }
+                                .padding()
+                                .frame(height: 60)
+                                .background(Color.white)
+                                .cornerRadius(10)
+                            }
+                            
+                            NavigationLink(destination: quizView(
+                                deckTitle: set.title,
+                                apiKey: "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",
+                                questions: $questions,
+                                answers: $answers).navigationBarBackButtonHidden(true)) {
+                                HStack {
+                                    Spacer()
+                                    Text("Quiz")
+                                        .foregroundColor(.black)
+                                        .font(.headline)
+                                    Spacer()
+                                }
+                                .padding()
+                                .frame(height: 60)
+                                .background(Color.white)
+                                .cornerRadius(10)
+                            }
                         }
                         .padding(.horizontal)
                     }
+
                 }
                 .padding(.vertical)
             }
@@ -275,6 +299,33 @@ struct existingDeckView: View {
         }
         .navigationBarBackButtonHidden(true)
     }
+    
+    //ai card adder
+    func addCardViaAI() {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+        
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
+        
+        // Create the new Word instance
+        let newWord = Word(term: "sample question", definition: "sample answer", color: "#FFFFFF")
+        
+        // Add the Word to the database
+        userSetRef.childByAutoId().setValue(newWord.toDictionary()) { error, _ in
+            if let error = error {
+                print("Error adding card via AI: \(error.localizedDescription)")
+            } else {
+                print("Card added via AI successfully.")
+                self.questions.append(newWord.term)
+                self.answers.append(newWord.definition)
+            }
+        }
+    }
+
 
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
