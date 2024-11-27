@@ -1,16 +1,5 @@
 import SwiftUI
 
-struct QuizResponse: Codable {
-    let questions: [GeneratedQuizQuestion]
-}
-
-struct GeneratedQuizQuestion: Codable {
-    let question: String
-    let options: [String]
-    let correctAnswer: Int
-    let explanation: String
-}
-
 // MARK: - Quiz View
 struct quizView: View {
     let deckTitle: String
