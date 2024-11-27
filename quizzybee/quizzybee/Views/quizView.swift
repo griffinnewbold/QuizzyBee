@@ -1,6 +1,12 @@
+//
+//  newCardView.swift
+//  quizzybee
+//
+//  Created by Tommy Lam on 2024/11/10.
+//
+
 import SwiftUI
 
-// MARK: - Quiz View
 struct quizView: View {
     let deckTitle: String
     let apiKey: String
@@ -14,13 +20,17 @@ struct quizView: View {
     @State private var isLoading = true
     @State private var generatedQuestions: [GeneratedQuizQuestion] = []
     @State private var error: QuizError? = nil
+    @State private var showQuestionCountSelector = true
+    @State private var selectedQuestionCount = 5
     
     var body: some View {
         ZStack {
             Color.yellow
                 .edgesIgnoringSafeArea(.all)
             
-            if isLoading {
+            if showQuestionCountSelector {
+                questionCountSelector
+            } else if isLoading {
                 VStack {
                     ProgressView()
                         .scaleEffect(1.5)
@@ -37,9 +47,7 @@ struct quizView: View {
                         .padding()
                         .multilineTextAlignment(.center)
                     Button("Try Again") {
-                        Task {
-                            await loadQuestions()
-                        }
+                        showQuestionCountSelector = true
                     }
                     .padding()
                     .background(Color.white)
@@ -52,9 +60,38 @@ struct quizView: View {
         }
         .navigationTitle("\(deckTitle) Quiz")
         .navigationBarTitleDisplayMode(.inline)
-        .task {
-            await loadQuestions()
+    }
+    
+    private var questionCountSelector: some View {
+        VStack(spacing: 20) {
+            Text("How many questions would you like?")
+                .font(.headline)
+                .multilineTextAlignment(.center)
+            
+            Picker("Number of Questions", selection: $selectedQuestionCount) {
+                ForEach(1...20, id: \.self) { count in
+                    Text("\(count)").tag(count)
+                }
+            }
+            .pickerStyle(WheelPickerStyle())
+            
+            Button("Start Quiz") {
+                showQuestionCountSelector = false
+                Task {
+                    await loadQuestions()
+                }
+            }
+            .font(.system(size: 16, weight: .medium))
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.white)
+            .cornerRadius(10)
+            .padding(.horizontal)
         }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15)
+        .padding()
     }
     
     // MARK: - Quiz Content View
@@ -69,9 +106,11 @@ struct quizView: View {
                         .font(.system(size: 40, weight: .bold))
                     
                     Button("New Quiz") {
-                        Task {
-                            await loadQuestions()
-                        }
+                        showQuestionCountSelector = true
+                        score = 0
+                        currentQuestionIndex = 0
+                        selectedAnswer = nil
+                        showResults = false
                     }
                     .font(.system(size: 16, weight: .medium))
                     .padding()
@@ -164,7 +203,8 @@ struct quizView: View {
         
         do {
             let service = OpenAIService(apiKey: apiKey)
-            generatedQuestions = try await service.generateQuiz(basedOn: questions)
+            // Pass the selected question count to the quiz generation
+            generatedQuestions = try await service.generateQuiz(basedOn: questions, questionCount: selectedQuestionCount)
             isLoading = false
         } catch let error as QuizError {
             self.error = error
