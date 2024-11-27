@@ -40,13 +40,3 @@ struct searchBar: View {
         .padding(.horizontal)
     }
 }
-
-#Preview {
-    searchBar(
-        searchText: .constant(""),
-        placeholder: "search deck...",
-        onSubmit: {
-            print("search submitted")
-        }
-    )
-}

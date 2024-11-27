@@ -9,7 +9,7 @@ import SwiftUI
 
 struct profileList: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    // default is ******
+    
     @State private var currentPassword: String = "******"
     
     var body: some View {
@@ -53,8 +53,4 @@ struct profileList: View {
         .padding(.top)
         .background(Color(hex: "7B7B7B").ignoresSafeArea())
     }
-}
-
-#Preview {
-    profileList().environmentObject(AuthViewModel())
 }

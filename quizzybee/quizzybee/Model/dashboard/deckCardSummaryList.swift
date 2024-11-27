@@ -15,8 +15,15 @@ struct deckCardSummaryList: View {
     var body: some View {
         
         List {
-            ForEach(targetDecks) {
+            ForEach(targetDecks, id: \.id) {
                 deckCard in deckCardSummaryRow(deckCard: deckCard)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            authViewModel.deleteDeck(setId: deckCard.id)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
                     .padding()
                     .background(Color.white)
                     .cornerRadius(10)
