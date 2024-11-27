@@ -197,6 +197,7 @@ struct newCardView: View {
                 
             }
         }
+        .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showingColorPicker) {
             // Color Picker Sheet
             VStack {
