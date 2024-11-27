@@ -11,6 +11,7 @@ struct gearShape: View {
     @AppStorage("allow AI") var allowAI = false
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showMenu = false
+    @State private var shouldLogin = false
     
     
     var body: some View {
@@ -36,15 +37,14 @@ struct gearShape: View {
                         )
                     }
                     
-                    NavigationLink(destination: LoginView()) {
-                        Label("Sign In", systemImage: "person.fill")
-                            .foregroundColor(.black)
-                    }
-                    
                     Button(role: .destructive, action: {
                         authViewModel.logOut()
+                        shouldLogin = true
                     }) {
                         Label("Log Out", systemImage: "rectangle.portrait.and.arrow.right")
+                    }
+                    .navigationDestination(isPresented: $shouldLogin) {
+                        LoginView()
                     }
                 }
                 .padding()
@@ -62,7 +62,3 @@ struct gearShape: View {
         }
     }
 }
-
-//#Preview {
-//    gearShape().environmentObject(AuthViewModel())
-//}
