@@ -17,6 +17,7 @@ struct Flashcard {
 
 struct newCardView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @State private var currentCardIndex = 0
     @State private var words = [
@@ -25,6 +26,7 @@ struct newCardView: View {
     @State private var deckTitle = "New Deck Title"
     @State private var set = Set(title: "")
     @State private var showingColorPicker = false
+    @State private var showingAlert = false
     
     var existingDeckID: String? // Optional parameter for the existing deck ID
     
@@ -175,6 +177,13 @@ struct newCardView: View {
                 
                 // Save Deck Button (Moved here)
                 Button(action: {
+                    
+                    if !networkMonitor.isConnected {
+                        print("Cannot save deck, no internet connection.")
+                        showingAlert = true
+                        return
+                    }
+                    
                     if existingDeckID == nil {
                         set.title = deckTitle
                         set.words = words
@@ -197,6 +206,7 @@ struct newCardView: View {
                 
             }
         }
+        .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showingColorPicker) {
             // Color Picker Sheet
             VStack {
@@ -226,6 +236,13 @@ struct newCardView: View {
                 .padding(.top)
             }
             .padding()
+        }
+        .alert(isPresented: $showingAlert) {
+            Alert(
+                title: Text("No Internet Connection"),
+                message: Text("Please check your internet connection and try again."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -260,6 +277,11 @@ struct newCardView: View {
                 print("Error saving set to Firebase: \(error)")
             } else {
                 print("Successfully saved set to Firebase.")
+                
+                // need to refresh dashboard
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("RefreshDashboard"), object: nil)
+                }
             }
         }
     }
@@ -296,6 +318,12 @@ struct newCardView: View {
                     print("Error appending cards to deck: \(error)")
                 } else {
                     print("Successfully added new cards to the existing deck.")
+                    
+                    // need to refresh dashboard
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: NSNotification.Name("RefreshDashboard"), object: nil)
+                    }
+
                 }
             }
         }

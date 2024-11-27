@@ -70,6 +70,15 @@ struct dashboardView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
+            loadDecks()
+            
+            // for instant change
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("RefreshDashboard"),
+                                                   object: nil,
+                                                   queue: .main
+            ) { _ in
+                loadDecks()
+            }
             if networkMonitor.isConnected {
                 loadDecks()
             } else {

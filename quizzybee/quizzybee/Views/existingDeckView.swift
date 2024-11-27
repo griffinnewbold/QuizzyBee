@@ -19,6 +19,7 @@ struct existingDeckView: View {
     @State private var showAnswer = false
     @State private var questions: [String] = []
     @State private var answers: [String] = []
+    @State private var colors: [String] = []
     @State private var isLoading = true // Track loading state
     
     // Text-to-speech
@@ -27,6 +28,7 @@ struct existingDeckView: View {
     
     @State private var selectedQuestion: String = "" // Added to hold the question for editing
     @State private var selectedAnswer: String = ""   // Added to hold the answer for editing
+    @State private var selectedColor: String = ""   // Added to hold the color for editing
     @State private var showEditView = false         // Toggle to show editCardView
     
     
@@ -133,7 +135,7 @@ struct existingDeckView: View {
                                     .multilineTextAlignment(.center)
                                     .padding()
                                     .font(.title3)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(Color(hex: colors[currentQuestionIndex]).isDarkBackground() ? .white : .black)
                                 
                                 // MARK: text to speech
                                 Button(action: {
@@ -157,7 +159,7 @@ struct existingDeckView: View {
                             }
                             .frame(maxWidth: .infinity, minHeight: 200)
                             .padding()
-                            .background(Color.white)
+                            .background(Color(hex: colors[currentQuestionIndex]))
                             .cornerRadius(10)
                             .padding(.horizontal)
                             .onTapGesture {
@@ -290,10 +292,11 @@ struct existingDeckView: View {
                 editCurrentCardView(
                     question: $selectedQuestion,
                     answer: $selectedAnswer,
+                    color: selectedColor,
                     deckID: set.id,
                     flashcardIndex: currentQuestionIndex,
-                    onSave: { updatedQuestion, updatedAnswer in
-                        updateFlashcard(question: updatedQuestion, answer: updatedAnswer)
+                    onSave: { updatedQuestion, updatedAnswer, updatedColor in
+                        updateFlashcard(question: updatedQuestion, answer: updatedAnswer, color: updatedColor)
                     },
                     onDelete: {
                         deleteFlashcard()
@@ -391,11 +394,13 @@ struct existingDeckView: View {
                 print("No flashcards found for this set or invalid format.")
                 self.questions = []
                 self.answers = []
+                self.colors = []
                 return
             }
             
             self.questions = wordsArray.compactMap { $0["term"] as? String }
             self.answers = wordsArray.compactMap { $0["definition"] as? String }
+            self.colors = wordsArray.compactMap { $0["color"] as? String }
             
             if !self.questions.isEmpty {
                 self.currentQuestionIndex = 0
@@ -404,7 +409,7 @@ struct existingDeckView: View {
     }
     
     // Function to update a flashcard
-    func updateFlashcard(question: String, answer: String) {
+    func updateFlashcard(question: String, answer: String, color: String) {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
             return
@@ -414,13 +419,14 @@ struct existingDeckView: View {
         let ref = Database.database().reference()
         let flashcardRef = ref.child("users").child(userID).child("sets").child(set.id).child("words").child("\(currentQuestionIndex)")
         
-        flashcardRef.updateChildValues(["term": question, "definition": answer]) { error, _ in
+        flashcardRef.updateChildValues(["term": question, "definition": answer, "color": color]) { error, _ in
             if let error = error {
                 print("Error updating flashcard: \(error.localizedDescription)")
             } else {
                 print("Flashcard updated successfully.")
                 questions[currentQuestionIndex] = question
                 answers[currentQuestionIndex] = answer
+                colors[currentQuestionIndex] = color
             }
         }
     }
@@ -443,6 +449,7 @@ struct existingDeckView: View {
                 print("Flashcard deleted successfully.")
                 questions.remove(at: currentQuestionIndex)
                 answers.remove(at: currentQuestionIndex)
+                colors.remove(at: currentQuestionIndex)
                 
                 // Adjust the index to prevent out-of-bounds errors
                 if currentQuestionIndex >= questions.count {

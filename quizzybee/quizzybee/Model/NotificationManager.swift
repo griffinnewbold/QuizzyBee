@@ -2,8 +2,6 @@
 //  NotificationManager.swift
 //  quizzybee
 //
-//  Created by Griffin on 2024/11/24.
-//
 
 import UserNotifications
 
