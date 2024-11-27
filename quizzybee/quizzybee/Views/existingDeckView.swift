@@ -11,6 +11,7 @@ import FirebaseAuth
 
 struct existingDeckView: View {
     let set: Set
+    let openAIAPIKey: String = "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"
     @Environment(\.presentationMode) var presentationMode
     
     @State private var currentQuestionIndex = 0
@@ -27,6 +28,7 @@ struct existingDeckView: View {
     @State private var selectedQuestion: String = "" // Added to hold the question for editing
     @State private var selectedAnswer: String = ""   // Added to hold the answer for editing
     @State private var showEditView = false         // Toggle to show editCardView
+    
     
     var body: some View {
         NavigationView {
@@ -220,7 +222,9 @@ struct existingDeckView: View {
                         .padding(.horizontal)
                         
                         Button(action: {
-                            addCardViaAI()
+                            Task {
+                                await addCardViaAI()
+                            }
                         }) {
                             HStack {
                                 Spacer()
@@ -255,9 +259,9 @@ struct existingDeckView: View {
                             
                             NavigationLink(destination: quizView(
                                 deckTitle: set.title,
-                                apiKey: "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",
+                                apiKey: openAIAPIKey,
                                 questions: $questions,
-                                answers: $answers).navigationBarBackButtonHidden(true)) {
+                                answers: $answers)) {
                                 HStack {
                                     Spacer()
                                     Text("Quiz")
@@ -301,7 +305,7 @@ struct existingDeckView: View {
     }
     
     //ai card adder
-    func addCardViaAI() {
+    func addCardViaAI() async {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
             return
@@ -311,18 +315,59 @@ struct existingDeckView: View {
         let ref = Database.database().reference()
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
         
-        // Create the new Word instance
-        let newWord = Word(term: "sample question", definition: "sample answer", color: "#FFFFFF")
+        // Fetch all existing terms and definitions to avoid duplicates
+        let existingQuestions = questions
+        let existingAnswers = answers
         
-        // Add the Word to the database
-        userSetRef.childByAutoId().setValue(newWord.toDictionary()) { error, _ in
-            if let error = error {
-                print("Error adding card via AI: \(error.localizedDescription)")
-            } else {
-                print("Card added via AI successfully.")
-                self.questions.append(newWord.term)
-                self.answers.append(newWord.definition)
+        do {
+            let service = OpenAIService(apiKey: openAIAPIKey)
+            
+            // Generate a question and answer prompt based on the existing set
+            let prompt = """
+            Generate a new question and answer similar to these:
+            \(existingQuestions.map { "- \($0)" }.joined(separator: "\n"))
+            
+            Make sure the question and answer are not duplicates.
+            
+            Respond in the following JSON format:
+            {
+                "question": "A unique question text",
+                "answer": "A unique answer text"
             }
+            """
+            
+            let response = try await service.sendPrompt(prompt: prompt, systemRole: "You are a helpful assistant generating unique flashcards.")
+            
+            guard let jsonData = response.data(using: .utf8),
+                  let generatedCard = try? JSONDecoder().decode([String: String].self, from: jsonData),
+                  let newQuestion = generatedCard["question"],
+                  let newAnswer = generatedCard["answer"] else {
+                print("Failed to decode OpenAI response.")
+                return
+            }
+            
+            // Ensure no duplicates
+            guard !existingQuestions.contains(newQuestion), !existingAnswers.contains(newAnswer) else {
+                print("Generated question/answer already exists. Try again.")
+                return
+            }
+            
+            // Create the new Word instance with the sequential id
+            let nextIndex = questions.count
+            let newWord = Word(id: "\(nextIndex)", term: newQuestion, definition: newAnswer, color: "#FFFFFF")
+            
+            // Add the Word to the database using its id
+            userSetRef.child(newWord.id).setValue(newWord.toDictionary()) { error, _ in
+                if let error = error {
+                    print("Error adding card via AI: \(error.localizedDescription)")
+                } else {
+                    print("Card added via AI successfully.")
+                    self.questions.append(newWord.term)
+                    self.answers.append(newWord.definition)
+                }
+            }
+        } catch {
+            print("Error generating AI card: \(error.localizedDescription)")
         }
     }
 
