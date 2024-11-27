@@ -131,7 +131,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // MARK: Update Profile
+    // MARK: Update Username
     func updateUserProfile(_ updatedUser: User) {
         saveUserDetails(updatedUser) { [weak self] success in
             if success {
@@ -140,6 +140,7 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    // MARK: Update Password
     func updatePassword(_ newPassword: String, completion: @escaping (Bool, String?) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
             completion(false, "No user logged in")
@@ -181,4 +182,53 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    // MARK: delete deck
+    func deleteDeck(setId: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        let userID = user.uid
+        let ref = Database.database().reference()
+        
+        // Reference to the specific set to delete
+        let setRef = ref.child("users").child(userID).child("sets").child(setId)
+        
+        // Remove the set from Firebase
+        setRef.removeValue { error, _ in
+            if let error = error {
+                print("Error deleting set: \(error)")
+            } else {
+                // print("Successfully deleted set")
+                
+                // Refresh dashboard after successful deletion
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: NSNotification.Name("RefreshDashboard"),
+                        object: nil
+                    )
+                }
+            }
+        }
+    }
+    
+    // MARK: Ppdate user profile
+    func updateUserProfileImage(imageName: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        let userRef = Database.database().reference().child("users").child(user.uid)
+        
+        userRef.child("profileImage").setValue(imageName) { error, _ in
+            if let error = error {
+                print("Error updating profile image: \(error)")
+            } else {
+                DispatchQueue.main.async {
+                    self.user?.profileImage = imageName
+                }
+                // print("Successfully updated profile image")
+                
+                // for user updating their image
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("UserImageUpdated"),
+                    object: nil
+                )
+            }
+        }
+    }
 }

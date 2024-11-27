@@ -98,6 +98,7 @@ struct LoginView: View {
             .navigationDestination(isPresented: $navigateToDashboard) {
                 dashboardView()
                     .environmentObject(authViewModel)
+                    .environmentObject(networkMonitor)
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -129,6 +130,6 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView().environmentObject(NetworkMonitor())
     }
 }
