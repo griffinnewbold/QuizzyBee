@@ -26,6 +26,7 @@ enum QuizError: Error, LocalizedError {
     case invalidJSON
     case apiError(String)
     case processingError(Error)
+    case invalidQuestionCount
     
     var errorDescription: String? {
         switch self {
@@ -39,6 +40,8 @@ enum QuizError: Error, LocalizedError {
             return "API Error: \(message)"
         case .processingError(let error):
             return "Error processing response: \(error.localizedDescription)"
+        case .invalidQuestionCount:
+            return "Invalid number of questions requested. Must be between 1 and 20."
         }
     }
 }
@@ -99,9 +102,20 @@ class OpenAIService {
 
 // MARK: - Quiz-Specific Extension
 extension OpenAIService {
-    func generateQuiz(basedOn questions: [String]) async throws -> [GeneratedQuizQuestion] {
+    func generateQuiz(basedOn questions: [String], questionCount: Int = 5) async throws -> [GeneratedQuizQuestion] {
+        // Validate question count
+        guard questionCount > 0 && questionCount <= 20 else {
+            throw QuizError.invalidQuestionCount
+        }
+        
         let prompt = """
-        Generate 10 multiple choice questions related to these topics: \(questions.joined(separator: ", "))
+        Generate \(questionCount) multiple choice questions related to these topics: \(questions.joined(separator: ", "))
+        
+        Follow these rules:
+        1. Each question should test understanding of the topics
+        2. Include 4 options for each question
+        3. Options should be clear and distinct
+        4. Provide a brief explanation for the correct answer
         
         Respond with a JSON object in this exact format:
         {
@@ -109,14 +123,19 @@ extension OpenAIService {
                 {
                     "question": "question text",
                     "options": ["option1", "option2", "option3", "option4"],
-                    "correctAnswer": 0,
+                    "correctAnswer": integer_index,
                     "explanation": "explanation text"
                 }
             ]
         }
+        
+        Generate exactly \(questionCount) questions.
         """
         
-        let response = try await sendPrompt(prompt: prompt, systemRole: "You are a helpful quiz generator.")
+        let response = try await sendPrompt(
+            prompt: prompt,
+            systemRole: "You are a quiz generator specialized in creating educational multiple-choice questions."
+        )
         
         guard let jsonData = response.data(using: .utf8) else {
             throw QuizError.invalidJSON
