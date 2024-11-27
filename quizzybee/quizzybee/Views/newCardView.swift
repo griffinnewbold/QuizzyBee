@@ -261,6 +261,11 @@ struct newCardView: View {
                 print("Error saving set to Firebase: \(error)")
             } else {
                 print("Successfully saved set to Firebase.")
+                
+                // need to refresh dashboard
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name("RefreshDashboard"), object: nil)
+                }
             }
         }
     }
@@ -297,6 +302,12 @@ struct newCardView: View {
                     print("Error appending cards to deck: \(error)")
                 } else {
                     print("Successfully added new cards to the existing deck.")
+                    
+                    // need to refresh dashboard
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: NSNotification.Name("RefreshDashboard"), object: nil)
+                    }
+
                 }
             }
         }
