@@ -18,8 +18,9 @@ struct dashboardView: View {
     
     private func loadDecks() {
         authViewModel.fetchUserSets { sets in
-            
-            self.allDecks = sets
+            DispatchQueue.main.async {
+                self.allDecks = sets
+            }
         }
     }
     
@@ -71,20 +72,21 @@ struct dashboardView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             loadDecks()
-            
             // for instant change
             NotificationCenter.default.addObserver(forName: NSNotification.Name("RefreshDashboard"),
                                                    object: nil,
-                                                   queue: .main
-            ) { _ in
+                                                   queue: .main) { _ in
                 loadDecks()
             }
             if networkMonitor.isConnected {
                 loadDecks()
-            } else {
+            } else if !showNetworkAlert {
                 showNetworkAlert = true
             }
             
+        }
+        .onDisappear {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name("RefreshDashboard"), object: nil)
         }
         .onChange(of: authViewModel.user?.sets) {
             if networkMonitor.isConnected {
@@ -99,4 +101,5 @@ struct dashboardView: View {
 #Preview {
     dashboardView()
         .environmentObject(AuthViewModel())
+        .environmentObject(NetworkMonitor())
 }

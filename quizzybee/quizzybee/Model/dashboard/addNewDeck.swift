@@ -36,7 +36,3 @@ struct addNewDeck: View {
         }
     }
 }
-
-#Preview {
-    addNewDeck()
-}
