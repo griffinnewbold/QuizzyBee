@@ -18,11 +18,12 @@ struct addNewDeck: View {
                 HStack {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 14))
-                        .foregroundColor(.blue)
+                        .foregroundColor(.black)
                     
                     Text("Add A New Deck")
                         .font(.system(size: 14))
                         .bold()
+                        .foregroundStyle(.black)
                 }
             }
             .padding()

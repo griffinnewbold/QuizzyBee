@@ -10,7 +10,6 @@ import SwiftUI
 struct headerForDashboard: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
-    // for change in user image
     @State private var refreshID = UUID()
     
     var body: some View {
@@ -22,8 +21,10 @@ struct headerForDashboard: View {
             .buttonStyle(PlainButtonStyle())
             .id(refreshID)
             
+            Spacer()
+            
             if let userName = authViewModel.user?.fullName, !userName.isEmpty {
-                Text("Hello, \(userName)!")
+                Text("Hello, \(displayedUserName(userName))!")
                     .font(.largeTitle)
                     .foregroundColor(Color(hex: "FFFFFF"))
                     .bold()
@@ -34,8 +35,11 @@ struct headerForDashboard: View {
                     .bold()
             }
             
+            Spacer() 
+            
             gearShape()
         }
+        .padding(.horizontal, 16)
         .onAppear {
             NotificationCenter.default.addObserver(
                 forName: NSNotification.Name("UserImageUpdated"),
@@ -45,5 +49,9 @@ struct headerForDashboard: View {
                 refreshID = UUID()
             }
         }
+    }
+    
+    private func displayedUserName(_ fullName: String) -> String {
+        return fullName.components(separatedBy: " ").first ?? fullName
     }
 }
