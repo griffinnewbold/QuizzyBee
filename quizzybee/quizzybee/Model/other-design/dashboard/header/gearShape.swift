@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct gearShape: View {
-    @AppStorage("allow AI") var allowAI = false
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var tourGuide: onboardingModel
     @State private var showMenu = false

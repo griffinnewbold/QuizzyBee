@@ -234,4 +234,45 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    func updateUserVoiceModel(voiceID: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        let userRef = Database.database().reference().child("users").child(user.uid)
+        
+        userRef.child("voiceModel").setValue(voiceID) { error, _ in
+            if let error = error {
+                print("Error updating voice model: \(error)")
+            } else {
+                DispatchQueue.main.async {
+                    self.user?.voiceModel = voiceID
+                }
+                // Notify for updates if necessary
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("UserVoiceModelUpdated"),
+                    object: nil
+                )
+            }
+        }
+    }
+    
+    // MARK: - Fetch User Voice Model
+    func fetchUserVoiceModel(completion: @escaping (String?) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            completion(nil)
+            return
+        }
+        
+        let userRef = dbRef.child("users").child(user.uid).child("voiceModel")
+        userRef.observeSingleEvent(of: .value) { snapshot in
+            if let voiceModel = snapshot.value as? String {
+                print("Fetched Voice Model: \(voiceModel)")
+                completion(voiceModel)
+            } else {
+                print("No voice model found for user, returning Default.")
+                completion("Default") // Default fallback if no voice model is found
+            }
+        }
+    }
+
 }

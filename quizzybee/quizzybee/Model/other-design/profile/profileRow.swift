@@ -13,37 +13,41 @@ struct profileRow: View {
     var isSecure: Bool = false
     @State private var isEditing = false
 
-    
     var body: some View {
         HStack {
+            // Label and Value
             VStack(alignment: .leading, spacing: 4) {
                 Text(label)
-                    .foregroundColor(.gray.opacity(0.8))
-                    .font(.system(size: 14))
+                    .foregroundColor(.yellow)
+                    .font(.system(size: 14, weight: .bold))
                 
-                // password
-                Text(value)
+                Text(isSecure ? String(repeating: "•", count: value.count) : value)
+                    .foregroundColor(.white)
                     .font(.system(size: 16))
             }
             
             Spacer()
             
+            // Edit Button
             Button(action: {
                 isEditing = true
             }) {
                 Image(systemName: "square.and.pencil")
-                    .foregroundColor(.gray)
+                    .foregroundColor(.yellow)
                     .font(.system(size: 20))
             }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .background(
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.white)
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 2)
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(hex: "2C2C2C")) // Dark gray background
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.yellow, lineWidth: 1) // Yellow border
+                )
         )
-        .padding(.horizontal)
+        .padding(.horizontal, 16)
         .sheet(isPresented: $isEditing) {
             editProfile(value: $value, label: label, isSecure: isSecure)
         }

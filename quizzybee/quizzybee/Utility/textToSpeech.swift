@@ -11,6 +11,7 @@ import Combine
 class textToSpeech: ObservableObject {
     private let synthesizer = AVSpeechSynthesizer()
     private var currentUtterance: AVSpeechUtterance?
+    private var player: AVAudioPlayer?
     
     func speak(_ text: String) {
         
@@ -32,6 +33,16 @@ class textToSpeech: ObservableObject {
     func stop() {
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: .immediate)
+        }
+    }
+    
+    func playAudio(from url: URL) {
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.prepareToPlay()
+            player?.play()
+        } catch {
+            print("Error playing audio: \(error.localizedDescription)")
         }
     }
 }

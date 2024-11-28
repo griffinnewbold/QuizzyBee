@@ -14,11 +14,13 @@ struct User: Codable {
     var createdAt: Double
     var sets: [String: Set]
     var profileImage: String
+    var voiceModel: String // New property
     
     // for first-time user onboarding process
     var hasCompletedOnboarding: Bool
     
     init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", hasCompletedOnboarding: Bool = false) {
+    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", voiceModel: String = "Default") {
         self.userID = userID
         self.fullName = fullName
         self.email = email
@@ -39,9 +41,12 @@ struct User: Codable {
     }
     
     // Convert User to a dictionary
+        self.voiceModel = voiceModel
+    }
+    
+    // Include "voiceModel" in dictionary conversion
     func toDictionary() -> [String: Any] {
-        let setsDict = sets.mapValues { $0.toDictionary() }
-        return [
+        var userDict = [
             "userID": userID,
             "fullName": fullName,
             "email": email,
@@ -50,16 +55,20 @@ struct User: Codable {
             "profileImage": profileImage,
             "hasCompletedOnboarding": hasCompletedOnboarding
         ]
+            "sets": sets.mapValues { $0.toDictionary() },
+            "profileImage": profileImage
+        ] as [String : Any]
+        userDict["voiceModel"] = voiceModel
+        return userDict
     }
     
-    // Initialize User from a dictionary
+    // Initialize User from dictionary with "voiceModel"
     init?(dictionary: [String: Any]) {
         guard let userID = dictionary["userID"] as? String,
               let fullName = dictionary["fullName"] as? String,
               let email = dictionary["email"] as? String,
               let createdAt = dictionary["createdAt"] as? Double,
-              let setsDict = dictionary["sets"] as? [String: [String: Any]]
-        else {
+              let setsDict = dictionary["sets"] as? [String: [String: Any]] else {
             return nil
         }
         
@@ -73,6 +82,8 @@ struct User: Codable {
         self.sets = setsDict.compactMapValues { Set(dictionary: $0)}
         self.profileImage = profileImage
         self.hasCompletedOnboarding = hasCompletedOnboarding
+        self.sets = setsDict.compactMapValues { Set(dictionary: $0) }
+        self.profileImage = dictionary["profileImage"] as? String ?? "UserImage1"
+        self.voiceModel = dictionary["voiceModel"] as? String ?? "Default" // New property
     }
 }
-
