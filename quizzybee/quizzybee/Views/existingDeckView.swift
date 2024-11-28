@@ -26,6 +26,7 @@ struct existingDeckView: View {
     @StateObject private var speech = textToSpeech()
     @State private var isPlaying = false
     
+
     @State private var selectedQuestion: String = "" // Added to hold the question for editing
     @State private var selectedAnswer: String = ""   // Added to hold the answer for editing
     @State private var selectedColor: String = ""   // Added to hold the color for editing
@@ -56,9 +57,11 @@ struct existingDeckView: View {
                         //Edit current flashcard
                         Button(action: {
                             if let question = questions[safe: currentQuestionIndex],
-                               let answer = answers[safe: currentQuestionIndex] {
+                               let answer = answers[safe: currentQuestionIndex],
+                               let color = colors[safe: currentQuestionIndex] {
                                 selectedQuestion = question
                                 selectedAnswer = answer
+                                selectedColor = color
                                 // Show editCurrentCardView
                                 showEditView = true
                             }
@@ -222,7 +225,7 @@ struct existingDeckView: View {
                             .cornerRadius(10)
                         }
                         .padding(.horizontal)
-                        
+
                         Button(action: {
                             Task {
                                 await addCardViaAI()
@@ -373,7 +376,7 @@ struct existingDeckView: View {
             print("Error generating AI card: \(error.localizedDescription)")
         }
     }
-
+    
 
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
