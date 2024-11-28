@@ -102,7 +102,7 @@ struct reviewView: View {
         }
         .padding(.vertical)
         .background(Color.yellow.edgesIgnoringSafeArea(.all))
-        .onChange(of: currentQuestionIndex) { _ in
+        .onChange(of: currentQuestionIndex) { _, _ in
             isPlaying = false
             speech.stop()
         }

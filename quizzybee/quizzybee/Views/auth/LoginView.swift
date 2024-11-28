@@ -114,7 +114,7 @@ struct LoginView: View {
         
         if networkMonitor.isConnected {
             authViewModel.logIn(email: email, password: password) { user in
-                if let user = user {
+                if user != nil {
                     self.navigateToDashboard = true
                 } else {
                     self.showError = true

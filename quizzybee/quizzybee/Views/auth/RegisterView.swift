@@ -20,7 +20,7 @@ struct RegisterView: View {
     @State private var showNetworkAlert = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color.gray.ignoresSafeArea()
 
@@ -77,14 +77,12 @@ struct RegisterView: View {
                     HStack {
                         Text("Already Registered?")
                         
-                        NavigationLink(destination: LoginView(), isActive: $navigateToLogin) {
-                            Button(action: {
-                                navigateToLogin = true
-                            }) {
-                                Text("Login")
-                                    .foregroundColor(.yellow)
-                                    .underline()
-                            }
+                        Button(action: {
+                            navigateToLogin = true
+                        }) {
+                            Text("Login")
+                                .foregroundColor(.yellow)
+                                .underline()
                         }
                     }
                     .padding(.bottom, 20)
@@ -94,6 +92,9 @@ struct RegisterView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text("There is a network issue. Please try again later.")
+            }
+            .navigationDestination(isPresented: $navigateToLogin) {
+                LoginView()
             }
         }
         .navigationBarBackButtonHidden(true)
