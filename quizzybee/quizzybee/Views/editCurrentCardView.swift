@@ -41,7 +41,7 @@ struct editCurrentCardView: View {
                     TextEditor(text: $question)
                         .padding()
                         .frame(height: 160)
-                        .background(Color.white)
+                        .background(Color(hex: color))
                         .cornerRadius(8)
                         .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 2)
                         .overlay(
@@ -60,7 +60,7 @@ struct editCurrentCardView: View {
                     TextEditor(text: $answer)
                         .padding()
                         .frame(height: 160)
-                        .background(Color.white)
+                        .background(Color(hex: color))
                         .cornerRadius(8)
                         .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 2)
                         .overlay(
