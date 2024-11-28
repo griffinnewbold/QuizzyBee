@@ -57,9 +57,11 @@ struct existingDeckView: View {
                         //Edit current flashcard
                         Button(action: {
                             if let question = questions[safe: currentQuestionIndex],
-                               let answer = answers[safe: currentQuestionIndex] {
+                               let answer = answers[safe: currentQuestionIndex],
+                               let color = colors[safe: currentQuestionIndex] {
                                 selectedQuestion = question
                                 selectedAnswer = answer
+                                selectedColor = color
                                 // Show editCurrentCardView
                                 showEditView = true
                             }
