@@ -10,6 +10,7 @@ import SwiftUI
 struct dashboardView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var tourGuide: onboardingModel
     @State private var searchText = ""
     @State private var noResults = false
     @State private var allDecks: [Set] = []
@@ -62,6 +63,18 @@ struct dashboardView: View {
                 } message: {
                     Text("No decks found matching '\(searchText)'")
                 }
+                
+                // show tour
+                if !(authViewModel.user?.hasCompletedOnboarding ?? false) {
+                    if tourGuide.currentStep == 0 {
+                        welcome()
+                    } else if tourGuide.currentStep == 1 {
+                        tips(message: onboardingModel.TourStep.defaultDeck.message,
+                             
+                             onNext: { tourGuide.nextStep() })
+                    }
+                }
+                
             }
             .alert("Network Error", isPresented: $showNetworkAlert) {
                 Button("OK", role: .cancel) { }
@@ -102,4 +115,5 @@ struct dashboardView: View {
     dashboardView()
         .environmentObject(AuthViewModel())
         .environmentObject(NetworkMonitor())
+        .environmentObject(onboardingModel())
 }

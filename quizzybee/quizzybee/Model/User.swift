@@ -15,13 +15,17 @@ struct User: Codable {
     var sets: [String: Set]
     var profileImage: String
     
-    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1") {
+    // for first-time user onboarding process
+    var hasCompletedOnboarding: Bool
+    
+    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", hasCompletedOnboarding: Bool = false) {
         self.userID = userID
         self.fullName = fullName
         self.email = email
         self.createdAt = createdAt
         self.sets = sets
         self.profileImage = profileImage
+        self.hasCompletedOnboarding = hasCompletedOnboarding
     }
     
     init() {
@@ -31,6 +35,7 @@ struct User: Codable {
         self.createdAt = 0.0
         self.sets = [:]
         self.profileImage = "UserImage1"
+        self.hasCompletedOnboarding = false
     }
     
     // Convert User to a dictionary
@@ -42,7 +47,8 @@ struct User: Codable {
             "email": email,
             "createdAt": createdAt,
             "sets": setsDict,
-            "profileImage": profileImage
+            "profileImage": profileImage,
+            "hasCompletedOnboarding": hasCompletedOnboarding
         ]
     }
     
@@ -58,6 +64,7 @@ struct User: Codable {
         }
         
         let profileImage = dictionary["profileImage"] as? String ?? "UserImage1"
+        let hasCompletedOnboarding = dictionary["hasCompletedOnboarding"] as? Bool ?? false
         
         self.userID = userID
         self.fullName = fullName
@@ -65,6 +72,7 @@ struct User: Codable {
         self.createdAt = createdAt
         self.sets = setsDict.compactMapValues { Set(dictionary: $0)}
         self.profileImage = profileImage
+        self.hasCompletedOnboarding = hasCompletedOnboarding
     }
 }
 

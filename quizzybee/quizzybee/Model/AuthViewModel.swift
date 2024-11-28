@@ -47,7 +47,10 @@ class AuthViewModel: ObservableObject {
                 fullName: name,
                 email: email,
                 createdAt: Date().timeIntervalSince1970,
-                sets: [defaultSet.id: defaultSet]
+                sets: [defaultSet.id: defaultSet],
+                
+                // for first-time user
+                hasCompletedOnboarding: false
             )
             
             
