@@ -7,7 +7,12 @@
 
 import Foundation
 
+/// Represents a set of flashcards containing words and their definitions.
 struct Set: Codable, Identifiable, Equatable, Hashable {
+    // MARK: - Properties
+
+    /// The unique identifier of the set.
+
     var id: String
     /// The title of the set.
     var title: String
