@@ -13,6 +13,7 @@ struct existingDeckView: View {
     let set: Set
     let openAIAPIKey: String = "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"
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
@@ -170,7 +171,7 @@ struct existingDeckView: View {
                                 isPlaying = false
                                 speech.stop()
                             }
-                            .onChange(of: currentQuestionIndex) { _ in
+                            .onChange(of: currentQuestionIndex) {
                                 isPlaying = false
                                 speech.stop()
                             }
@@ -225,7 +226,9 @@ struct existingDeckView: View {
                     
                     // Action Buttons
                     VStack(spacing: 10) {
-                        NavigationLink(destination: newCardView(existingDeckID: set.id, shouldShowTitle: false).navigationBarBackButtonHidden(true)) {
+                        NavigationLink(destination: newCardView(existingDeckID: set.id, shouldShowTitle: true)
+                            .navigationBarBackButtonHidden(true)
+                            .environmentObject(networkMonitor)) {
                             HStack {
                                 Spacer()
                                 Image(systemName: "plus")
@@ -240,6 +243,7 @@ struct existingDeckView: View {
                             .background(Color.white)
                             .cornerRadius(10)
                         }
+
                         .padding(.horizontal)
 
                         Button(action: {
@@ -406,7 +410,7 @@ struct existingDeckView: View {
         let ref = Database.database().reference()
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
         
-        userSetRef.observeSingleEvent(of: .value) { snapshot in
+        userSetRef.observe(.value) { snapshot in
             defer { self.isLoading = false } // Ensure loading state stops
             
             guard let wordsArray = snapshot.value as? [[String: Any]] else {
