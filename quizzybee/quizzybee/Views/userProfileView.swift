@@ -24,74 +24,75 @@ struct userProfileView: View {
         ZStack {
             Color(hex: "2C2C2C").ignoresSafeArea() // Black background
             
-            VStack(spacing: 0) {
-                // Top Bar
-                HStack {
-                    Button(action: { dismiss() }) {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                                .foregroundColor(.yellow)
-                            Text("Back to Dashboard")
-                                .foregroundColor(.yellow)
-                                .font(.headline)
+            ScrollView {
+                VStack(spacing: 0) {
+                    // Top Bar
+                    HStack {
+                        Button(action: { dismiss() }) {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(.yellow)
+                                Text("Back to Dashboard")
+                                    .foregroundColor(.yellow)
+                                    .font(.headline)
+                            }
                         }
+                        Spacer()
                     }
-                    Spacer()
-                }
-                .padding(.bottom, 30)
-                .padding(.horizontal, 16)
-                
-                // User Image
-                userImage(size: 120, // Increased size for better visibility
-                          imageName: authViewModel.user?.profileImage ?? "UserImage1")
-                    .padding(.bottom, 20)
-                    .id(refreshID)
-                
-                // Image Selector
-                imageSelector(selectedImage: $selectedImage)
-                    .onChange(of: selectedImage) { oldValue, newValue in
-                        authViewModel.updateUserProfileImage(imageName: newValue)
-                    }
+                    .padding(.top, 16)
                     .padding(.horizontal, 16)
-                
-                Spacer()
-                
-                // Profile List
-                profileList()
-                    .environmentObject(authViewModel)
-                    .padding(.horizontal, 16)
-                    .background(Color(hex: "2C2C2C")) // Dark gray background
-                    .cornerRadius(12)
-                    .padding(.bottom, 20)
-                
-                // Voice Model Selector
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Select Voice Model:")
-                        .foregroundColor(.yellow)
-                        .font(.headline)
+                    
+                    // User Image
+                    userImage(size: 120, // Increased size for better visibility
+                              imageName: authViewModel.user?.profileImage ?? "UserImage1")
+                        .padding(.top, 16)
+                        .padding(.bottom, 20)
+                        .id(refreshID)
+                    
+                    // Image Selector
+                    imageSelector(selectedImage: $selectedImage)
+                        .onChange(of: selectedImage) { oldValue, newValue in
+                            authViewModel.updateUserProfileImage(imageName: newValue)
+                        }
                         .padding(.horizontal, 16)
                     
-                    Picker("Voice Model", selection: $selectedVoice) {
-                        Text("Default").tag("Default")
-                        ForEach(voiceModels, id: \.voice_id) { voice in
-                            Text(voice.name).tag(voice.voice_id)
-                        }
+                    Spacer() // Pushes profile and voice model sections downward
+                    
+                    // Profile List
+                    profileList()
+                        .environmentObject(authViewModel)
+                        .padding(.horizontal, 16)
+                        .background(Color(hex: "2C2C2C")) // Dark gray background
+                        .cornerRadius(12)
+                        .padding(.vertical, 20)
+                    
+                    // Voice Model Selector
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Select Voice Model:")
+                            .foregroundColor(.yellow)
+                            .font(.headline)
+                            .padding(.horizontal, 16)
                         
+                        Picker("Voice Model", selection: $selectedVoice) {
+                            Text("Default").tag("Default")
+                            ForEach(voiceModels, id: \.voice_id) { voice in
+                                Text(voice.name).tag(voice.voice_id)
+                            }
+                        }
+                        .accentColor(.yellow)
+                        .pickerStyle(MenuPickerStyle())
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+                        .onChange(of: selectedVoice) { _, newValue in
+                            saveSelectedVoiceModel(newValue)
+                        }
                     }
-                    .accentColor(.yellow)
-                    .pickerStyle(MenuPickerStyle())
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(8)
-                    .onChange(of: selectedVoice) { _, newValue in
-                        saveSelectedVoiceModel(newValue)
-                    }
-
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .padding(.bottom, 100) // Adjusted bottom spacing
+                .padding(.bottom, 20) // Adds space at the bottom to prevent clipping
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -129,7 +130,6 @@ struct userProfileView: View {
         authViewModel.updateUserVoiceModel(voiceID: voiceID)
     }
 }
-
 
 #Preview {
     return ZStack {
