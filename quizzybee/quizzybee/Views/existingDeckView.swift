@@ -8,13 +8,15 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
-import FirebaseDatabaseInternal
+import FirebaseDatabase
 
 struct existingDeckView: View {
     let set: Set
     let openAIAPIKey: String = "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"
+    
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var tourGuide: onboardingModel
     
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
@@ -272,6 +274,18 @@ struct existingDeckView: View {
                     }
                 }
                 .padding(.vertical)
+                
+                // show tour
+                if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
+                   (2...7).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
+                    tipView(
+                        currentStep: currentStep,
+                        nextStep: { tourGuide.nextStep(userID: userID) },
+                        skipTour: { tourGuide.skipTour(userID: userID) }
+                    )
+                }
+                
+                
             }
             .navigationBarHidden(true)
             .onAppear {

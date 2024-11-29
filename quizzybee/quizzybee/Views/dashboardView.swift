@@ -69,10 +69,24 @@ struct dashboardView: View {
                 // show welcome
                 if !(authViewModel.user?.hasCompletedOnboarding ?? false) || tourGuide.showTour {
                     if tourGuide.currentStep == 0 {
-                        welcome()
+                        welcomeAndEnding(mode: "welcome", button: "Let's Explore.")
                     }
                 }
                 
+                // show other tips
+                if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
+                   (8...11).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
+                    tipView(
+                        currentStep: currentStep,
+                        nextStep: { tourGuide.nextStep(userID: userID) },
+                        skipTour: { tourGuide.skipTour(userID: userID) }
+                    )
+                }
+                
+                // show ending
+                if tourGuide.currentStep == 12 {
+                    welcomeAndEnding(mode: "ending", button: "OK")
+                }
             }
             .alert("Network Error", isPresented: $showNetworkAlert) {
                 Button("OK", role: .cancel) { }

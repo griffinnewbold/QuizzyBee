@@ -7,9 +7,12 @@
 
 import SwiftUI
 
-struct welcome: View {
+struct welcomeAndEnding: View {
     @EnvironmentObject var tourGuide: onboardingModel
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    let mode: String
+    let button: String
     
     var body: some View {
         VStack(spacing: 20) {
@@ -27,11 +30,17 @@ struct welcome: View {
             }
             .padding(.top, 8)
             
-            Text(onboardingModel.TourStep.welcome.message)
-                .font(.title3)
-                .multilineTextAlignment(.center)
+            if mode == "welcome" {
+                Text(onboardingModel.TourStep.welcome.message)
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+            } else if mode == "ending" {
+                Text(onboardingModel.TourStep.ending.message)
+                    .font(.title3)
+                    .multilineTextAlignment(.center)
+            }
             
-            Button("Show me around") {
+            Button("\(button)") {
                 if let userID = authViewModel.user?.userID {
                     tourGuide.nextStep(userID: userID)
                 }

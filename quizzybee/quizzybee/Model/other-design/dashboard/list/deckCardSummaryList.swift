@@ -61,7 +61,7 @@ struct deckCardSummaryList: View {
         }
         .navigationDestination(isPresented: $isActive) {
             if let deck = selectedDeck {
-                existingDeckView(set: deck).environmentObject(authViewModel)
+                existingDeckView(set: deck).environmentObject(authViewModel).environmentObject(tourGuide)
             }
         }
     }

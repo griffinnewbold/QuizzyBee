@@ -14,7 +14,7 @@ struct ContentView: View {
     @StateObject private var authViewModel = AuthViewModel()
     
     var body: some View {
-        if let user = authViewModel.user {
+        if authViewModel.user != nil {
             dashboardView()
                 .environmentObject(authViewModel)
                 .environmentObject(networkMonitor)
