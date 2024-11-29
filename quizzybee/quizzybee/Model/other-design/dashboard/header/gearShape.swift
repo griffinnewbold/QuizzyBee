@@ -28,18 +28,10 @@ struct gearShape: View {
             
             if showMenu {
                 VStack(alignment: .leading, spacing: 12) {
-                    Button(action: {
-                        allowAI.toggle() // sync with profile
-                    }) {
-                        Label(
-                            allowAI ? "AI is Enabled" : "AI is Disabled",
-                            systemImage: allowAI ? "checkmark.circle.fill" : "circle"
-                        )
-                    }
-                    
                     // re-show tour
                     Button(action: {
-                        tourGuide.startTour()
+                        tourGuide.startTour(userID: authViewModel.user?.userID ?? "")
+                        showMenu = false
                     }) {
                         Label("Show Tour", systemImage: "questionmark.circle")
                     }

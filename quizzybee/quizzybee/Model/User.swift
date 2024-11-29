@@ -19,8 +19,7 @@ struct User: Codable {
     // for first-time user onboarding process
     var hasCompletedOnboarding: Bool
     
-    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", hasCompletedOnboarding: Bool = false) {
-    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", voiceModel: String = "Default") {
+    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", hasCompletedOnboarding: Bool = false, voiceModel: String = "Default") {
         self.userID = userID
         self.fullName = fullName
         self.email = email
@@ -28,6 +27,7 @@ struct User: Codable {
         self.sets = sets
         self.profileImage = profileImage
         self.hasCompletedOnboarding = hasCompletedOnboarding
+        self.voiceModel = voiceModel
     }
     
     init() {
@@ -38,10 +38,7 @@ struct User: Codable {
         self.sets = [:]
         self.profileImage = "UserImage1"
         self.hasCompletedOnboarding = false
-    }
-    
-    // Convert User to a dictionary
-        self.voiceModel = voiceModel
+        self.voiceModel = "Default"
     }
     
     // Include "voiceModel" in dictionary conversion
@@ -51,12 +48,9 @@ struct User: Codable {
             "fullName": fullName,
             "email": email,
             "createdAt": createdAt,
-            "sets": setsDict,
+            "sets": sets.mapValues { $0.toDictionary() },
             "profileImage": profileImage,
             "hasCompletedOnboarding": hasCompletedOnboarding
-        ]
-            "sets": sets.mapValues { $0.toDictionary() },
-            "profileImage": profileImage
         ] as [String : Any]
         userDict["voiceModel"] = voiceModel
         return userDict

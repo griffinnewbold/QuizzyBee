@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Word: Codable, Identifiable, Equatable {
+struct Word: Codable, Identifiable, Equatable, Hashable {
     var id: String
     var term: String
     var definition: String

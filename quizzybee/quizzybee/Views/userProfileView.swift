@@ -69,7 +69,6 @@ struct userProfileView: View {
                     Text("Select Voice Model:")
                         .foregroundColor(.yellow)
                         .font(.headline)
-                        .padding(.horizontal, 16)
                     
                     Picker("Voice Model", selection: $selectedVoice) {
                         Text("Default").tag("Default")
@@ -89,6 +88,7 @@ struct userProfileView: View {
                     }
 
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .padding(.bottom, 100) // Adjusted bottom spacing

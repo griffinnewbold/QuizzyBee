@@ -12,7 +12,7 @@ class onboardingModel: ObservableObject {
     @Published var showTour = false
     private let dbRef = Database.database().reference()
     
-    enum TourStep {
+    enum TourStep: CaseIterable {
         case welcome // welcome to quizbee
         case defaultDeck
         case deckDetails
@@ -27,18 +27,30 @@ class onboardingModel: ObservableObject {
     }
     
     // show tour
-    func startTour() {
+    func startTour(userID: String) {
+        print("Starting tour for user")
         currentStep = 0
         showTour = true
+        dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(false)
     }
     
     // if user clicks 'x', then skip the tour
     func skipTour(userID: String) {
+        print("Skipping tour for user")
+        // no tour/welcome message shown
+        currentStep = -1
         showTour = false
         dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(true)
     }
     
-    func nextStep() {
-        currentStep += 1
+    func nextStep(userID: String) {
+        if currentStep < TourStep.allCases.count - 1 {
+            currentStep += 1
+        } else {
+            print("Tour completed.")
+            dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(true)
+            showTour = false
+        }
+        print("Next step on click, the current step is \(currentStep)")
     }
 }

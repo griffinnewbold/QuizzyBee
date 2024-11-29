@@ -22,7 +22,8 @@ struct TopShape: Shape {
 
 struct LoginView: View {
     @StateObject private var authViewModel = AuthViewModel()
-    @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var networkMonitor:  NetworkMonitor
+    @StateObject private var tourGuide = onboardingModel()
     @State private var email = ""
     @State private var password = ""
     @State private var showError = false
@@ -99,6 +100,7 @@ struct LoginView: View {
                 dashboardView()
                     .environmentObject(authViewModel)
                     .environmentObject(networkMonitor)
+                    .environmentObject(tourGuide)
             }
         }
         .navigationBarBackButtonHidden(true)

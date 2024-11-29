@@ -32,7 +32,9 @@ struct welcome: View {
                 .multilineTextAlignment(.center)
             
             Button("Show me around") {
-                tourGuide.nextStep()
+                if let userID = authViewModel.user?.userID {
+                    tourGuide.nextStep(userID: userID)
+                }
             }
             .frame(width: UIScreen.main.bounds.width * 0.4)
             .padding(.vertical, 6)
@@ -47,9 +49,4 @@ struct welcome: View {
         .frame(width: UIScreen.main.bounds.width * 0.7)
         .padding(.horizontal)
     }
-}
-
-#Preview {
-    welcome().environmentObject(AuthViewModel())
-        .environmentObject(onboardingModel())
 }

@@ -54,6 +54,8 @@ struct dashboardView: View {
                     .padding(.bottom, 50)
                     
                     deckCardSummaryList(targetDecks: filteredDecks)
+                        .environmentObject(authViewModel)
+                        .environmentObject(tourGuide)
                     
                     addNewDeck()
                         .padding(.bottom, 30)
@@ -64,14 +66,10 @@ struct dashboardView: View {
                     Text("No decks found matching '\(searchText)'")
                 }
                 
-                // show tour
-                if !(authViewModel.user?.hasCompletedOnboarding ?? false) {
+                // show welcome
+                if !(authViewModel.user?.hasCompletedOnboarding ?? false) || tourGuide.showTour {
                     if tourGuide.currentStep == 0 {
                         welcome()
-                    } else if tourGuide.currentStep == 1 {
-                        tips(message: onboardingModel.TourStep.defaultDeck.message,
-                             
-                             onNext: { tourGuide.nextStep() })
                     }
                 }
                 
@@ -85,6 +83,7 @@ struct dashboardView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             loadDecks()
+            
             // for instant change
             NotificationCenter.default.addObserver(forName: NSNotification.Name("RefreshDashboard"),
                                                    object: nil,
@@ -96,7 +95,6 @@ struct dashboardView: View {
             } else if !showNetworkAlert {
                 showNetworkAlert = true
             }
-            
         }
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name("RefreshDashboard"), object: nil)

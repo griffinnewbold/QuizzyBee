@@ -212,7 +212,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // MARK: Ppdate user profile
+    // MARK: Update user profile
     func updateUserProfileImage(imageName: String) {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = Database.database().reference().child("users").child(user.uid)
