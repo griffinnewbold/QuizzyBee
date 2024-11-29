@@ -27,6 +27,10 @@ struct User: Codable {
     /// Defaults to `"Default"` if not specified.
     var voiceModel: String
     
+    /// Indicate whether user has completed the onboarding tour
+    /// Defaults to false
+    var hasCompletedOnboarding: Bool
+    
     // MARK: - Initializers
     /// Initializes a new `User` instance with the given properties.
     /// - Parameters:
@@ -37,14 +41,26 @@ struct User: Codable {
     ///   - sets: A dictionary of the user's sets. Defaults to an empty dictionary.
     ///   - profileImage: The profile image name. Defaults to `"UserImage1"`.
     ///   - voiceModel: The selected voice model. Defaults to `"Default"`.
-    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", voiceModel: String = "Default") {
+    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1", voiceModel: String = "Default", hasCompletedOnboarding: Bool = false) {
         self.userID = userID
         self.fullName = fullName
         self.email = email
         self.createdAt = createdAt
         self.sets = sets
         self.profileImage = profileImage
+        self.hasCompletedOnboarding = hasCompletedOnboarding
         self.voiceModel = voiceModel
+    }
+    
+    init() {
+        self.userID = ""
+        self.email = ""
+        self.fullName = ""
+        self.createdAt = 0.0
+        self.sets = [:]
+        self.profileImage = "UserImage1"
+        self.hasCompletedOnboarding = false
+        self.voiceModel = "Default"
     }
 
     /// Initializes a `User` instance from a dictionary representation.
@@ -59,10 +75,16 @@ struct User: Codable {
             return nil
         }
         
+        let profileImage = dictionary["profileImage"] as? String ?? "UserImage1"
+        let hasCompletedOnboarding = dictionary["hasCompletedOnboarding"] as? Bool ?? false
+        
         self.userID = userID
         self.fullName = fullName
         self.email = email
         self.createdAt = createdAt
+        self.sets = setsDict.compactMapValues { Set(dictionary: $0)}
+        self.profileImage = profileImage
+        self.hasCompletedOnboarding = hasCompletedOnboarding
         self.sets = setsDict.compactMapValues { Set(dictionary: $0) }
         self.profileImage = dictionary["profileImage"] as? String ?? "UserImage1"
         self.voiceModel = dictionary["voiceModel"] as? String ?? "Default"

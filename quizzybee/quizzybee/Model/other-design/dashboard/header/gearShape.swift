@@ -9,6 +9,7 @@ import SwiftUI
 
 struct gearShape: View {
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var tourGuide: onboardingModel
     @State private var showMenu = false
     @State private var shouldLogin = false
     
@@ -27,6 +28,14 @@ struct gearShape: View {
             
             if showMenu {
                 VStack(alignment: .leading, spacing: 12) {
+                    // re-show tour
+                    Button(action: {
+                        tourGuide.startTour(userID: authViewModel.user?.userID ?? "")
+                        showMenu = false
+                    }) {
+                        Label("Show Tour", systemImage: "questionmark.circle")
+                    }
+                    
                     Button(role: .destructive, action: {
                         authViewModel.logOut()
                         shouldLogin = true

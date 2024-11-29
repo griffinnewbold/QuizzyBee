@@ -10,6 +10,7 @@ import SwiftUI
 struct dashboardView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var tourGuide: onboardingModel
     @State private var searchText = ""
     @State private var noResults = false
     @State private var allDecks: [Set] = []
@@ -53,6 +54,8 @@ struct dashboardView: View {
                     .padding(.bottom, 50)
                     
                     deckCardSummaryList(targetDecks: filteredDecks)
+                        .environmentObject(authViewModel)
+                        .environmentObject(tourGuide)
                     
                     addNewDeck()
                         .padding(.bottom, 30)
@@ -61,6 +64,28 @@ struct dashboardView: View {
                     Button("OK", role: .cancel) { noResults = false }
                 } message: {
                     Text("No decks found matching '\(searchText)'")
+                }
+                
+                // show welcome
+                if !(authViewModel.user?.hasCompletedOnboarding ?? false) || tourGuide.showTour {
+                    if tourGuide.currentStep == 0 {
+                        welcomeAndEnding(mode: "welcome", button: "Let's Explore.")
+                    }
+                }
+                
+                // show other tips
+                if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
+                   (8...11).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
+                    tipView(
+                        currentStep: currentStep,
+                        nextStep: { tourGuide.nextStep(userID: userID) },
+                        skipTour: { tourGuide.skipTour(userID: userID) }
+                    )
+                }
+                
+                // show ending
+                if tourGuide.currentStep == 12 {
+                    welcomeAndEnding(mode: "ending", button: "OK")
                 }
             }
             .alert("Network Error", isPresented: $showNetworkAlert) {
@@ -72,6 +97,7 @@ struct dashboardView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             loadDecks()
+            
             // for instant change
             NotificationCenter.default.addObserver(forName: NSNotification.Name("RefreshDashboard"),
                                                    object: nil,
@@ -83,7 +109,6 @@ struct dashboardView: View {
             } else if !showNetworkAlert {
                 showNetworkAlert = true
             }
-            
         }
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name("RefreshDashboard"), object: nil)
@@ -102,4 +127,5 @@ struct dashboardView: View {
     dashboardView()
         .environmentObject(AuthViewModel())
         .environmentObject(NetworkMonitor())
+        .environmentObject(onboardingModel())
 }

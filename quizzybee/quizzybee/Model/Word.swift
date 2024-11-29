@@ -7,10 +7,7 @@
 
 import Foundation
 
-/// Represents a word with its term, definition, and associated color in the Quizzybee application.
-struct Word: Codable, Identifiable, Equatable {
-    // MARK: - Properties
-    /// The unique identifier of the word.
+struct Word: Codable, Identifiable, Equatable, Hashable {
     var id: String
     /// The word or term.
     var term: String

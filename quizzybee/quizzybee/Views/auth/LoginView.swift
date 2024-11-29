@@ -23,8 +23,9 @@ struct TopShape: Shape {
 
 /// The primary view for user login.
 struct LoginView: View {
-    @StateObject private var authViewModel = AuthViewModel()  // ViewModel for handling authentication logic.
+    @EnvironmentObject var authViewModel: AuthViewModel  // ViewModel for handling authentication logic.
     @EnvironmentObject var networkMonitor: NetworkMonitor    // Observes network connectivity.
+    @EnvironmentObject var tourGuide: onboardingModel // Tour Guide
     @State private var email = ""                            // User's email input.
     @State private var password = ""                         // User's password input.
     @State private var showError = false                     // Flag to control error message visibility.
@@ -101,6 +102,14 @@ struct LoginView: View {
                     
                     Spacer()
                     
+                    // add AI consent here
+                    Text("You need to login to use Quizzybee, and you're consenting to use GenAI.")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                    
+                    Spacer()
+                    
                     // Navigation to Register View
                     HStack {
                         Text("Not Registered Yet?")
@@ -124,6 +133,7 @@ struct LoginView: View {
                 dashboardView()
                     .environmentObject(authViewModel)
                     .environmentObject(networkMonitor)
+                    .environmentObject(tourGuide)
             }
             // Reset Password Sheet
             .sheet(isPresented: $showResetPasswordSheet) {
@@ -247,6 +257,9 @@ struct ResetPasswordView: View {
 /// Previews for the `LoginView`.
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView().environmentObject(NetworkMonitor())
+        LoginView()
+            .environmentObject(AuthViewModel())
+            .environmentObject(NetworkMonitor())
+            .environmentObject(onboardingModel())
     }
 }
