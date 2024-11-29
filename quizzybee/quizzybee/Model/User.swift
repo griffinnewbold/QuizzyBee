@@ -13,13 +13,15 @@ struct User: Codable {
     var email: String
     var createdAt: Double
     var sets: [String: Set]
+    var profileImage: String
     
-    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:]) {
+    init(userID: String, fullName: String, email: String, createdAt: Double = Date().timeIntervalSince1970, sets: [String: Set] = [:], profileImage: String = "UserImage1") {
         self.userID = userID
         self.fullName = fullName
         self.email = email
         self.createdAt = createdAt
         self.sets = sets
+        self.profileImage = profileImage
     }
     
     init() {
@@ -28,6 +30,7 @@ struct User: Codable {
         self.fullName = ""
         self.createdAt = 0.0
         self.sets = [:]
+        self.profileImage = "UserImage1"
     }
     
     // Convert User to a dictionary
@@ -38,7 +41,8 @@ struct User: Codable {
             "fullName": fullName,
             "email": email,
             "createdAt": createdAt,
-            "sets": setsDict
+            "sets": setsDict,
+            "profileImage": profileImage
         ]
     }
     
@@ -48,15 +52,19 @@ struct User: Codable {
               let fullName = dictionary["fullName"] as? String,
               let email = dictionary["email"] as? String,
               let createdAt = dictionary["createdAt"] as? Double,
-              let setsDict = dictionary["sets"] as? [String: [String: Any]] else {
+              let setsDict = dictionary["sets"] as? [String: [String: Any]]
+        else {
             return nil
         }
+        
+        let profileImage = dictionary["profileImage"] as? String ?? "UserImage1"
         
         self.userID = userID
         self.fullName = fullName
         self.email = email
         self.createdAt = createdAt
-        self.sets = setsDict.compactMapValues { Set(dictionary: $0) }
+        self.sets = setsDict.compactMapValues { Set(dictionary: $0)}
+        self.profileImage = profileImage
     }
 }
 

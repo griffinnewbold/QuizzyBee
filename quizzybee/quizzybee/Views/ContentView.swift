@@ -9,8 +9,11 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
+    @StateObject private var networkMonitor = NetworkMonitor()
+    
     var body: some View {
         LoginView()
+            .environmentObject(networkMonitor)
     }
 }
 

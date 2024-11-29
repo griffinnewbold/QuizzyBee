@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject var networkMonitor: NetworkMonitor
     
     @State private var fullName = ""
     @State private var email = ""
@@ -16,6 +17,7 @@ struct RegisterView: View {
     
     @State private var showError = false
     @State private var navigateToLogin = false
+    @State private var showNetworkAlert = false
 
     var body: some View {
         NavigationView {
@@ -88,6 +90,11 @@ struct RegisterView: View {
                     .padding(.bottom, 20)
                 }
             }
+            .alert("Network Error", isPresented: $showNetworkAlert) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("There is a network issue. Please try again later.")
+            }
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -100,16 +107,20 @@ struct RegisterView: View {
             return
         }
         
-        authViewModel.signUp(email: email, password: password, name: fullName) { success in
-            if success {
-                showError = false
-                fullName = ""
-                email = ""
-                password = ""
-                navigateToLogin = true
-            } else {
-                showError = true
+        if networkMonitor.isConnected {
+            authViewModel.signUp(email: email, password: password, name: fullName) { success in
+                if success {
+                    showError = false
+                    fullName = ""
+                    email = ""
+                    password = ""
+                    navigateToLogin = true
+                } else {
+                    showError = true
+                }
             }
+        } else {
+            showNetworkAlert = true
         }
     }
 }

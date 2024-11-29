@@ -34,7 +34,3 @@ struct dashboardBackgroundView: View {
         .ignoresSafeArea()
     }
 }
-    
-#Preview {
-    dashboardBackgroundView()
-}

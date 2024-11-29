@@ -15,8 +15,15 @@ struct deckCardSummaryList: View {
     var body: some View {
         
         List {
-            ForEach(targetDecks) {
+            ForEach(targetDecks, id: \.id) {
                 deckCard in deckCardSummaryRow(deckCard: deckCard)
+                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                        Button(role: .destructive) {
+                            authViewModel.deleteDeck(setId: deckCard.id)
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }
                     .padding()
                     .background(Color.white)
                     .cornerRadius(10)
@@ -30,33 +37,3 @@ struct deckCardSummaryList: View {
     }
     
 }
-
-//#Preview {
-//    deckCardSummaryList(targetDecks: [
-//        Set(
-//            id: "1",
-//            title: "Intro to Java",
-//            words: [
-//                Word(term: "Class", definition: "A blueprint for creating objects"),
-//                Word(term: "Object", definition: "An instance of a class")
-//            ]
-//        ),
-//        Set(
-//            id: "2",
-//            title: "Data Structures",
-//            words: [
-//                Word(term: "Array", definition: "A collection of elements"),
-//                Word(term: "LinkedList", definition: "A sequence of elements"),
-//                Word(term: "Stack", definition: "LIFO data structure")
-//            ]
-//        ),
-//        Set(
-//            id: "3",
-//            title: "Advanced Programming",
-//            words: [
-//                Word(term: "Design Pattern", definition: "Reusable solution to common problems"),
-//                Word(term: "Algorithm", definition: "Step-by-step procedure to solve a problem")
-//            ]
-//        )
-//    ])
-//}

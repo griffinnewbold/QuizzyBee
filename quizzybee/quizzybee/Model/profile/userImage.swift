@@ -9,9 +9,10 @@ import SwiftUI
 
 struct userImage: View {
     let size: CGFloat
+    let imageName: String
     
     var body: some View {
-        Image("UserImage")
+        Image(imageName)
             .resizable()
             .scaledToFit()
             .frame(width: size, height: size)
@@ -21,8 +22,4 @@ struct userImage: View {
             }
             .shadow(radius: 4)
     }
-}
-
-#Preview {
-    userImage(size: 50)
 }

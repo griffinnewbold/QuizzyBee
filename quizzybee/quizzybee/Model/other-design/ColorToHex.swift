@@ -44,4 +44,19 @@ extension Color {
                       lround(Double(g * 255)),
                       lround(Double(b * 255)))
     }
+    
+    func isDarkBackground() -> Bool {
+        // Convert Color to UIColor to extract RGB components
+        let uiColor = UIColor(self)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        // Calculate perceived brightness
+        let brightness = (0.299 * red + 0.587 * green + 0.114 * blue)
+        return brightness < 0.5 // Adjust threshold as needed
+    }
 }
