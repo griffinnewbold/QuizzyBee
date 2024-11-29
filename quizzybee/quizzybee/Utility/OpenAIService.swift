@@ -8,18 +8,23 @@
 import Foundation
 
 // MARK: - Models
+
+/// Represents the response structure from the OpenAI API.
 struct OpenAIResponse: Codable {
     let choices: [Choice]
     
+    /// Represents a choice in the OpenAI response.
     struct Choice: Codable {
         let message: Message
     }
     
+    /// Represents a message in the OpenAI response.
     struct Message: Codable {
         let content: String
     }
 }
 
+/// Custom error types for handling OpenAI API and quiz generation errors.
 enum QuizError: Error, LocalizedError {
     case invalidResponse
     case noContent
@@ -27,7 +32,8 @@ enum QuizError: Error, LocalizedError {
     case apiError(String)
     case processingError(Error)
     case invalidQuestionCount
-    
+
+    /// Provides human-readable descriptions for errors.
     var errorDescription: String? {
         switch self {
         case .invalidResponse:
@@ -47,15 +53,26 @@ enum QuizError: Error, LocalizedError {
 }
 
 // MARK: - OpenAI Service
+
+/// A service for interacting with the OpenAI API.
 class OpenAIService {
     private let apiKey: String
     private let baseURL = "https://api.openai.com/v1/chat/completions"
     
+    /// Initializes the `OpenAIService` with the required API key.
+    /// - Parameter apiKey: The API key to authenticate requests with OpenAI.
     init(apiKey: String) {
         self.apiKey = apiKey
     }
     
-    // Generic function to send a prompt to OpenAI API
+    // MARK: - Generic Prompt Sending
+
+    /// Sends a prompt to the OpenAI API and retrieves the generated response.
+    /// - Parameters:
+    ///   - prompt: The user-provided prompt for OpenAI to process.
+    ///   - systemRole: The role of the assistant in the conversation (default: "You are an assistant.").
+    /// - Returns: A `String` containing the generated content from OpenAI.
+    /// - Throws: A `QuizError` if the request fails, the response is invalid, or decoding fails.
     func sendPrompt(prompt: String, systemRole: String = "You are an assistant.") async throws -> String {
         let messages: [[String: Any]] = [
             ["role": "system", "content": systemRole],
@@ -101,7 +118,15 @@ class OpenAIService {
 }
 
 // MARK: - Quiz-Specific Extension
+
+/// Extension of `OpenAIService` for generating quizzes.
 extension OpenAIService {
+    /// Generates a quiz based on the provided topics and question count.
+    /// - Parameters:
+    ///   - questions: An array of topics/questions for quiz generation.
+    ///   - questionCount: The number of quiz questions to generate (default: 5).
+    /// - Returns: An array of `GeneratedQuizQuestion` objects.
+    /// - Throws: A `QuizError` if the question count is invalid, the API request fails, or decoding fails.
     func generateQuiz(basedOn questions: [String], questionCount: Int = 5) async throws -> [GeneratedQuizQuestion] {
         // Validate question count
         guard questionCount > 0 && questionCount <= 20 else {
