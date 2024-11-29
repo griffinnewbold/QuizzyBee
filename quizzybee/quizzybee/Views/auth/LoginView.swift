@@ -23,8 +23,9 @@ struct TopShape: Shape {
 
 /// The primary view for user login.
 struct LoginView: View {
-    @StateObject private var authViewModel = AuthViewModel()  // ViewModel for handling authentication logic.
+    @EnvironmentObject var authViewModel: AuthViewModel  // ViewModel for handling authentication logic.
     @EnvironmentObject var networkMonitor: NetworkMonitor    // Observes network connectivity.
+    @EnvironmentObject var tourGuide: onboardingModel // Tour Guide
     @State private var email = ""                            // User's email input.
     @State private var password = ""                         // User's password input.
     @State private var showError = false                     // Flag to control error message visibility.
