@@ -21,9 +21,10 @@ struct TopShape: Shape {
 }
 
 struct LoginView: View {
-    @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject private var authViewModel: AuthViewModel
     @EnvironmentObject var networkMonitor:  NetworkMonitor
-    @StateObject private var tourGuide = onboardingModel()
+    @EnvironmentObject private var tourGuide: onboardingModel
+    
     @State private var email = ""
     @State private var password = ""
     @State private var showError = false
@@ -80,6 +81,14 @@ struct LoginView: View {
                     
                     Spacer()
                     
+                    // add AI consent here
+                    Text("You need to login to use Quizzybee, and you're consented to use GenAI.")
+                        .foregroundColor(.white)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                    
+                    Spacer()
+                    
                     HStack {
                         Text("Not Registered Yet?")
                         NavigationLink(destination: RegisterView()) {
@@ -132,6 +141,9 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView().environmentObject(NetworkMonitor())
+        LoginView()
+            .environmentObject(AuthViewModel())
+            .environmentObject(NetworkMonitor())
+            .environmentObject(onboardingModel())
     }
 }

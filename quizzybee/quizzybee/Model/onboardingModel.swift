@@ -14,14 +14,30 @@ class onboardingModel: ObservableObject {
     
     enum TourStep: CaseIterable {
         case welcome // welcome to quizbee
-        case defaultDeck
-        case deckDetails
+        case deck
+        case deckDetailTitle
+        case deckDetailSearch
+        case deckDetailCard
+        case addCard
+        case reviewAndQuiz
+        case searchDeck
+        case addDeck
+        case profile
+        case setting
         
         var message: String {
             switch self {
-                case .welcome: return "Welcome to Quizzybee! Would you like a quick tour?"
-                case .defaultDeck: return "This is your starter deck. Click to explore!"
-                case .deckDetails: return "Here you can practice with flashcards and take quizzes"
+            case .welcome: return "Welcome to Quizzybee! Would you like a quick tour?"
+            case .deck: return "Click to explore!"
+            case .deckDetailTitle: return "Change your deck title here."
+            case .deckDetailSearch: return "Type to search your cards."
+            case .deckDetailCard: return "Click to flip the card and see the answer. Play with the sound."
+            case .addCard: return "Manual or use AI to add a new card."
+            case .reviewAndQuiz: return "Review your cards or see AI generated quizzes."
+            case .searchDeck: return "Search your deck here."
+            case .addDeck: return "Click to add a new deck!"
+            case .profile: return "Change your profile here."
+            case .setting: return "See this tour again or log out."
             }
         }
     }
@@ -31,7 +47,6 @@ class onboardingModel: ObservableObject {
         print("Starting tour for user")
         currentStep = 0
         showTour = true
-        dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(false)
     }
     
     // if user clicks 'x', then skip the tour

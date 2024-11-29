@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import FirebaseDatabaseInternal
 
 struct existingDeckView: View {
     let set: Set
