@@ -7,7 +7,7 @@ class AuthViewModel: ObservableObject {
     @Published var isLoggedIn = false
     @Published var errorMessage: String?
     
-    private let dbRef = Database.database().reference()
+    let dbRef = Database.database().reference()
     
     init() {
         do {
@@ -82,8 +82,8 @@ class AuthViewModel: ObservableObject {
     // MARK: - Log In Function with Completion Handler
     func logIn(email: String, password: String, completion: @escaping (User?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
-            if let error = error {
-                self?.errorMessage = error.localizedDescription
+            if error != nil {
+                self?.errorMessage = "Incorrect email or password."
                 completion(nil)
                 return
             }
@@ -108,7 +108,7 @@ class AuthViewModel: ObservableObject {
     }
     
     // MARK: - Fetch User from Firebase
-    private func fetchUser(withID userID: String, completion: @escaping (User?) -> Void) {
+    func fetchUser(withID userID: String, completion: @escaping (User?) -> Void) {
         dbRef.child("users").child(userID).observeSingleEvent(of: .value) { snapshot in
             guard let value = snapshot.value as? [String: Any] else {
                 completion(nil)
@@ -254,6 +254,18 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    // MARK: - Reset Password
+    func resetPassword(email: String, completion: @escaping (Bool, String?) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                completion(false, error.localizedDescription)
+            } else {
+                completion(true, "Password reset email sent.")
+            }
+        }
+    }
+
     
     // MARK: - Fetch User Voice Model
     func fetchUserVoiceModel(completion: @escaping (String?) -> Void) {
