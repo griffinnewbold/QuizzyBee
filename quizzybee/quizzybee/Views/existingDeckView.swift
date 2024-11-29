@@ -282,7 +282,7 @@ struct existingDeckView: View {
                 editCurrentCardView(
                     question: $selectedQuestion,
                     answer: $selectedAnswer,
-                    color: selectedColor,
+                    color: $selectedColor,
                     deckID: set.id,
                     flashcardIndex: currentQuestionIndex,
                     onSave: { updatedQuestion, updatedAnswer, updatedColor in
