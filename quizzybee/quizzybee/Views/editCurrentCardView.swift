@@ -11,7 +11,7 @@ import Firebase
 struct editCurrentCardView: View {
     @Binding var question: String
     @Binding var answer: String
-    @State var color: String
+    @Binding var color: String
     @State private var showingColorPicker = false
     let deckID: String
     let flashcardIndex: Int
@@ -158,7 +158,7 @@ struct editCurrentCardView: View {
     editCurrentCardView(
         question: .constant("Sample Question"),
         answer: .constant("Sample Answer"),
-        color: "#FFFFFF",
+        color: .constant("#FFFFFF"),
         deckID: "sampleDeckID",
         flashcardIndex: 0,
         onSave: { updatedQuestion, updatedAnswer, updatedColor in

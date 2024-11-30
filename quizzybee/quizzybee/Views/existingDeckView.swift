@@ -34,6 +34,7 @@ struct existingDeckView: View {
     @State private var showEditView = false         // Toggle to show editCardView
     
     @State private var deckTitle: String
+    @State private var flashcardIDs: [String] = [] // To store IDs of the flashcards
     
     init(set: Set) {
         self.set = set
@@ -327,7 +328,7 @@ struct existingDeckView: View {
                 editCurrentCardView(
                     question: $selectedQuestion,
                     answer: $selectedAnswer,
-                    color: selectedColor,
+                    color: $selectedColor,
                     deckID: set.id,
                     flashcardIndex: currentQuestionIndex,
                     onSave: { updatedQuestion, updatedAnswer, updatedColor in
@@ -441,19 +442,21 @@ struct existingDeckView: View {
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
         
         userSetRef.observe(.value) { snapshot in
-            defer { self.isLoading = false } // Ensure loading state stops
+            defer { self.isLoading = false }
             
             guard let wordsArray = snapshot.value as? [[String: Any]] else {
-                print("No flashcards found for this set or invalid format.")
+                print("No flashcards found or invalid format.")
                 self.questions = []
                 self.answers = []
                 self.colors = []
+                self.flashcardIDs = []
                 return
             }
             
             self.questions = wordsArray.compactMap { $0["term"] as? String }
             self.answers = wordsArray.compactMap { $0["definition"] as? String }
             self.colors = wordsArray.compactMap { $0["color"] as? String }
+            self.flashcardIDs = wordsArray.compactMap { $0["id"] as? String }
             
             if !self.questions.isEmpty {
                 self.currentQuestionIndex = 0
@@ -490,33 +493,51 @@ struct existingDeckView: View {
             print("User not logged in.")
             return
         }
-        
+
+        guard currentQuestionIndex < questions.count else {
+            print("Index out of bounds.")
+            return
+        }
+
         let userID = user.uid
         let ref = Database.database().reference()
-        let flashcardRef = ref.child("users").child(userID).child("sets").child(set.id).child("words").child("\(currentQuestionIndex)")
-        
-        flashcardRef.removeValue { error, _ in
+        let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
+
+        // Remove the specific card locally
+        _ = flashcardIDs[currentQuestionIndex]
+        questions.remove(at: currentQuestionIndex)
+        answers.remove(at: currentQuestionIndex)
+        colors.remove(at: currentQuestionIndex)
+        flashcardIDs.remove(at: currentQuestionIndex)
+
+        // Reorganize remaining flashcards
+        var updatedFlashcards: [[String: Any]] = []
+        for (index, question) in questions.enumerated() {
+            let updatedCard: [String: Any] = [
+                "id": "\(index)",
+                "term": question,
+                "definition": answers[index],
+                "color": colors[index]
+            ]
+            updatedFlashcards.append(updatedCard)
+        }
+
+        // Write the updated flashcards back to Firebase
+        userSetRef.setValue(updatedFlashcards) { error, _ in
             if let error = error {
-                print("Error deleting flashcard: \(error.localizedDescription)")
+                print("Error updating flashcards in Firebase: \(error.localizedDescription)")
             } else {
-                print("Flashcard deleted successfully.")
-                
-                // Safely check bounds before modifying the arrays
-                if currentQuestionIndex < questions.count {
-                    questions.remove(at: currentQuestionIndex)
-                    answers.remove(at: currentQuestionIndex)
-                    colors.remove(at: currentQuestionIndex)
-                    
-                    // Adjust the index to prevent out-of-bounds errors
-                    if currentQuestionIndex >= questions.count {
-                        currentQuestionIndex = max(0, questions.count - 1)
-                    }
-                } else {
-                    print("Index out of range. Flashcard not removed from local arrays.")
-                }
+                print("Flashcards successfully updated in Firebase.")
             }
         }
+
+        // Adjust currentQuestionIndex to prevent out-of-bounds errors
+        if currentQuestionIndex >= questions.count {
+            currentQuestionIndex = max(0, questions.count - 1)
+        }
     }
+
+
 }
 
 // Prevent crashes due to out-of-bounds array access
