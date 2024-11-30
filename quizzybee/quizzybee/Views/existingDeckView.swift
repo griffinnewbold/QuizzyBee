@@ -33,6 +33,12 @@ struct existingDeckView: View {
     @State private var selectedColor: String = ""   // Added to hold the color for editing
     @State private var showEditView = false         // Toggle to show editCardView
     
+    @State private var deckTitle: String
+    
+    init(set: Set) {
+        self.set = set
+        self._deckTitle = State(initialValue: set.title)
+    }
     
     var body: some View {
         NavigationView {
@@ -50,10 +56,15 @@ struct existingDeckView: View {
                                 .padding()
                         }
                         Spacer()
-                        Text(set.title)
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.black)
+                        NavigationLink(destination: EditDeckTitleView(deckID: set.id, title: $deckTitle).navigationBarBackButtonHidden(true)) {
+                            Text(deckTitle)
+                                .font(.title)
+                                .bold()
+                                .foregroundColor(.black)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                        }
                         Spacer()
                         //Edit current flashcard
                         Button(action: {
@@ -310,6 +321,7 @@ struct existingDeckView: View {
             .onAppear {
                 isLoading = true
                 fetchFlashcards(forSet: set)
+                fetchDeckTitle()
             }
             .sheet(isPresented: $showEditView) {
                 editCurrentCardView(
@@ -328,6 +340,23 @@ struct existingDeckView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+    }
+    
+    func fetchDeckTitle() {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let deckTitleRef = ref.child("users").child(userID).child("sets").child(set.id).child("title")
+
+        deckTitleRef.observeSingleEvent(of: .value) { snapshot in
+            if let updatedTitle = snapshot.value as? String {
+                self.deckTitle = updatedTitle
+            }
+        }
     }
     
     //ai card adder
@@ -383,13 +412,14 @@ struct existingDeckView: View {
             let newWord = Word(id: "\(nextIndex)", term: newQuestion, definition: newAnswer, color: "#FFFFFF")
             
             // Add the Word to the database using its id
-            userSetRef.child(newWord.id).setValue(newWord.toDictionary()) { error, _ in
-                if let error = error {
-                    print("Error adding card via AI: \(error.localizedDescription)")
-                } else {
+            Task {
+                do {
+                    try await userSetRef.child(newWord.id).setValue(newWord.toDictionary())
                     print("Card added via AI successfully.")
                     self.questions.append(newWord.term)
                     self.answers.append(newWord.definition)
+                } catch {
+                    print("Error adding card via AI: \(error.localizedDescription)")
                 }
             }
         } catch {
@@ -470,18 +500,23 @@ struct existingDeckView: View {
                 print("Error deleting flashcard: \(error.localizedDescription)")
             } else {
                 print("Flashcard deleted successfully.")
-                questions.remove(at: currentQuestionIndex)
-                answers.remove(at: currentQuestionIndex)
-                colors.remove(at: currentQuestionIndex)
                 
-                // Adjust the index to prevent out-of-bounds errors
-                if currentQuestionIndex >= questions.count {
-                    currentQuestionIndex = max(0, questions.count - 1)
+                // Safely check bounds before modifying the arrays
+                if currentQuestionIndex < questions.count {
+                    questions.remove(at: currentQuestionIndex)
+                    answers.remove(at: currentQuestionIndex)
+                    colors.remove(at: currentQuestionIndex)
+                    
+                    // Adjust the index to prevent out-of-bounds errors
+                    if currentQuestionIndex >= questions.count {
+                        currentQuestionIndex = max(0, questions.count - 1)
+                    }
+                } else {
+                    print("Index out of range. Flashcard not removed from local arrays.")
                 }
             }
         }
     }
-
 }
 
 // Prevent crashes due to out-of-bounds array access
