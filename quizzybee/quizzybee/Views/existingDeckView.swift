@@ -8,12 +8,15 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
+import FirebaseDatabase
 
 struct existingDeckView: View {
     let set: Set
     let openAIAPIKey: String = "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"
+    
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var tourGuide: onboardingModel
     
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
@@ -21,26 +24,26 @@ struct existingDeckView: View {
     @State private var questions: [String] = []
     @State private var answers: [String] = []
     @State private var colors: [String] = []
-    @State private var isLoading = true // Track loading state
+    @State private var isLoading = true
+    @State private var selectedVoice: String = "Default"
     
     // Text-to-speech
     @StateObject private var speech = textToSpeech()
     @State private var isPlaying = false
-    
 
-    @State private var selectedQuestion: String = "" // Added to hold the question for editing
-    @State private var selectedAnswer: String = ""   // Added to hold the answer for editing
-    @State private var selectedColor: String = ""   // Added to hold the color for editing
-    @State private var showEditView = false         // Toggle to show editCardView
+    @State private var showEditView = false
+    @State private var selectedQuestion: String = ""
+    @State private var selectedAnswer: String = ""
+    @State private var selectedColor: String = ""
     
     @State private var deckTitle: String
-    @State private var flashcardIDs: [String] = [] // To store IDs of the flashcards
+    @State private var flashcardIDs: [String] = [] 
     
     init(set: Set) {
         self.set = set
         self._deckTitle = State(initialValue: set.title)
     }
-    
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -67,7 +70,7 @@ struct existingDeckView: View {
                                 .truncationMode(.tail)
                         }
                         Spacer()
-                        //Edit current flashcard
+                        // Edit Current Flashcard Button
                         Button(action: {
                             if let question = questions[safe: currentQuestionIndex],
                                let answer = answers[safe: currentQuestionIndex],
@@ -75,7 +78,6 @@ struct existingDeckView: View {
                                 selectedQuestion = question
                                 selectedAnswer = answer
                                 selectedColor = color
-                                // Show editCurrentCardView
                                 showEditView = true
                             }
                         }) {
@@ -112,17 +114,14 @@ struct existingDeckView: View {
                     
                     // Main Content
                     if isLoading {
-                        // Loading State
                         ProgressView("Loading...")
                             .scaleEffect(1.5)
                             .padding()
                     } else if questions.isEmpty {
-                        // No Data State
                         VStack {
                             Text("No flashcards available.")
                                 .foregroundColor(.gray)
                                 .font(.headline)
-                                .multilineTextAlignment(.center)
                                 .padding()
                             Button("Reload") {
                                 isLoading = true
@@ -151,19 +150,11 @@ struct existingDeckView: View {
                                     .multilineTextAlignment(.center)
                                     .padding()
                                     .font(.title3)
-                                    .foregroundColor(Color(hex: colors[currentQuestionIndex]).isDarkBackground() ? .white : .black)
+                                    .foregroundColor(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF").isDarkBackground() ? .white : .black)
                                 
-                                // MARK: text to speech
+                                // MARK: Text-to-Speech
                                 Button(action: {
-                                    let textToSpeak = showAnswer ?
-                                    (answers[safe: currentQuestionIndex] ?? "") :
-                                    (questions[safe: currentQuestionIndex] ?? "")
-                                    isPlaying.toggle()
-                                    if isPlaying {
-                                        speech.speak(textToSpeak)
-                                    } else {
-                                        speech.stop()
-                                    }
+                                    handleTextToSpeech()
                                 }) {
                                     Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
                                         .foregroundColor(.black)
@@ -171,11 +162,10 @@ struct existingDeckView: View {
                                         .background(Color.gray.opacity(0.2))
                                         .clipShape(Circle())
                                 }
-                                
                             }
                             .frame(maxWidth: .infinity, minHeight: 200)
                             .padding()
-                            .background(Color(hex: colors[currentQuestionIndex]))
+                            .background(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF"))
                             .cornerRadius(10)
                             .padding(.horizontal)
                             .onTapGesture {
@@ -183,7 +173,7 @@ struct existingDeckView: View {
                                 isPlaying = false
                                 speech.stop()
                             }
-                            .onChange(of: currentQuestionIndex) {
+                            .onChange(of: currentQuestionIndex) { _,_ in
                                 isPlaying = false
                                 speech.stop()
                             }
@@ -200,18 +190,16 @@ struct existingDeckView: View {
                             }
                         }
                         
-                        // Flashcard Page
+                        // Flashcard page dots
                         let maxVisibleDots = 10
                         let startIndex = max(0, currentQuestionIndex - maxVisibleDots / 2)
                         let endIndex = min(questions.count, startIndex + maxVisibleDots)
-                        
                         HStack(spacing: 8) {
                             if startIndex > 0 {
                                 Text("...")
                                     .font(.headline)
                                     .foregroundColor(.gray)
                             }
-                            
                             ForEach(startIndex..<endIndex, id: \.self) { index in
                                 Circle()
                                     .fill(index == currentQuestionIndex ? Color.black : Color.gray)
@@ -221,7 +209,6 @@ struct existingDeckView: View {
                                         showAnswer = false
                                     }
                             }
-                            
                             if endIndex < questions.count {
                                 Text("...")
                                     .font(.headline)
@@ -238,9 +225,7 @@ struct existingDeckView: View {
                     
                     // Action Buttons
                     VStack(spacing: 10) {
-                        NavigationLink(destination: newCardView(existingDeckID: set.id, shouldShowTitle: true)
-                            .navigationBarBackButtonHidden(true)
-                            .environmentObject(networkMonitor)) {
+                        NavigationLink(destination: newCardView(existingDeckID: set.id).navigationBarBackButtonHidden(true)) {
                             HStack {
                                 Spacer()
                                 Image(systemName: "plus")
@@ -255,7 +240,6 @@ struct existingDeckView: View {
                             .background(Color.white)
                             .cornerRadius(10)
                         }
-
                         .padding(.horizontal)
 
                         Button(action: {
@@ -314,14 +298,26 @@ struct existingDeckView: View {
                         }
                         .padding(.horizontal)
                     }
-
                 }
                 .padding(.vertical)
+                
+                // show tour
+                if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
+                   (2...7).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
+                    tipView(
+                        currentStep: currentStep,
+                        nextStep: { tourGuide.nextStep(userID: userID) },
+                        skipTour: { tourGuide.skipTour(userID: userID) }
+                    )
+                }
+                
+                
             }
             .navigationBarHidden(true)
             .onAppear {
                 isLoading = true
                 fetchFlashcards(forSet: set)
+                loadUserVoiceModel()
                 fetchDeckTitle()
             }
             .sheet(isPresented: $showEditView) {
@@ -343,24 +339,6 @@ struct existingDeckView: View {
         .navigationBarBackButtonHidden(true)
     }
     
-    func fetchDeckTitle() {
-        guard let user = Auth.auth().currentUser else {
-            print("User not logged in.")
-            return
-        }
-
-        let userID = user.uid
-        let ref = Database.database().reference()
-        let deckTitleRef = ref.child("users").child(userID).child("sets").child(set.id).child("title")
-
-        deckTitleRef.observeSingleEvent(of: .value) { snapshot in
-            if let updatedTitle = snapshot.value as? String {
-                self.deckTitle = updatedTitle
-            }
-        }
-    }
-    
-    //ai card adder
     func addCardViaAI() async {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
@@ -428,6 +406,22 @@ struct existingDeckView: View {
         }
     }
     
+    func fetchDeckTitle() {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let deckTitleRef = ref.child("users").child(userID).child("sets").child(set.id).child("title")
+
+        deckTitleRef.observeSingleEvent(of: .value) { snapshot in
+            if let updatedTitle = snapshot.value as? String {
+                self.deckTitle = updatedTitle
+            }
+        }
+    }
 
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
@@ -536,8 +530,50 @@ struct existingDeckView: View {
             currentQuestionIndex = max(0, questions.count - 1)
         }
     }
-
-
+    
+    private func loadUserVoiceModel() {
+        authViewModel.fetchUserVoiceModel { voiceModel in
+            if let model = voiceModel {
+                selectedVoice = model
+            } else {
+                selectedVoice = "Default"
+            }
+        }
+    }
+    
+    // MARK: Handle Text-to-Speech
+    private func handleTextToSpeech() {
+        let textToSpeak = showAnswer
+            ? (answers[safe: currentQuestionIndex] ?? "")
+            : (questions[safe: currentQuestionIndex] ?? "")
+        
+        if selectedVoice == "Default" {
+            isPlaying.toggle()
+            if isPlaying {
+                speech.speak(textToSpeak)
+            } else {
+                speech.stop()
+            }
+        } else {
+            isPlaying.toggle()
+            if isPlaying {
+                Task {
+                    do {
+                        let audioURL = try await ElevenLabsAPI.synthesizeSpeech(
+                            voiceId: selectedVoice,
+                            text: textToSpeak
+                        )
+                        speech.playAudio(from: audioURL)
+                    } catch {
+                        print("Error using ElevenLabsAPI: \(error.localizedDescription)")
+                        isPlaying = false
+                    }
+                }
+            } else {
+                speech.stop()
+            }
+        }
+    }
 }
 
 // Prevent crashes due to out-of-bounds array access
@@ -546,13 +582,3 @@ extension Collection {
         return indices.contains(index) ? self[index] : nil
     }
 }
-
-//#Preview {
-//    existingDeckView(set: Set(
-//        id: "1",
-//        title: "Intro to Java",
-//        words: [
-//            Word(term: "", definition: "", color: "#FFFFFF")
-//        ]
-//    ))
-//}

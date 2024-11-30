@@ -7,7 +7,7 @@ class AuthViewModel: ObservableObject {
     @Published var isLoggedIn = false
     @Published var errorMessage: String?
     
-    private let dbRef = Database.database().reference()
+    let dbRef = Database.database().reference()
     
     init() {
         do {
@@ -47,7 +47,10 @@ class AuthViewModel: ObservableObject {
                 fullName: name,
                 email: email,
                 createdAt: Date().timeIntervalSince1970,
-                sets: [defaultSet.id: defaultSet]
+                sets: [defaultSet.id: defaultSet],
+                
+                // for first-time user
+                hasCompletedOnboarding: false
             )
             
             
@@ -79,8 +82,8 @@ class AuthViewModel: ObservableObject {
     // MARK: - Log In Function with Completion Handler
     func logIn(email: String, password: String, completion: @escaping (User?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
-            if let error = error {
-                self?.errorMessage = error.localizedDescription
+            if error != nil {
+                self?.errorMessage = "Incorrect email or password."
                 completion(nil)
                 return
             }
@@ -105,7 +108,7 @@ class AuthViewModel: ObservableObject {
     }
     
     // MARK: - Fetch User from Firebase
-    private func fetchUser(withID userID: String, completion: @escaping (User?) -> Void) {
+    func fetchUser(withID userID: String, completion: @escaping (User?) -> Void) {
         dbRef.child("users").child(userID).observeSingleEvent(of: .value) { snapshot in
             guard let value = snapshot.value as? [String: Any] else {
                 completion(nil)
@@ -209,7 +212,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // MARK: Ppdate user profile
+    // MARK: Update user profile
     func updateUserProfileImage(imageName: String) {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = Database.database().reference().child("users").child(user.uid)
@@ -231,4 +234,57 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    func updateUserVoiceModel(voiceID: String) {
+        guard let user = Auth.auth().currentUser else { return }
+        let userRef = Database.database().reference().child("users").child(user.uid)
+        
+        userRef.child("voiceModel").setValue(voiceID) { error, _ in
+            if let error = error {
+                print("Error updating voice model: \(error)")
+            } else {
+                DispatchQueue.main.async {
+                    self.user?.voiceModel = voiceID
+                }
+                // Notify for updates if necessary
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("UserVoiceModelUpdated"),
+                    object: nil
+                )
+            }
+        }
+    }
+    
+    // MARK: - Reset Password
+    func resetPassword(email: String, completion: @escaping (Bool, String?) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                completion(false, error.localizedDescription)
+            } else {
+                completion(true, "Password reset email sent.")
+            }
+        }
+    }
+
+    
+    // MARK: - Fetch User Voice Model
+    func fetchUserVoiceModel(completion: @escaping (String?) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            completion(nil)
+            return
+        }
+        
+        let userRef = dbRef.child("users").child(user.uid).child("voiceModel")
+        userRef.observeSingleEvent(of: .value) { snapshot in
+            if let voiceModel = snapshot.value as? String {
+                print("Fetched Voice Model: \(voiceModel)")
+                completion(voiceModel)
+            } else {
+                print("No voice model found for user, returning Default.")
+                completion("Default") // Default fallback if no voice model is found
+            }
+        }
+    }
+
 }

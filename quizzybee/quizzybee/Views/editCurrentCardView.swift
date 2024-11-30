@@ -2,7 +2,7 @@
 //  editCurrentCardView.swift
 //  quizzybee
 //
-//  Created by ChiaPeng Wu on 11/24/24.
+//  Created by Justin Wu on 11/24/24.
 //
 
 import SwiftUI
@@ -25,6 +25,7 @@ struct editCurrentCardView: View {
             Color.yellow.edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 20) {
+
                 Text("Edit Current Flashcard")
                     .font(.largeTitle)
                     .fontWeight(.bold)

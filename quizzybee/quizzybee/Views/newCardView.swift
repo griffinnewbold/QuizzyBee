@@ -247,28 +247,6 @@ struct newCardView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .onAppear {
-            if existingDeckID != nil {
-                fetchDeckTitle()
-            }
-        }
-    }
-    
-    func fetchDeckTitle() {
-        guard let user = Auth.auth().currentUser, let existingDeckID = existingDeckID else { return }
-        let userID = user.uid
-        let ref = Database.database().reference()
-        let deckRef = ref.child("users").child(userID).child("sets").child(existingDeckID).child("title")
-        
-        deckRef.observeSingleEvent(of: .value) { snapshot in
-            if let title = snapshot.value as? String {
-                DispatchQueue.main.async {
-                    self.deckTitle = title
-                }
-            } else {
-                print("Failed to fetch deck title.")
-            }
-        }
     }
     
     func saveSetForCurrentUser(set: Set) {

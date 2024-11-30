@@ -6,17 +6,19 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct dashboardView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    @EnvironmentObject var tourGuide: onboardingModel
     @State private var searchText = ""
     @State private var noResults = false
     @State private var allDecks: [Set] = []
     @State private var showNetworkAlert: Bool = false
     
-    
     private func loadDecks() {
+        self.allDecks = []
         authViewModel.fetchUserSets { sets in
             DispatchQueue.main.async {
                 self.allDecks = sets
@@ -43,16 +45,34 @@ struct dashboardView: View {
                     headerForDashboard()
                         .padding(.bottom, 120)
                     
-                    searchBar(searchText: $searchText,
-                              placeholder: "search deck...",
-                              onSubmit: {
-                        if !searchText.isEmpty && filteredDecks.isEmpty {
-                            noResults = true
+                    // Search bar with refresh button
+                    HStack {
+                        searchBar(searchText: $searchText,
+                                  placeholder: "search deck...",
+                                  onSubmit: {
+                            if !searchText.isEmpty && filteredDecks.isEmpty {
+                                noResults = true
+                            }
+                        })
+                        
+                        // Refresh button
+                        Button(action: {
+                            if networkMonitor.isConnected {
+                                loadDecks()
+                            } else {
+                                showNetworkAlert = true
+                            }
+                        }) {
+                            Image(systemName: "arrow.clockwise")
+                                .foregroundColor(.yellow)
                         }
-                    })
+                        .padding(.trailing, 16)
+                    }
                     .padding(.bottom, 50)
                     
                     deckCardSummaryList(targetDecks: filteredDecks)
+                        .environmentObject(authViewModel)
+                        .environmentObject(tourGuide)
                     
                     addNewDeck()
                         .padding(.bottom, 30)
@@ -61,6 +81,26 @@ struct dashboardView: View {
                     Button("OK", role: .cancel) { noResults = false }
                 } message: {
                     Text("No decks found matching '\(searchText)'")
+                }
+                
+                // Welcome and tour guide logic
+                if !(authViewModel.user?.hasCompletedOnboarding ?? false) || tourGuide.showTour {
+                    if tourGuide.currentStep == 0 {
+                        welcomeAndEnding(mode: "welcome", button: "Let's Explore.")
+                    }
+                }
+                
+                if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
+                   (8...11).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
+                    tipView(
+                        currentStep: currentStep,
+                        nextStep: { tourGuide.nextStep(userID: userID) },
+                        skipTour: { tourGuide.skipTour(userID: userID) }
+                    )
+                }
+                
+                if tourGuide.currentStep == 12 {
+                    welcomeAndEnding(mode: "ending", button: "OK")
                 }
             }
             .alert("Network Error", isPresented: $showNetworkAlert) {
@@ -71,19 +111,20 @@ struct dashboardView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            loadDecks()
-            // for instant change
-            NotificationCenter.default.addObserver(forName: NSNotification.Name("RefreshDashboard"),
-                                                   object: nil,
-                                                   queue: .main) { _ in
-                loadDecks()
-            }
             if networkMonitor.isConnected {
                 loadDecks()
             } else if !showNetworkAlert {
                 showNetworkAlert = true
             }
-            
+            NotificationCenter.default.addObserver(forName: NSNotification.Name("RefreshDashboard"),
+                                                   object: nil,
+                                                   queue: .main) { _ in
+                if networkMonitor.isConnected {
+                    loadDecks()
+                } else if !showNetworkAlert {
+                    showNetworkAlert = true
+                }
+            }
         }
         .onDisappear {
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name("RefreshDashboard"), object: nil)
@@ -102,4 +143,5 @@ struct dashboardView: View {
     dashboardView()
         .environmentObject(AuthViewModel())
         .environmentObject(NetworkMonitor())
+        .environmentObject(onboardingModel())
 }

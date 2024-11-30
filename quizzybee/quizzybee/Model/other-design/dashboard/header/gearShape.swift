@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct gearShape: View {
-    @AppStorage("allow AI") var allowAI = false
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var tourGuide: onboardingModel
     @State private var showMenu = false
     @State private var shouldLogin = false
     
@@ -28,13 +28,12 @@ struct gearShape: View {
             
             if showMenu {
                 VStack(alignment: .leading, spacing: 12) {
+                    // re-show tour
                     Button(action: {
-                        allowAI.toggle() // sync with profile
+                        tourGuide.startTour(userID: authViewModel.user?.userID ?? "")
+                        showMenu = false
                     }) {
-                        Label(
-                            allowAI ? "AI is Enabled" : "AI is Disabled",
-                            systemImage: allowAI ? "checkmark.circle.fill" : "circle"
-                        )
+                        Label("Show Tour", systemImage: "questionmark.circle")
                     }
                     
                     Button(role: .destructive, action: {

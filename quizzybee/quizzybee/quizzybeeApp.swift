@@ -12,6 +12,8 @@ import UserNotifications
 struct quizzybeeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var networkMonitor = NetworkMonitor()
+    @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var onboardingViewModel = onboardingModel()
     
     init() {
         FirebaseApp.configure()
@@ -21,6 +23,8 @@ struct quizzybeeApp: App {
         WindowGroup {
             LoginView()
                 .environmentObject(networkMonitor)
+                .environmentObject(authViewModel)
+                .environmentObject(onboardingViewModel)
         }
     }
 }
