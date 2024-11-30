@@ -102,13 +102,6 @@ struct LoginView: View {
                     
                     Spacer()
                     
-                    // add AI consent here
-                    Text("You need to login to use Quizzybee, and you're consenting to use GenAI.")
-                        .foregroundColor(.white)
-                        .fontWeight(.semibold)
-                        .multilineTextAlignment(.center)
-                    
-                    Spacer()
                     
                     // Navigation to Register View
                     HStack {
