@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// the content design for each deck
 struct deckCardSummaryRow: View {
     var deckCard: Set
     @AppStorage private var notificationsEnabled: Bool

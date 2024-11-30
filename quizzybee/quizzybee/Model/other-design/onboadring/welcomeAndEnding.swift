@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// welcome and ending messages for user tour
 struct welcomeAndEnding: View {
     @EnvironmentObject var tourGuide: onboardingModel
     @EnvironmentObject var authViewModel: AuthViewModel

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// enable delete deck
 struct deckRow: View {
     let deckCard: Set
     let index: Int

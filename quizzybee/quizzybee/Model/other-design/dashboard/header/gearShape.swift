@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// gearShape on the dashboard header
+/// has "show tour" and "log out" options
 struct gearShape: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var tourGuide: onboardingModel
@@ -16,8 +18,6 @@ struct gearShape: View {
     
     var body: some View {
         ZStack {
-            //dashboardBackgroundView()
-            
             Image("GearShape")
                 .resizable()
                 .scaledToFit()

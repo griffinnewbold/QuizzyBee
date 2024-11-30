@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// header for the dashboard
+/// includes userImage and gearShape
 struct headerForDashboard: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
