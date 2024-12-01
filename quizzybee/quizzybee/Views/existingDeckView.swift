@@ -413,6 +413,74 @@ struct existingDeckView: View {
             }
         }
     }
+    
+    func addCardViaAI() async {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+        
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
+        
+        // Fetch all existing terms and definitions to avoid duplicates
+        let existingQuestions = questions
+        let existingAnswers = answers
+        
+        do {
+            let service = OpenAIService(apiKey: openAIAPIKey)
+            
+            // Generate a question and answer prompt based on the existing set
+            let prompt = """
+            Generate a new question and answer similar to these:
+            \(existingQuestions.map { "- \($0)" }.joined(separator: "\n"))
+            
+            Make sure the question and answer are not duplicates.
+            
+            Respond in the following JSON format:
+            {
+                "question": "A unique question text",
+                "answer": "A unique answer text"
+            }
+            """
+            
+            let response = try await service.sendPrompt(prompt: prompt, systemRole: "You are a helpful assistant generating unique flashcards.")
+            
+            guard let jsonData = response.data(using: .utf8),
+                  let generatedCard = try? JSONDecoder().decode([String: String].self, from: jsonData),
+                  let newQuestion = generatedCard["question"],
+                  let newAnswer = generatedCard["answer"] else {
+                print("Failed to decode OpenAI response.")
+                return
+            }
+            
+            // Ensure no duplicates
+            guard !existingQuestions.contains(newQuestion), !existingAnswers.contains(newAnswer) else {
+                print("Generated question/answer already exists. Try again.")
+                return
+            }
+            
+            // Create the new Word instance with the sequential id
+            let nextIndex = questions.count
+            let newWord = Word(id: "\(nextIndex)", term: newQuestion, definition: newAnswer, color: "#FFFFFF")
+            
+            // Add the Word to the database using its id
+            Task {
+                do {
+                    try await userSetRef.child(newWord.id).setValue(newWord.toDictionary())
+                    print("Card added via AI successfully.")
+                    self.questions.append(newWord.term)
+                    self.answers.append(newWord.definition)
+                } catch {
+                    print("Error adding card via AI: \(error.localizedDescription)")
+                }
+            }
+        } catch {
+            print("Error generating AI card: \(error.localizedDescription)")
+        }
+    }
+    
 
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
