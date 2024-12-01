@@ -108,10 +108,8 @@ class OpenAIService {
             
             return content
         } catch let decodingError as DecodingError {
-            print("Decoding error: \(decodingError)")
             throw QuizError.processingError(decodingError)
         } catch {
-            print("Error: \(error)")
             throw QuizError.processingError(error)
         }
     }

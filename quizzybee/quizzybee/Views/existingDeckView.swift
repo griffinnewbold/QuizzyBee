@@ -57,7 +57,6 @@ struct existingDeckView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.black)
                         Spacer()
-                        // Edit Current Flashcard Button
                         Button(action: {
                             if let question = questions[safe: currentQuestionIndex],
                                let answer = answers[safe: currentQuestionIndex],
@@ -131,38 +130,59 @@ struct existingDeckView: View {
                                     .padding()
                             }
                             
-                            VStack {
+                            ZStack(alignment: .topTrailing) {
                                 Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available" : questions[safe: currentQuestionIndex] ?? "No question available")
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
                                     .font(.title3)
                                     .foregroundColor(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF").isDarkBackground() ? .white : .black)
+                                    .frame(maxWidth: .infinity, minHeight: 200)
+                                    .background(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF"))
+                                    .cornerRadius(10)
+                                    .padding(.horizontal)
+                                    .onTapGesture {
+                                        showAnswer.toggle()
+                                        isPlaying = false
+                                        speech.stop()
+                                    }
+                                    .onChange(of: currentQuestionIndex) { _, _ in
+                                        isPlaying = false
+                                        speech.stop()
+                                    }
                                 
-                                // MARK: Text-to-Speech
-                                Button(action: {
-                                    handleTextToSpeech()
-                                }) {
-                                    Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
-                                        .foregroundColor(.black)
-                                        .padding(8)
-                                        .background(Color.gray.opacity(0.2))
-                                        .clipShape(Circle())
+                                // Speaker and Pencil Icons
+                                HStack() {
+                                    // Speaker Icon
+                                    Button(action: {
+                                        handleTextToSpeech()
+                                    }) {
+                                        Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
+                                            .foregroundColor(.black)
+                                            .padding(8)
+                                            .background(Color.gray.opacity(0.2))
+                                            .clipShape(Circle())
+                                    }
+                                    
+                                    // Pencil Icon
+                                    Button(action: {
+                                        if let question = questions[safe: currentQuestionIndex],
+                                           let answer = answers[safe: currentQuestionIndex],
+                                           let color = colors[safe: currentQuestionIndex] {
+                                            selectedQuestion = question
+                                            selectedAnswer = answer
+                                            selectedColor = color
+                                            showEditView = true
+                                        }
+                                    }) {
+                                        Image(systemName: "pencil")
+                                            .foregroundColor(.black)
+                                            .padding(8)
+                                            .background(Color.gray.opacity(0.2))
+                                            .clipShape(Circle())
+                                    }
                                 }
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 200)
-                            .padding()
-                            .background(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF"))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                showAnswer.toggle()
-                                isPlaying = false
-                                speech.stop()
-                            }
-                            .onChange(of: currentQuestionIndex) { _,_ in
-                                isPlaying = false
-                                speech.stop()
+                                .padding()
                             }
                             
                             Button(action: {
@@ -275,7 +295,6 @@ struct existingDeckView: View {
                 }
                 .padding(.vertical)
                 
-                // show tour
                 if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
                    (2...7).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
                     tipView(
@@ -284,8 +303,6 @@ struct existingDeckView: View {
                         skipTour: { tourGuide.skipTour(userID: userID) }
                     )
                 }
-                
-                
             }
             .navigationBarHidden(true)
             .onAppear {
