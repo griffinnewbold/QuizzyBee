@@ -8,6 +8,7 @@
 import SwiftUI
 import CoreData
 
+/// our initial screen
 struct ContentView: View {
     @StateObject private var networkMonitor = NetworkMonitor()
     @StateObject private var tourGuide = onboardingModel()

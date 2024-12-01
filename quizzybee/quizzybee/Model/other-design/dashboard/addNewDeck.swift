@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// navigate users to add a new deck
 struct addNewDeck: View {
     @State private var addNewDeck = false
     

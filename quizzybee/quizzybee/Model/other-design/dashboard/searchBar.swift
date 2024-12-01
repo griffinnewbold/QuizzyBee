@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// search bar on the dashboard
+/// used to search relevant decks
 struct searchBar: View {
     @Binding var searchText: String
     var placeholder: String

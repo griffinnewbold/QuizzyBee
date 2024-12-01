@@ -8,6 +8,7 @@
 // define a method to allow hexademical input as color
 import SwiftUI
 
+/// could just pass hex code to look for colors
 extension Color {
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

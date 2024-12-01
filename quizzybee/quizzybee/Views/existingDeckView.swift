@@ -37,7 +37,7 @@ struct existingDeckView: View {
     @State private var selectedColor: String = ""
     
     @State private var deckTitle: String
-    @State private var flashcardIDs: [String] = [] 
+    @State private var flashcardIDs: [String] = []
     
     init(set: Set) {
         self.set = set
@@ -60,32 +60,18 @@ struct existingDeckView: View {
                                 .padding()
                         }
                         Spacer()
-                        NavigationLink(destination: EditDeckTitleView(deckID: set.id, title: $deckTitle).navigationBarBackButtonHidden(true)) {
-                            Text(deckTitle)
-                                .font(.title)
-                                .bold()
-                                .foregroundColor(.black)
-                                .multilineTextAlignment(.center)
-                                .lineLimit(1)
-                                .truncationMode(.tail)
-                        }
+                        Text(deckTitle)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.black)
                         Spacer()
-                        // Edit Current Flashcard Button
-                        Button(action: {
-                            if let question = questions[safe: currentQuestionIndex],
-                               let answer = answers[safe: currentQuestionIndex],
-                               let color = colors[safe: currentQuestionIndex] {
-                                selectedQuestion = question
-                                selectedAnswer = answer
-                                selectedColor = color
-                                showEditView = true
-                            }
-                        }) {
+                        NavigationLink(destination: EditDeckTitleView(deckID: set.id, title: $deckTitle).navigationBarBackButtonHidden(true)) {
                             Text("Edit")
                                 .foregroundColor(.black)
                                 .font(.headline)
                                 .padding()
                         }
+
                     }
                     .padding(.horizontal)
                     
@@ -144,38 +130,59 @@ struct existingDeckView: View {
                                     .padding()
                             }
                             
-                            VStack {
+                            ZStack(alignment: .topTrailing) {
                                 Text(showAnswer ? answers[safe: currentQuestionIndex] ?? "No answer available" : questions[safe: currentQuestionIndex] ?? "No question available")
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
                                     .font(.title3)
                                     .foregroundColor(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF").isDarkBackground() ? .white : .black)
+                                    .frame(maxWidth: .infinity, minHeight: 200)
+                                    .background(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF"))
+                                    .cornerRadius(10)
+                                    .padding(.horizontal)
+                                    .onTapGesture {
+                                        showAnswer.toggle()
+                                        isPlaying = false
+                                        speech.stop()
+                                    }
+                                    .onChange(of: currentQuestionIndex) { _, _ in
+                                        isPlaying = false
+                                        speech.stop()
+                                    }
                                 
-                                // MARK: Text-to-Speech
-                                Button(action: {
-                                    handleTextToSpeech()
-                                }) {
-                                    Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
-                                        .foregroundColor(.black)
-                                        .padding(8)
-                                        .background(Color.gray.opacity(0.2))
-                                        .clipShape(Circle())
+                                // Speaker and Pencil Icons
+                                HStack() {
+                                    // Speaker Icon
+                                    Button(action: {
+                                        handleTextToSpeech()
+                                    }) {
+                                        Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
+                                            .foregroundColor(.black)
+                                            .padding(8)
+                                            .background(Color.gray.opacity(0.2))
+                                            .clipShape(Circle())
+                                    }
+                                    
+                                    // Pencil Icon
+                                    Button(action: {
+                                        if let question = questions[safe: currentQuestionIndex],
+                                           let answer = answers[safe: currentQuestionIndex],
+                                           let color = colors[safe: currentQuestionIndex] {
+                                            selectedQuestion = question
+                                            selectedAnswer = answer
+                                            selectedColor = color
+                                            showEditView = true
+                                        }
+                                    }) {
+                                        Image(systemName: "pencil")
+                                            .foregroundColor(.black)
+                                            .padding(8)
+                                            .background(Color.gray.opacity(0.2))
+                                            .clipShape(Circle())
+                                    }
                                 }
-                            }
-                            .frame(maxWidth: .infinity, minHeight: 200)
-                            .padding()
-                            .background(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF"))
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                            .onTapGesture {
-                                showAnswer.toggle()
-                                isPlaying = false
-                                speech.stop()
-                            }
-                            .onChange(of: currentQuestionIndex) { _,_ in
-                                isPlaying = false
-                                speech.stop()
+                                .padding()
                             }
                             
                             Button(action: {
@@ -190,17 +197,9 @@ struct existingDeckView: View {
                             }
                         }
                         
-                        // Flashcard page dots
-                        let maxVisibleDots = 10
-                        let startIndex = max(0, currentQuestionIndex - maxVisibleDots / 2)
-                        let endIndex = min(questions.count, startIndex + maxVisibleDots)
+                        // Flashcard Navigation Indicators
                         HStack(spacing: 8) {
-                            if startIndex > 0 {
-                                Text("...")
-                                    .font(.headline)
-                                    .foregroundColor(.gray)
-                            }
-                            ForEach(startIndex..<endIndex, id: \.self) { index in
+                            ForEach(questions.indices, id: \.self) { index in
                                 Circle()
                                     .fill(index == currentQuestionIndex ? Color.black : Color.gray)
                                     .frame(width: 10, height: 10)
@@ -208,11 +207,6 @@ struct existingDeckView: View {
                                         currentQuestionIndex = index
                                         showAnswer = false
                                     }
-                            }
-                            if endIndex < questions.count {
-                                Text("...")
-                                    .font(.headline)
-                                    .foregroundColor(.gray)
                             }
                         }
                         .padding()
@@ -264,7 +258,7 @@ struct existingDeckView: View {
                         .padding(.horizontal)
                         
                         HStack(spacing: 10) {
-                            NavigationLink(destination: reviewView(questions: $questions, answers: $answers)) {
+                            NavigationLink(destination: reviewView(questions: $questions, answers: $answers, colors: $colors).navigationBarBackButtonHidden(true)) {
                                 HStack {
                                     Spacer()
                                     Text("Review")
@@ -301,7 +295,6 @@ struct existingDeckView: View {
                 }
                 .padding(.vertical)
                 
-                // show tour
                 if let currentStep = onboardingModel.TourStep.allCases[safe: tourGuide.currentStep],
                    (2...7).contains(tourGuide.currentStep), let userID = authViewModel.user?.userID {
                     tipView(
@@ -310,8 +303,6 @@ struct existingDeckView: View {
                         skipTour: { tourGuide.skipTour(userID: userID) }
                     )
                 }
-                
-                
             }
             .navigationBarHidden(true)
             .onAppear {
@@ -405,7 +396,7 @@ struct existingDeckView: View {
             print("Error generating AI card: \(error.localizedDescription)")
         }
     }
-    
+
     func fetchDeckTitle() {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
@@ -416,7 +407,7 @@ struct existingDeckView: View {
         let ref = Database.database().reference()
         let deckTitleRef = ref.child("users").child(userID).child("sets").child(set.id).child("title")
 
-        deckTitleRef.observeSingleEvent(of: .value) { snapshot in
+        deckTitleRef.observe(.value) { snapshot in
             if let updatedTitle = snapshot.value as? String {
                 self.deckTitle = updatedTitle
             }

@@ -29,7 +29,6 @@ struct newCardView: View {
     @State private var showingAlert = false
     
     var existingDeckID: String? // Optional parameter for the existing deck ID
-    var shouldShowTitle: Bool = true
     
     var body: some View {
         ZStack {
@@ -48,23 +47,21 @@ struct newCardView: View {
                     }
                     
                     Spacer()
-                    if shouldShowTitle {
-                        ZStack(alignment: .trailing) {
-                            TextField("Enter Deck Title", text: $deckTitle)
-                                .font(.title)
-                                .bold()
+                    
+                    ZStack(alignment: .trailing) {
+                        TextField("Enter Deck Title", text: $deckTitle)
+                            .font(.title)
+                            .bold()
+                            .foregroundColor(.black)
+                            .multilineTextAlignment(.center)
+                            .disabled(existingDeckID != nil) // Disable title editing for existing decks
+                        
+                        if existingDeckID == nil {
+                            Image(systemName: "pencil")
                                 .foregroundColor(.black)
-                                .multilineTextAlignment(.center)
-                                .disabled(existingDeckID != nil) // Disable title editing for existing decks
-                            
-                            if existingDeckID == nil {
-                                Image(systemName: "pencil")
-                                    .foregroundColor(.black)
-                                    .offset(x: -50)
-                            }
+                                .offset(x: -50)
                         }
                     }
-
                     
                     Spacer()
                 }

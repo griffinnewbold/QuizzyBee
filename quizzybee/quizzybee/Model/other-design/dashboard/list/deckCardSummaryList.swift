@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// show list of decks
+/// partner with tour guides and navigation
 struct deckCardSummaryList: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var tourGuide: onboardingModel
@@ -38,6 +40,19 @@ struct deckCardSummaryList: View {
                                 authViewModel.deleteDeck(setId: targetDecks[index].id)
                             }
                         )
+                        
+                        NavigationLink(
+                            destination: existingDeckView(set: targetDecks[index])
+                                .environmentObject(authViewModel)
+                                .environmentObject(tourGuide),
+                            isActive: Binding(
+                                get: { selectedDeck == targetDecks[index] && isActive },
+                                set: { if !$0 { isActive = false; selectedDeck = nil } }
+                            )
+                        ) {
+                            EmptyView()
+                        }
+                        .opacity(0)
                     }
                     .listRowBackground(Color.clear)
                 }
@@ -57,11 +72,6 @@ struct deckCardSummaryList: View {
                     }
                 )
                 .zIndex(1)
-            }
-        }
-        .navigationDestination(isPresented: $isActive) {
-            if let deck = selectedDeck {
-                existingDeckView(set: deck).environmentObject(authViewModel).environmentObject(tourGuide)
             }
         }
     }

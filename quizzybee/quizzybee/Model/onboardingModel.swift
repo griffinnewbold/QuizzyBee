@@ -8,6 +8,7 @@
 import FirebaseDatabase
 import UIKit
 
+/// model to user tour
 class onboardingModel: ObservableObject {
     @Published var currentStep = 0
     @Published var showTour = false
@@ -79,7 +80,6 @@ class onboardingModel: ObservableObject {
     
     // show tour
     func startTour(userID: String) {
-        // print("Starting tour for user")
         currentStep = 0
         showTour = true
         dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(false)
@@ -87,7 +87,6 @@ class onboardingModel: ObservableObject {
     
     // if user clicks 'x', then skip the tour
     func skipTour(userID: String) {
-        // print("Skipping tour for user")
         // no tour/welcome message shown
         currentStep = -1
         showTour = false
@@ -98,11 +97,9 @@ class onboardingModel: ObservableObject {
         if currentStep < TourStep.allCases.count - 1 {
             currentStep += 1
         } else {
-            // print("Tour completed.")
             dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(true)
             currentStep = -1
             showTour = false
         }
-        // print("Next step on click, the current step is \(currentStep)")
     }
 }

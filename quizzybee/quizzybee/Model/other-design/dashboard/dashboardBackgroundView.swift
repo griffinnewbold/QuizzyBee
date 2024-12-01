@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// grey and yellow background for dashboard
 struct dashboardBackgroundView: View {
     var body: some View {
         GeometryReader { geometry in

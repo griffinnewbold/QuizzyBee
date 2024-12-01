@@ -2,7 +2,7 @@
 //  editCurrentCardView.swift
 //  quizzybee
 //
-//  Created by Justin Wu on 11/24/24.
+//  Created by ChiaPeng Wu on 11/24/24.
 //
 
 import SwiftUI

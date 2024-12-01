@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct reviewView: View {
+    @Environment(\.presentationMode) var presentationMode
     @Binding var questions: [String]
     @Binding var answers: [String]
+    @Binding var colors: [String]
     @State private var currentQuestionIndex = 0
     @State private var showAnswer = false
     
@@ -19,7 +21,21 @@ struct reviewView: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            Spacer()
+            HStack {
+                            Button(action: {
+                                presentationMode.wrappedValue.dismiss() // Navigate back
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .foregroundColor(.black)
+                                    .padding()
+                            }
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                        
+                        Spacer()
+            
+            // Flashcards
             HStack {
                 Button(action: {
                     if currentQuestionIndex > 0 {
@@ -61,7 +77,7 @@ struct reviewView: View {
                 }
                 .frame(maxWidth: .infinity, minHeight: 200)
                 .padding()
-                .background(Color.white)
+                .background(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF"))
                 .cornerRadius(10)
                 .padding(.horizontal)
                 .onTapGesture {
