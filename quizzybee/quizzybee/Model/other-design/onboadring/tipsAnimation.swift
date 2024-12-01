@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// guide users to navigate into detailed deck view
 struct tipsAnimation: View {
     let message: String
     let targetFrame: CGRect

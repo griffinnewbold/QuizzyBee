@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// highlight mentioned portion
 struct highlightOverlay: View {
     let frame: CGRect
 

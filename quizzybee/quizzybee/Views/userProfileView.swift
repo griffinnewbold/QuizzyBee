@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// user profile view
+/// allow image selection
 struct userProfileView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
@@ -128,14 +130,5 @@ struct userProfileView: View {
     
     private func saveSelectedVoiceModel(_ voiceID: String) {
         authViewModel.updateUserVoiceModel(voiceID: voiceID)
-    }
-}
-
-#Preview {
-    return ZStack {
-        Color(hex: "2C2C2C").ignoresSafeArea()
-        
-        userProfileView()
-            .environmentObject(AuthViewModel())
     }
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// all the rest of the tips
 struct tipView: View {
     let currentStep: onboardingModel.TourStep
     let nextStep: () -> Void

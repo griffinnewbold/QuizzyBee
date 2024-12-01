@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// show pulse effect to guide user to click
 struct pulseAnimation: ViewModifier {
     @State private var scale: CGFloat = 1
     

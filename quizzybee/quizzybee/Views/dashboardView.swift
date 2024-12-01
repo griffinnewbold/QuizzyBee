@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 
+/// dashboard
 struct dashboardView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var networkMonitor: NetworkMonitor
@@ -137,11 +138,4 @@ struct dashboardView: View {
             }
         }
     }
-}
-
-#Preview {
-    dashboardView()
-        .environmentObject(AuthViewModel())
-        .environmentObject(NetworkMonitor())
-        .environmentObject(onboardingModel())
 }

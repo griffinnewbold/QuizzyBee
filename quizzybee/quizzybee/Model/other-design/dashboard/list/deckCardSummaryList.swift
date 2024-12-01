@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+/// show list of decks
+/// partner with tour guides and navigation
 struct deckCardSummaryList: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var tourGuide: onboardingModel
