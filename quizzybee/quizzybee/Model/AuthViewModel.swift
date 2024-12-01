@@ -199,8 +199,6 @@ class AuthViewModel: ObservableObject {
             if let error = error {
                 print("Error deleting set: \(error)")
             } else {
-                // print("Successfully deleted set")
-                
                 // Refresh dashboard after successful deletion
                 DispatchQueue.main.async {
                     NotificationCenter.default.post(
@@ -224,8 +222,6 @@ class AuthViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.user?.profileImage = imageName
                 }
-                // print("Successfully updated profile image")
-                
                 // for user updating their image
                 NotificationCenter.default.post(
                     name: NSNotification.Name("UserImageUpdated"),
@@ -270,7 +266,6 @@ class AuthViewModel: ObservableObject {
     // MARK: - Fetch User Voice Model
     func fetchUserVoiceModel(completion: @escaping (String?) -> Void) {
         guard let user = Auth.auth().currentUser else {
-            print("User not logged in.")
             completion(nil)
             return
         }
@@ -278,11 +273,9 @@ class AuthViewModel: ObservableObject {
         let userRef = dbRef.child("users").child(user.uid).child("voiceModel")
         userRef.observeSingleEvent(of: .value) { snapshot in
             if let voiceModel = snapshot.value as? String {
-                print("Fetched Voice Model: \(voiceModel)")
                 completion(voiceModel)
             } else {
-                print("No voice model found for user, returning Default.")
-                completion("Default") // Default fallback if no voice model is found
+                completion("Default")
             }
         }
     }
