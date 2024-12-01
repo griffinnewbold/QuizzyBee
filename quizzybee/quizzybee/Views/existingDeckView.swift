@@ -35,6 +35,14 @@ struct existingDeckView: View {
     @State private var selectedQuestion: String = ""
     @State private var selectedAnswer: String = ""
     @State private var selectedColor: String = ""
+    
+    @State private var deckTitle: String
+    @State private var flashcardIDs: [String] = []
+    
+    init(set: Set) {
+        self.set = set
+        self._deckTitle = State(initialValue: set.title)
+    }
 
     var body: some View {
         NavigationView {
@@ -52,26 +60,18 @@ struct existingDeckView: View {
                                 .padding()
                         }
                         Spacer()
-                        Text(set.title)
+                        Text(deckTitle)
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.black)
                         Spacer()
-                        Button(action: {
-                            if let question = questions[safe: currentQuestionIndex],
-                               let answer = answers[safe: currentQuestionIndex],
-                               let color = colors[safe: currentQuestionIndex] {
-                                selectedQuestion = question
-                                selectedAnswer = answer
-                                selectedColor = color
-                                showEditView = true
-                            }
-                        }) {
+                        NavigationLink(destination: EditDeckTitleView(deckID: set.id, title: $deckTitle).navigationBarBackButtonHidden(true)) {
                             Text("Edit")
                                 .foregroundColor(.black)
                                 .font(.headline)
                                 .padding()
                         }
+
                     }
                     .padding(.horizontal)
                     
@@ -258,20 +258,6 @@ struct existingDeckView: View {
                         .padding(.horizontal)
                         
                         HStack(spacing: 10) {
-                            NavigationLink(destination: reviewView(questions: $questions, answers: $answers)) {
-                                HStack {
-                                    Spacer()
-                                    Text("Review")
-                                        .foregroundColor(.black)
-                                        .font(.headline)
-                                    Spacer()
-                                }
-                                .padding()
-                                .frame(height: 60)
-                                .background(Color.white)
-                                .cornerRadius(10)
-                            }
-                            
                             NavigationLink(destination: quizView(
                                 deckTitle: set.title,
                                 apiKey: openAIAPIKey,
@@ -309,6 +295,7 @@ struct existingDeckView: View {
                 isLoading = true
                 fetchFlashcards(forSet: set)
                 loadUserVoiceModel()
+                fetchDeckTitle()
             }
             .sheet(isPresented: $showEditView) {
                 editCurrentCardView(
@@ -395,7 +382,23 @@ struct existingDeckView: View {
             print("Error generating AI card: \(error.localizedDescription)")
         }
     }
-    
+
+    func fetchDeckTitle() {
+        guard let user = Auth.auth().currentUser else {
+            print("User not logged in.")
+            return
+        }
+
+        let userID = user.uid
+        let ref = Database.database().reference()
+        let deckTitleRef = ref.child("users").child(userID).child("sets").child(set.id).child("title")
+
+        deckTitleRef.observe(.value) { snapshot in
+            if let updatedTitle = snapshot.value as? String {
+                self.deckTitle = updatedTitle
+            }
+        }
+    }
 
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
@@ -409,20 +412,22 @@ struct existingDeckView: View {
         let ref = Database.database().reference()
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
         
-        userSetRef.observeSingleEvent(of: .value) { snapshot in
-            defer { self.isLoading = false } // Ensure loading state stops
+        userSetRef.observe(.value) { snapshot in
+            defer { self.isLoading = false }
             
             guard let wordsArray = snapshot.value as? [[String: Any]] else {
-                print("No flashcards found for this set or invalid format.")
+                print("No flashcards found or invalid format.")
                 self.questions = []
                 self.answers = []
                 self.colors = []
+                self.flashcardIDs = []
                 return
             }
             
             self.questions = wordsArray.compactMap { $0["term"] as? String }
             self.answers = wordsArray.compactMap { $0["definition"] as? String }
             self.colors = wordsArray.compactMap { $0["color"] as? String }
+            self.flashcardIDs = wordsArray.compactMap { $0["id"] as? String }
             
             if !self.questions.isEmpty {
                 self.currentQuestionIndex = 0
@@ -459,25 +464,47 @@ struct existingDeckView: View {
             print("User not logged in.")
             return
         }
-        
+
+        guard currentQuestionIndex < questions.count else {
+            print("Index out of bounds.")
+            return
+        }
+
         let userID = user.uid
         let ref = Database.database().reference()
-        let flashcardRef = ref.child("users").child(userID).child("sets").child(set.id).child("words").child("\(currentQuestionIndex)")
-        
-        flashcardRef.removeValue { error, _ in
+        let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
+
+        // Remove the specific card locally
+        _ = flashcardIDs[currentQuestionIndex]
+        questions.remove(at: currentQuestionIndex)
+        answers.remove(at: currentQuestionIndex)
+        colors.remove(at: currentQuestionIndex)
+        flashcardIDs.remove(at: currentQuestionIndex)
+
+        // Reorganize remaining flashcards
+        var updatedFlashcards: [[String: Any]] = []
+        for (index, question) in questions.enumerated() {
+            let updatedCard: [String: Any] = [
+                "id": "\(index)",
+                "term": question,
+                "definition": answers[index],
+                "color": colors[index]
+            ]
+            updatedFlashcards.append(updatedCard)
+        }
+
+        // Write the updated flashcards back to Firebase
+        userSetRef.setValue(updatedFlashcards) { error, _ in
             if let error = error {
-                print("Error deleting flashcard: \(error.localizedDescription)")
+                print("Error updating flashcards in Firebase: \(error.localizedDescription)")
             } else {
-                print("Flashcard deleted successfully.")
-                questions.remove(at: currentQuestionIndex)
-                answers.remove(at: currentQuestionIndex)
-                colors.remove(at: currentQuestionIndex)
-                
-                // Adjust the index to prevent out-of-bounds errors
-                if currentQuestionIndex >= questions.count {
-                    currentQuestionIndex = max(0, questions.count - 1)
-                }
+                print("Flashcards successfully updated in Firebase.")
             }
+        }
+
+        // Adjust currentQuestionIndex to prevent out-of-bounds errors
+        if currentQuestionIndex >= questions.count {
+            currentQuestionIndex = max(0, questions.count - 1)
         }
     }
     
