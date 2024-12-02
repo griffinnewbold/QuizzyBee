@@ -8,19 +8,27 @@
 import Foundation
 
 /// Represents a set of flashcards containing words and their definitions.
+///
+/// - Purpose:
+///   - Provides a model for managing flashcard sets.
+///   - Supports encoding/decoding for Firebase and local storage.
+///   - Includes utilities for converting between dictionary representations and `Set` objects.
 struct Set: Codable, Identifiable, Equatable, Hashable {
     // MARK: - Properties
 
     /// The unique identifier of the set.
-
     var id: String
+    
     /// The title of the set.
     var title: String
+    
     /// The list of words in the set.
     var words: [Word]
 
     // MARK: - Initializers
+    
     /// Initializes a new `Set` instance.
+    ///
     /// - Parameters:
     ///   - id: The unique identifier for the set. Defaults to a new UUID string.
     ///   - title: The title of the set.
@@ -32,6 +40,7 @@ struct Set: Codable, Identifiable, Equatable, Hashable {
     }
 
     /// Initializes a `Set` from a dictionary.
+    ///
     /// - Parameter dictionary: A dictionary representation of the `Set`.
     /// - Returns: A `Set` instance if the dictionary contains valid data, or `nil` if the data is invalid.
     init?(dictionary: [String: Any]) {
@@ -47,7 +56,9 @@ struct Set: Codable, Identifiable, Equatable, Hashable {
     }
 
     // MARK: - Methods
+    
     /// Converts the `Set` instance into a dictionary.
+    ///
     /// - Returns: A dictionary representation of the `Set`.
     func toDictionary() -> [String: Any] {
         return [

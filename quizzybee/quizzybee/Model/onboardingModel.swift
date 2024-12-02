@@ -8,14 +8,25 @@
 import FirebaseDatabase
 import UIKit
 
-/// model to user tour
+/// Model to manage the user onboarding tour.
+///
+/// - Purpose:
+///   - Guides users through an interactive onboarding experience.
+///   - Tracks the current step and highlights relevant UI elements.
+///   - Stores the onboarding progress in Firebase Realtime Database.
 class onboardingModel: ObservableObject {
+    /// The current step in the onboarding tour.
     @Published var currentStep = 0
+    
+    /// A flag indicating whether the tour is currently being shown.
     @Published var showTour = false
+    
+    /// Reference to the Firebase Realtime Database.
     private let dbRef = Database.database().reference()
     
+    /// Enumeration of all onboarding tour steps with associated messages and UI highlight areas.
     enum TourStep: CaseIterable {
-        case welcome // welcome to quizbee
+        case welcome
         case deck
         case deckDetailTitle
         case deckDetailSearch
@@ -29,6 +40,7 @@ class onboardingModel: ObservableObject {
         case setting
         case ending
         
+        /// A descriptive message for each step in the tour.
         var message: String {
             switch self {
             case .welcome: return "Welcome to Quizzybee! Would you like a quick tour?"
@@ -37,8 +49,8 @@ class onboardingModel: ObservableObject {
             case .deckDetailSearch: return "Type to search your cards."
             case .deckDetailCard: return "Click to flip the card and see the answer. Play with the sound."
             case .addCard: return "Manual or use AI to add a new card."
-            case .reviewAndQuiz: return "Review your cards or see AI generated quizzes."
-            case .back: return "Go back to dashboard."
+            case .reviewAndQuiz: return "Create AI Generated Quizzes."
+            case .back: return "Go back to the dashboard."
             case .searchDeck: return "Search your deck here."
             case .addDeck: return "Click to add a new deck!"
             case .profile: return "Change your profile here."
@@ -47,6 +59,7 @@ class onboardingModel: ObservableObject {
             }
         }
         
+        /// The frame of the UI element to highlight for the current step.
         var highlightFrame: CGRect {
             let screenWidth = UIScreen.main.bounds.width
             let screenHeight = UIScreen.main.bounds.height
@@ -78,21 +91,26 @@ class onboardingModel: ObservableObject {
         }
     }
     
-    // show tour
+    // MARK: - Tour Management
+    
+    /// Starts the onboarding tour.
+    /// - Parameter userID: The user's unique ID.
     func startTour(userID: String) {
         currentStep = 0
         showTour = true
         dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(false)
     }
     
-    // if user clicks 'x', then skip the tour
+    /// Skips the onboarding tour.
+    /// - Parameter userID: The user's unique ID.
     func skipTour(userID: String) {
-        // no tour/welcome message shown
         currentStep = -1
         showTour = false
         dbRef.child("users").child(userID).child("hasCompletedOnboarding").setValue(true)
     }
     
+    /// Moves to the next step in the onboarding tour.
+    /// - Parameter userID: The user's unique ID.
     func nextStep(userID: String) {
         if currentStep < TourStep.allCases.count - 1 {
             currentStep += 1

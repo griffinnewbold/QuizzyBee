@@ -11,7 +11,7 @@ import FirebaseAuth
 
 struct EditDeckTitleView: View {
     let deckID: String
-    @Binding var title: String // Binding to update the title in the parent view
+    @Binding var title: String
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -49,7 +49,7 @@ struct EditDeckTitleView: View {
                         .foregroundColor(.white)
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .background(Color.blue)
+                        .background(Color.black)
                         .cornerRadius(8)
                         .padding(.horizontal)
                 }
@@ -71,7 +71,6 @@ struct EditDeckTitleView: View {
         let ref = Database.database().reference()
         let deckTitleRef = ref.child("users").child(userID).child("sets").child(deckID).child("title")
 
-        // Save the updated title to Firebase
         deckTitleRef.setValue(title) { error, _ in
             if let error = error {
                 print("Error updating deck title: \(error.localizedDescription)")

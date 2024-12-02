@@ -7,17 +7,31 @@
 
 import Foundation
 
+/// Represents a word or term, its definition, and associated properties.
+///
+/// - Purpose:
+///   - Provides a model for individual flashcards.
+///   - Supports serialization and deserialization for Firebase or local storage.
+///   - Includes utilities for converting to and from dictionary representations.
 struct Word: Codable, Identifiable, Equatable, Hashable {
+    // MARK: - Properties
+
+    /// The unique identifier for the word.
     var id: String
+    
     /// The word or term.
     var term: String
+    
     /// The definition of the word.
     var definition: String
+    
     /// The color associated with the word, represented as a string (e.g., a hex color code).
     var color: String
 
     // MARK: - Initializers
+
     /// Initializes a new `Word` instance.
+    ///
     /// - Parameters:
     ///   - id: The unique identifier for the word. Defaults to a new UUID string.
     ///   - term: The word or term.
@@ -31,6 +45,7 @@ struct Word: Codable, Identifiable, Equatable, Hashable {
     }
 
     /// Initializes a `Word` instance from a dictionary representation.
+    ///
     /// - Parameter dictionary: A dictionary containing the word's data.
     /// - Returns: A `Word` instance if the dictionary contains valid data, or `nil` if the data is invalid.
     init?(dictionary: [String: Any]) {
@@ -47,9 +62,16 @@ struct Word: Codable, Identifiable, Equatable, Hashable {
     }
 
     // MARK: - Methods
+
     /// Converts the `Word` instance into a dictionary representation.
+    ///
     /// - Returns: A dictionary containing the word's data.
     func toDictionary() -> [String: Any] {
-        return ["id": id, "term": term, "definition": definition, "color": color]
+        return [
+            "id": id,
+            "term": term,
+            "definition": definition,
+            "color": color
+        ]
     }
 }
