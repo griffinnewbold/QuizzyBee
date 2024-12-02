@@ -30,7 +30,7 @@ struct existingDeckView: View {
     // Text-to-speech
     @StateObject private var speech = textToSpeech()
     @State private var isPlaying = false
-
+    
     @State private var showEditView = false
     @State private var selectedQuestion: String = ""
     @State private var selectedAnswer: String = ""
@@ -43,7 +43,7 @@ struct existingDeckView: View {
         self.set = set
         self._deckTitle = State(initialValue: set.title)
     }
-
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -71,7 +71,7 @@ struct existingDeckView: View {
                                 .font(.headline)
                                 .padding()
                         }
-
+                        
                     }
                     .padding(.horizontal)
                     
@@ -235,7 +235,7 @@ struct existingDeckView: View {
                             .cornerRadius(10)
                         }
                         .padding(.horizontal)
-
+                        
                         Button(action: {
                             Task {
                                 await addCardViaAI()
@@ -262,19 +262,21 @@ struct existingDeckView: View {
                                 deckTitle: set.title,
                                 apiKey: openAIAPIKey,
                                 questions: $questions,
-                                answers: $answers)) {
-                                HStack {
-                                    Spacer()
-                                    Text("Quiz")
-                                        .foregroundColor(.black)
-                                        .font(.headline)
-                                    Spacer()
+                                answers: $answers)
+                                .tint(.black)
+                            ) {
+                                    HStack {
+                                        Spacer()
+                                        Text("Quiz")
+                                            .foregroundColor(.black)
+                                            .font(.headline)
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    .frame(height: 60)
+                                    .background(Color.white)
+                                    .cornerRadius(10)
                                 }
-                                .padding()
-                                .frame(height: 60)
-                                .background(Color.white)
-                                .cornerRadius(10)
-                            }
                         }
                         .padding(.horizontal)
                     }
@@ -382,24 +384,24 @@ struct existingDeckView: View {
             print("Error generating AI card: \(error.localizedDescription)")
         }
     }
-
+    
     func fetchDeckTitle() {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
             return
         }
-
+        
         let userID = user.uid
         let ref = Database.database().reference()
         let deckTitleRef = ref.child("users").child(userID).child("sets").child(set.id).child("title")
-
+        
         deckTitleRef.observe(.value) { snapshot in
             if let updatedTitle = snapshot.value as? String {
                 self.deckTitle = updatedTitle
             }
         }
     }
-
+    
     // Function to Fetch Flashcards from Firebase
     func fetchFlashcards(forSet set: Set) {
         guard let user = Auth.auth().currentUser else {
@@ -457,30 +459,30 @@ struct existingDeckView: View {
             }
         }
     }
-
+    
     // Function to delete a flashcard
     func deleteFlashcard() {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
             return
         }
-
+        
         guard currentQuestionIndex < questions.count else {
             print("Index out of bounds.")
             return
         }
-
+        
         let userID = user.uid
         let ref = Database.database().reference()
         let userSetRef = ref.child("users").child(userID).child("sets").child(set.id).child("words")
-
+        
         // Remove the specific card locally
         _ = flashcardIDs[currentQuestionIndex]
         questions.remove(at: currentQuestionIndex)
         answers.remove(at: currentQuestionIndex)
         colors.remove(at: currentQuestionIndex)
         flashcardIDs.remove(at: currentQuestionIndex)
-
+        
         // Reorganize remaining flashcards
         var updatedFlashcards: [[String: Any]] = []
         for (index, question) in questions.enumerated() {
@@ -492,7 +494,7 @@ struct existingDeckView: View {
             ]
             updatedFlashcards.append(updatedCard)
         }
-
+        
         // Write the updated flashcards back to Firebase
         userSetRef.setValue(updatedFlashcards) { error, _ in
             if let error = error {
@@ -501,7 +503,7 @@ struct existingDeckView: View {
                 print("Flashcards successfully updated in Firebase.")
             }
         }
-
+        
         // Adjust currentQuestionIndex to prevent out-of-bounds errors
         if currentQuestionIndex >= questions.count {
             currentQuestionIndex = max(0, questions.count - 1)
@@ -521,8 +523,8 @@ struct existingDeckView: View {
     // MARK: Handle Text-to-Speech
     private func handleTextToSpeech() {
         let textToSpeak = showAnswer
-            ? (answers[safe: currentQuestionIndex] ?? "")
-            : (questions[safe: currentQuestionIndex] ?? "")
+        ? (answers[safe: currentQuestionIndex] ?? "")
+        : (questions[safe: currentQuestionIndex] ?? "")
         
         if selectedVoice == "Default" {
             isPlaying.toggle()

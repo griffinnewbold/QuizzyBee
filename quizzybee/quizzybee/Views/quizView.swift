@@ -23,43 +23,60 @@ struct quizView: View {
     @State private var showQuestionCountSelector = true
     @State private var selectedQuestionCount = 5
     
+    @Environment(\.presentationMode) var presentationMode
+    
     var body: some View {
         ZStack {
             Color.yellow
                 .edgesIgnoringSafeArea(.all)
             
-            if showQuestionCountSelector {
-                questionCountSelector
-            } else if isLoading {
-                VStack {
-                    ProgressView()
-                        .scaleEffect(1.5)
-                    Text("Generating quiz questions...")
-                        .padding(.top)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let error = error {
-                VStack(spacing: 20) {
-                    Text("Error generating quiz")
-                        .font(.headline)
-                    Text(error.errorDescription ?? "Unknown error")
-                        .font(.subheadline)
-                        .padding()
-                        .multilineTextAlignment(.center)
-                    Button("Try Again") {
-                        showQuestionCountSelector = true
+            VStack {
+                // Custom Back Button
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.title)
+                            .foregroundColor(.black)
                     }
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(10)
+                    Spacer()
                 }
                 .padding()
-            } else {
-                quizContent
+                
+                if showQuestionCountSelector {
+                    questionCountSelector
+                } else if isLoading {
+                    VStack {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                        Text("Generating quiz questions...")
+                            .padding(.top)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if let error = error {
+                    VStack(spacing: 20) {
+                        Text("Error generating quiz")
+                            .font(.headline)
+                        Text(error.errorDescription ?? "Unknown error")
+                            .font(.subheadline)
+                            .padding()
+                            .multilineTextAlignment(.center)
+                        Button("Try Again") {
+                            showQuestionCountSelector = true
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(10)
+                    }
+                    .padding()
+                } else {
+                    quizContent
+                }
             }
+            .navigationTitle("\(deckTitle) Quiz")
+            .navigationBarHidden(true) // Hide the default navigation bar
         }
-        .navigationTitle("\(deckTitle) Quiz")
-        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var questionCountSelector: some View {
@@ -85,6 +102,7 @@ struct quizView: View {
             .padding()
             .frame(maxWidth: .infinity)
             .background(Color.white)
+            .foregroundColor(.black)
             .cornerRadius(10)
             .padding(.horizontal)
         }
@@ -96,102 +114,107 @@ struct quizView: View {
     
     // MARK: - Quiz Content View
     private var quizContent: some View {
-        VStack(spacing: 20) {
-            if showResults {
-                VStack(spacing: 20) {
-                    Text("Quiz Results")
-                        .font(.system(size: 20, weight: .bold))
-                    
-                    Text("\(score)/\(generatedQuestions.count)")
-                        .font(.system(size: 40, weight: .bold))
-                    
-                    Button("New Quiz") {
-                        showQuestionCountSelector = true
-                        score = 0
-                        currentQuestionIndex = 0
-                        selectedAnswer = nil
-                        showResults = false
-                    }
-                    .font(.system(size: 16, weight: .medium))
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
-                }
-            } else {
-                Text("\(currentQuestionIndex + 1)/\(generatedQuestions.count)")
-                    .font(.system(size: 16, weight: .medium))
-                    .padding(.top)
-                
-                VStack(alignment: .leading, spacing: 16) {
-                    Text(generatedQuestions[currentQuestionIndex].question)
+        ScrollView {
+            VStack(spacing: 20) {
+                if showResults {
+                    VStack(spacing: 20) {
+                        Text("Quiz Results")
+                            .font(.system(size: 20, weight: .bold))
+                        
+                        Text("\(score)/\(generatedQuestions.count)")
+                            .font(.system(size: 40, weight: .bold))
+                        
+                        Button("New Quiz") {
+                            showQuestionCountSelector = true
+                            score = 0
+                            currentQuestionIndex = 0
+                            selectedAnswer = nil
+                            showResults = false
+                        }
                         .font(.system(size: 16, weight: .medium))
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.white)
                         .cornerRadius(10)
-                    
-                    ForEach(0..<generatedQuestions[currentQuestionIndex].options.count, id: \.self) { index in
-                        Button(action: {
-                            selectedAnswer = index
-                            if index == generatedQuestions[currentQuestionIndex].correctAnswer {
-                                score += 1
-                            }
-                        }) {
-                            Text(generatedQuestions[currentQuestionIndex].options[index])
-                                .font(.system(size: 16))
-                                .padding()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .fill(backgroundColor(for: index))
-                                )
-                                .foregroundColor(.black)
-                        }
+                        .padding(.horizontal)
                     }
+                } else {
+                    Text("\(currentQuestionIndex + 1)/\(generatedQuestions.count)")
+                        .font(.system(size: 16, weight: .medium))
+                        .padding(.top)
                     
-                    if let selectedAnswer = selectedAnswer {
-                        VStack(alignment: .leading, spacing: 10) {
-                            if selectedAnswer == generatedQuestions[currentQuestionIndex].correctAnswer {
-                                Text("Correct!")
-                                    .foregroundColor(.green)
-                                    .font(.headline)
-                            } else {
-                                Text("Incorrect")
-                                    .foregroundColor(.red)
-                                    .font(.headline)
-                            }
-                            
-                            Text("Explanation: \(generatedQuestions[currentQuestionIndex].explanation)")
-                                .font(.subheadline)
-                                .padding()
-                                .background(Color.white)
-                                .cornerRadius(10)
-                            
-                            Button("Next") {
-                                if currentQuestionIndex < generatedQuestions.count - 1 {
-                                    currentQuestionIndex += 1
-                                    self.selectedAnswer = nil
-                                } else {
-                                    showResults = true
-                                }
-                            }
+                    VStack(alignment: .leading, spacing: 16) {
+                        Text(generatedQuestions[currentQuestionIndex].question)
                             .font(.system(size: 16, weight: .medium))
                             .padding()
                             .frame(maxWidth: .infinity)
                             .background(Color.white)
                             .cornerRadius(10)
+                        
+                        ForEach(0..<generatedQuestions[currentQuestionIndex].options.count, id: \.self) { index in
+                            Button(action: {
+                                selectedAnswer = index
+                                if index == generatedQuestions[currentQuestionIndex].correctAnswer {
+                                    score += 1
+                                }
+                            }) {
+                                Text(generatedQuestions[currentQuestionIndex].options[index])
+                                    .font(.system(size: 16))
+                                    .padding()
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(backgroundColor(for: index))
+                                    )
+                                    .foregroundColor(.black)
+                            }
+                        }
+                        
+                        if let selectedAnswer = selectedAnswer {
+                            VStack(alignment: .leading, spacing: 10) {
+                                if selectedAnswer == generatedQuestions[currentQuestionIndex].correctAnswer {
+                                    Text("Correct!")
+                                        .foregroundColor(.green)
+                                        .font(.headline)
+                                } else {
+                                    Text("Incorrect")
+                                        .foregroundColor(.red)
+                                        .font(.headline)
+                                }
+                                
+                                // Explanation Text without Height Restriction
+                                Text("Explanation: \(generatedQuestions[currentQuestionIndex].explanation)")
+                                    .font(.subheadline)
+                                    .padding()
+                                    .background(Color.white)
+                                    .cornerRadius(10)
+                                
+                                Button("Next") {
+                                    if currentQuestionIndex < generatedQuestions.count - 1 {
+                                        currentQuestionIndex += 1
+                                        self.selectedAnswer = nil
+                                    } else {
+                                        showResults = true
+                                    }
+                                }
+                                .font(.system(size: 16, weight: .medium))
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.white)
+                                .cornerRadius(10)
+                            }
                         }
                     }
+                    .padding()
                 }
-                .padding()
+                
+                Spacer()
             }
-            
-            Spacer()
+            .padding(.horizontal)
         }
-        .padding(.horizontal)
     }
+    
+    
     
     private func loadQuestions() async {
         isLoading = true
