@@ -135,7 +135,7 @@ struct existingDeckView: View {
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
-                                    .lineLimit(5)
+                                    .lineLimit(3)
                                     .minimumScaleFactor(0.5)
                                     .font(.title3)
                                     .foregroundColor(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF").isDarkBackground() ? .white : .black)

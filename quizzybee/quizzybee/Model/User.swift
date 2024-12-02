@@ -121,7 +121,7 @@ struct User: Codable {
     ///
     /// - Returns: A dictionary containing the user's data.
     func toDictionary() -> [String: Any] {
-        var userDict: [String: Any] = [
+        let userDict: [String: Any] = [
             "userID": userID,
             "fullName": fullName,
             "email": email,

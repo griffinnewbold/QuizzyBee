@@ -8,8 +8,13 @@
 import SwiftUI
 import Foundation
 
-/// A custom shape for the top decorative background.
+// MARK: - Custom Shapes
+
+/// A custom shape for the top decorative background in the login view.
 struct TopShape: Shape {
+    /// Generates the path for the shape.
+    /// - Parameter rect: The frame of the shape.
+    /// - Returns: A `Path` representing the shape.
     func path(in rect: CGRect) -> Path {
         var path = Path()
         path.move(to: CGPoint(x: 0, y: rect.height * 0.4))
@@ -21,22 +26,27 @@ struct TopShape: Shape {
     }
 }
 
+// MARK: - Login View
+
 /// The primary view for user login.
 struct LoginView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel  // ViewModel for handling authentication logic.
-    @EnvironmentObject var networkMonitor: NetworkMonitor    // Observes network connectivity.
-    @EnvironmentObject var tourGuide: onboardingModel // Tour Guide
-    @State private var email = ""                            // User's email input.
-    @State private var password = ""                         // User's password input.
-    @State private var showError = false                     // Flag to control error message visibility.
-    @State private var showNetworkAlert = false              // Flag to display network alert.
-    @State private var navigateToDashboard = false           // Flag to navigate to the dashboard.
-    @State private var showResetPasswordSheet = false        // Flag to show password reset sheet.
+    @EnvironmentObject var authViewModel: AuthViewModel          // ViewModel for handling authentication logic.
+    @EnvironmentObject var networkMonitor: NetworkMonitor        // Observes network connectivity.
+    @EnvironmentObject var tourGuide: onboardingModel            // Manages onboarding tour logic.
+    
+    @State private var email = ""                                // User's email input.
+    @State private var password = ""                             // User's password input.
+    @State private var showError = false                         // Flag to control error message visibility.
+    @State private var showNetworkAlert = false                  // Flag to display network alert.
+    @State private var navigateToDashboard = false               // Flag to navigate to the dashboard.
+    @State private var showResetPasswordSheet = false            // Flag to show password reset sheet.
 
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.gray.ignoresSafeArea()
+                
+                // Top Decorative Shape
                 TopShape()
                     .fill(Color.yellow)
                     .rotationEffect(.degrees(180))
@@ -102,7 +112,6 @@ struct LoginView: View {
                     
                     Spacer()
                     
-                    
                     // Navigation to Register View
                     HStack {
                         Text("Not Registered Yet?")
@@ -159,6 +168,8 @@ struct LoginView: View {
         }
     }
 }
+
+// MARK: - Reset Password View
 
 /// The view for resetting a user's password.
 struct ResetPasswordView: View {
@@ -246,6 +257,8 @@ struct ResetPasswordView: View {
         }
     }
 }
+
+// MARK: - Previews
 
 /// Previews for the `LoginView`.
 struct LoginView_Previews: PreviewProvider {

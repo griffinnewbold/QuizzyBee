@@ -9,16 +9,21 @@ import SwiftUI
 import Firebase
 import FirebaseAuth
 
+/// A view for editing the title of a flashcard deck.
 struct EditDeckTitleView: View {
+    /// The unique identifier of the deck.
     let deckID: String
+    /// The current title of the deck, bound to the parent view for updates.
     @Binding var title: String
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ZStack {
+            // Background color
             Color.yellow.edgesIgnoringSafeArea(.all)
 
             VStack {
+                // Navigation bar with a back button
                 HStack {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
@@ -33,17 +38,20 @@ struct EditDeckTitleView: View {
                 }
                 .padding(.top)
 
+                // Title label
                 Text("Edit Deck Title")
                     .font(.title)
                     .fontWeight(.bold)
                     .padding()
 
+                // Text field for editing the deck title
                 TextField("Enter new deck title", text: $title)
                     .padding()
                     .background(Color.white)
                     .cornerRadius(8)
                     .padding(.horizontal)
 
+                // Save button
                 Button(action: updateDeckTitle) {
                     Text("Save")
                         .foregroundColor(.white)
@@ -61,6 +69,7 @@ struct EditDeckTitleView: View {
         }
     }
 
+    /// Updates the deck title in Firebase.
     func updateDeckTitle() {
         guard let user = Auth.auth().currentUser else {
             print("User not logged in.")
@@ -71,15 +80,15 @@ struct EditDeckTitleView: View {
         let ref = Database.database().reference()
         let deckTitleRef = ref.child("users").child(userID).child("sets").child(deckID).child("title")
 
+        // Save the updated title to Firebase
         deckTitleRef.setValue(title) { error, _ in
             if let error = error {
                 print("Error updating deck title: \(error.localizedDescription)")
             } else {
                 print("Deck title successfully updated.")
-                presentationMode.wrappedValue.dismiss() // Dismiss the view after saving
+                // Dismiss the view after saving
+                presentationMode.wrappedValue.dismiss()
             }
         }
     }
 }
-
-
