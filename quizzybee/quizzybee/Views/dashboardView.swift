@@ -8,16 +8,27 @@
 import SwiftUI
 import Firebase
 
-/// dashboard
+/// The main dashboard view for the Quizzybee app.
+///
+/// - Purpose:
+///   - Displays the user's decks.
+///   - Provides functionality to search, refresh, and add new decks.
+///   - Integrates onboarding and tour guidance.
 struct dashboardView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var networkMonitor: NetworkMonitor
-    @EnvironmentObject var tourGuide: onboardingModel
-    @State private var searchText = ""
-    @State private var noResults = false
-    @State private var allDecks: [Set] = []
-    @State private var showNetworkAlert: Bool = false
-    
+    // MARK: - Environment Objects
+    @EnvironmentObject var authViewModel: AuthViewModel         // Manages user authentication and data.
+    @EnvironmentObject var networkMonitor: NetworkMonitor       // Tracks network connectivity.
+    @EnvironmentObject var tourGuide: onboardingModel           // Handles onboarding and tour steps.
+
+    // MARK: - State Properties
+    @State private var searchText = ""                          // The search query entered by the user.
+    @State private var noResults = false                        // Flag to show "no results" alert.
+    @State private var allDecks: [Set] = []                     // The list of all decks for the user.
+    @State private var showNetworkAlert: Bool = false           // Flag to show network error alert.
+
+    // MARK: - Helper Methods
+
+    /// Loads the user's decks from Firebase.
     private func loadDecks() {
         self.allDecks = []
         authViewModel.fetchUserSets { sets in
@@ -26,7 +37,8 @@ struct dashboardView: View {
             }
         }
     }
-    
+
+    /// Filters decks based on the search query.
     var filteredDecks: [Set] {
         if searchText.isEmpty {
             return allDecks
@@ -36,27 +48,32 @@ struct dashboardView: View {
             }
         }
     }
-    
+
+    // MARK: - Body
     var body: some View {
         NavigationStack {
             ZStack {
+                // Background
                 dashboardBackgroundView()
                 
                 VStack(spacing: 0) {
+                    // Header
                     headerForDashboard()
                         .padding(.bottom, 120)
                     
                     // Search bar with refresh button
                     HStack {
-                        searchBar(searchText: $searchText,
-                                  placeholder: "search deck...",
-                                  onSubmit: {
-                            if !searchText.isEmpty && filteredDecks.isEmpty {
-                                noResults = true
+                        searchBar(
+                            searchText: $searchText,
+                            placeholder: "search deck...",
+                            onSubmit: {
+                                if !searchText.isEmpty && filteredDecks.isEmpty {
+                                    noResults = true
+                                }
                             }
-                        })
+                        )
                         
-                        // Refresh button
+                        // Refresh Button
                         Button(action: {
                             if networkMonitor.isConnected {
                                 loadDecks()
@@ -71,10 +88,12 @@ struct dashboardView: View {
                     }
                     .padding(.bottom, 50)
                     
+                    // Deck list
                     deckCardSummaryList(targetDecks: filteredDecks)
                         .environmentObject(authViewModel)
                         .environmentObject(tourGuide)
                     
+                    // Add new deck button
                     addNewDeck()
                         .padding(.bottom, 30)
                 }
@@ -84,7 +103,7 @@ struct dashboardView: View {
                     Text("No decks found matching '\(searchText)'")
                 }
                 
-                // Welcome and tour guide logic
+                // Onboarding and tour guidance
                 if !(authViewModel.user?.hasCompletedOnboarding ?? false) || tourGuide.showTour {
                     if tourGuide.currentStep == 0 {
                         welcomeAndEnding(mode: "welcome", button: "Let's Explore.")

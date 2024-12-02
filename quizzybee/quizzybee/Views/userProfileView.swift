@@ -7,25 +7,25 @@
 
 import SwiftUI
 
-/// user profile view
-/// allow image selection
+/// A user profile view that allows updating the profile image and selecting a voice model.
 struct userProfileView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
-    
-    // For updating images
-    @State private var selectedImage = "UserImage1"
-    @State private var refreshID = UUID()
-    
-    // For voice model selection
-    @State private var voiceModels: [Voice] = []
-    @State private var selectedVoice: String = "Default" // Default value
-    
-    @Environment(\.dismiss) var dismiss
-    
+    // MARK: - Environment Objects
+    @EnvironmentObject var authViewModel: AuthViewModel // Manages user authentication and profile updates.
+    @Environment(\.dismiss) var dismiss // Dismisses the view when the back button is tapped.
+
+    // MARK: - State Properties
+    @State private var selectedImage = "UserImage1" // Currently selected profile image.
+    @State private var refreshID = UUID()           // Refresh identifier to update the user image dynamically.
+    @State private var voiceModels: [Voice] = []    // List of available voice models.
+    @State private var selectedVoice: String = "Default" // Currently selected voice model.
+
+    // MARK: - Body
     var body: some View {
         ZStack {
+            // Background
             Color(hex: "2C2C2C").ignoresSafeArea() // Black background
-            
+
+            // Content
             ScrollView {
                 VStack(spacing: 0) {
                     // Top Bar
@@ -43,38 +43,38 @@ struct userProfileView: View {
                     }
                     .padding(.top, 16)
                     .padding(.horizontal, 16)
-                    
+
                     // User Image
-                    userImage(size: 120, // Increased size for better visibility
+                    userImage(size: 120, // Profile image with a larger size for visibility
                               imageName: authViewModel.user?.profileImage ?? "UserImage1")
                         .padding(.top, 16)
                         .padding(.bottom, 20)
                         .id(refreshID)
-                    
+
                     // Image Selector
                     imageSelector(selectedImage: $selectedImage)
                         .onChange(of: selectedImage) { oldValue, newValue in
                             authViewModel.updateUserProfileImage(imageName: newValue)
                         }
                         .padding(.horizontal, 16)
-                    
-                    Spacer() // Pushes profile and voice model sections downward
-                    
-                    // Profile List
+
+                    Spacer()
+
+                    // Profile Information
                     profileList()
                         .environmentObject(authViewModel)
                         .padding(.horizontal, 16)
-                        .background(Color(hex: "2C2C2C")) // Dark gray background
+                        .background(Color(hex: "2C2C2C"))
                         .cornerRadius(12)
                         .padding(.vertical, 20)
-                    
+
                     // Voice Model Selector
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Select Voice Model:")
                             .foregroundColor(.yellow)
                             .font(.headline)
                             .padding(.horizontal, 16)
-                        
+
                         Picker("Voice Model", selection: $selectedVoice) {
                             Text("Default").tag("Default")
                             ForEach(voiceModels, id: \.voice_id) { voice in
@@ -94,7 +94,7 @@ struct userProfileView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
                 }
-                .padding(.bottom, 20) // Adds space at the bottom to prevent clipping
+                .padding(.bottom, 20) // Space at the bottom to prevent clipping
             }
         }
         .navigationBarBackButtonHidden(true)
@@ -110,7 +110,10 @@ struct userProfileView: View {
             }
         }
     }
-    
+
+    // MARK: - Helper Methods
+
+    /// Fetches the available voice models from the ElevenLabs API.
     private func fetchVoiceModels() {
         Task {
             do {
@@ -121,13 +124,16 @@ struct userProfileView: View {
             }
         }
     }
-    
+
+    /// Loads the currently selected voice model for the user.
     private func loadSelectedVoice() {
         if let currentVoiceModel = authViewModel.user?.voiceModel {
             selectedVoice = currentVoiceModel
         }
     }
-    
+
+    /// Saves the selected voice model to the user's profile.
+    /// - Parameter voiceID: The ID of the selected voice model.
     private func saveSelectedVoiceModel(_ voiceID: String) {
         authViewModel.updateUserVoiceModel(voiceID: voiceID)
     }

@@ -64,14 +64,14 @@ struct existingDeckView: View {
                             .font(.largeTitle)
                             .fontWeight(.bold)
                             .foregroundColor(.black)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                         Spacer()
                         NavigationLink(destination: EditDeckTitleView(deckID: set.id, title: $deckTitle).navigationBarBackButtonHidden(true)) {
-                            Text("Edit")
+                            Image(systemName: "pencil")
                                 .foregroundColor(.black)
-                                .font(.headline)
                                 .padding()
                         }
-                        
                     }
                     .padding(.horizontal)
                     
@@ -135,6 +135,8 @@ struct existingDeckView: View {
                                     .fontWeight(.bold)
                                     .multilineTextAlignment(.center)
                                     .padding()
+                                    .lineLimit(3)
+                                    .minimumScaleFactor(0.5)
                                     .font(.title3)
                                     .foregroundColor(Color(hex: colors[safe: currentQuestionIndex] ?? "#FFFFFF").isDarkBackground() ? .white : .black)
                                     .frame(maxWidth: .infinity, minHeight: 200)

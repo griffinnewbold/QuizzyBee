@@ -5,7 +5,22 @@
 
 import UserNotifications
 
+/// Manages the scheduling and removal of notifications for study reminders.
+///
+/// - Purpose:
+///   - Schedules notifications to remind users to review specific decks.
+///   - Removes scheduled notifications when no longer needed.
+///   - Provides utility to check pending notifications for debugging and verification.
 class NotificationManager {
+    
+    /// Schedules a weekly notification to remind the user to review a specific deck.
+    ///
+    /// - Parameters:
+    ///   - deck: The `Set` object representing the deck for which the reminder is scheduled.
+    ///
+    /// - Notes:
+    ///   - Requests user permission for notifications if not already granted.
+    ///   - Currently sets a test notification to trigger in 5 seconds.
     static func scheduleWeeklyNotification(for deck: Set) {
         print("Attempting to schedule notification for deck: \(deck.title)")
         
@@ -44,6 +59,10 @@ class NotificationManager {
         }
     }
     
+    /// Removes a scheduled notification for a specific deck.
+    ///
+    /// - Parameters:
+    ///   - deck: The `Set` object representing the deck whose notification is to be removed.
     static func removeNotification(for deck: Set) {
         print("Removing notification for deck: \(deck.title)")
         UNUserNotificationCenter.current().removePendingNotificationRequests(
@@ -51,6 +70,11 @@ class NotificationManager {
         )
     }
     
+    /// Checks and prints all pending notifications for debugging purposes.
+    ///
+    /// - Prints:
+    ///   - The total count of pending notifications.
+    ///   - Details of each pending notification, including identifier, content, and trigger details.
     static func checkPendingNotifications() {
         print("Checking pending notifications...")
         UNUserNotificationCenter.current().getPendingNotificationRequests { requests in

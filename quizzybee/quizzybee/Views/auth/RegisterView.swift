@@ -9,10 +9,13 @@ import SwiftUI
 
 /// A view for user registration in the Quizzybee app.
 struct RegisterView: View {
+    // MARK: - Environment Objects
     /// The authentication view model responsible for handling user authentication logic.
     @StateObject private var authViewModel = AuthViewModel()
     /// An environment object to monitor network connectivity.
     @EnvironmentObject var networkMonitor: NetworkMonitor
+    
+    // MARK: - State Properties
     /// The user's full name input.
     @State private var fullName = ""
     /// The user's email input.
@@ -28,6 +31,7 @@ struct RegisterView: View {
     /// A flag indicating whether the user has given AI consent.
     @State private var aiConsentGiven = false
 
+    // MARK: - Body
     var body: some View {
         NavigationStack {
             ZStack {
@@ -88,7 +92,7 @@ struct RegisterView: View {
                         Text("Register")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(aiConsentGiven ? Color.yellow : Color.init(hex: "D3D3D3"))
+                            .background(aiConsentGiven ? Color.yellow : Color(hex: "D3D3D3"))
                             .foregroundColor(.black)
                             .cornerRadius(10)
                             .shadow(radius: 5)
@@ -171,6 +175,8 @@ struct RegisterView: View {
         }
     }
 }
+
+// MARK: - Previews
 
 /// Previews for the `RegisterView`.
 struct RegisterView_Previews: PreviewProvider {

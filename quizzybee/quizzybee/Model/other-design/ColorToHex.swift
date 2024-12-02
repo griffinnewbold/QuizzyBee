@@ -5,11 +5,20 @@
 //  Created by 李雨欣 on 2024/11/7.
 //
 
-// define a method to allow hexademical input as color
 import SwiftUI
 
-/// could just pass hex code to look for colors
+/// Extension to the `Color` struct that provides utilities for working with hexadecimal colors.
 extension Color {
+    /// Initializes a `Color` instance from a hexadecimal color code.
+    ///
+    /// - Parameters:
+    ///   - hex: A hexadecimal string representing the color. The string can be in the formats:
+    ///     - RGB (e.g., "FFF" for white, shorthand)
+    ///     - RGB (e.g., "FFFFFF" for white)
+    ///     - ARGB (e.g., "FFFFFFFF" with alpha)
+    ///
+    /// - Note:
+    ///   - Invalid input defaults to a transparent color (`r = 1, g = 1, b = 1, a = 0`).
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var int: UInt64 = 0
@@ -35,6 +44,10 @@ extension Color {
             opacity: Double(a) / 255
         )
     }
+    
+    /// Converts a `Color` instance to its hexadecimal string representation.
+    ///
+    /// - Returns: A string in the format `#RRGGBB` or `nil` if the conversion fails.
     func toHex() -> String? {
         guard let components = cgColor?.components, components.count >= 3 else { return nil }
         let r = components[0]
@@ -46,6 +59,13 @@ extension Color {
                       lround(Double(b * 255)))
     }
     
+    /// Determines whether the color is dark based on its perceived brightness.
+    ///
+    /// - Returns: `true` if the color is considered a dark background, otherwise `false`.
+    ///
+    /// - Note:
+    ///   - The brightness is calculated using the formula:
+    ///     \( \text{Brightness} = 0.299 \cdot R + 0.587 \cdot G + 0.114 \cdot B \)
     func isDarkBackground() -> Bool {
         // Convert Color to UIColor to extract RGB components
         let uiColor = UIColor(self)

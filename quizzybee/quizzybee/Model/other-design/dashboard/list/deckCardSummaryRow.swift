@@ -1,19 +1,36 @@
 import SwiftUI
 
-/// the content design for each deck
+/// A row design for displaying a single deck in the deck list.
+///
+/// Each row includes:
+/// - A navigation link to view the deck details.
+/// - A bell button to toggle notifications for the deck.
+/// - A share button to share the deck with other users.
+///
+/// - Parameters:
+///   - deckCard: The `Set` object representing the deck to display.
 struct deckCardSummaryRow: View {
+    /// The deck to display in this row.
     var deckCard: Set
+    
+    /// Indicates whether notifications are enabled for this deck.
     @AppStorage private var notificationsEnabled: Bool
+    
+    /// State to show or hide the share sheet.
     @State private var showShareSheet = false
 
+    /// Initializes the row with a given deck.
+    /// - Parameter deckCard: The deck to display in this row.
     init(deckCard: Set) {
         self.deckCard = deckCard
         let storageKey = "notifications-enabled-\(deckCard.id)"
         _notificationsEnabled = AppStorage(wrappedValue: false, storageKey)
     }
 
+    /// The view's body, containing the row layout.
     var body: some View {
         HStack {
+            // Navigation link to the deck details
             NavigationLink(destination: existingDeckView(set: deckCard)) {
                 VStack(alignment: .leading) {
                     Text(deckCard.title)
@@ -34,7 +51,7 @@ struct deckCardSummaryRow: View {
 
             Spacer()
 
-            // Bell Button
+            // Bell Button for toggling notifications
             Button(action: {
                 withAnimation {
                     notificationsEnabled.toggle()
@@ -51,7 +68,7 @@ struct deckCardSummaryRow: View {
             .buttonStyle(BorderlessButtonStyle())
             .padding(.trailing, 10)
 
-            // Share Button
+            // Share Button for sharing the deck
             Button(action: {
                 showShareSheet.toggle()
             }) {
@@ -68,14 +85,27 @@ struct deckCardSummaryRow: View {
     }
 }
 
+/// A view for sharing a deck with another user by entering their User ID (UID).
 struct ShareSheet: View {
+    /// The deck to be shared.
     var deckCard: Set
+    
+    /// Indicates whether the sheet is presented.
     @Binding var isPresented: Bool
+    
+    /// The authentication view model for user operations.
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    /// The User ID of the recipient to share the deck with.
     @State private var userIDToShare = ""
+    
+    /// An optional error message displayed if sharing fails.
     @State private var shareError: String? = nil
+    
+    /// Indicates whether the deck is currently being shared.
     @State private var isSharing = false
 
+    /// The view's body, containing the UI for sharing the deck.
     var body: some View {
         NavigationStack {
             ZStack {
@@ -180,8 +210,7 @@ struct ShareSheet: View {
     }
 }
 
-
-
+// MARK: - Preview
 #Preview {
     Group {
         deckCardSummaryRow(deckCard: Set(

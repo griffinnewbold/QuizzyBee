@@ -8,24 +8,32 @@
 import SwiftUI
 import Firebase
 
+/// A view for editing or deleting an existing flashcard within a deck.
+///
+/// - Purpose:
+///   - Allows the user to modify the question, answer, and background color of a flashcard.
+///   - Provides options to save the changes or delete the flashcard.
 struct editCurrentCardView: View {
-    @Binding var question: String
-    @Binding var answer: String
-    @Binding var color: String
-    @State private var showingColorPicker = false
-    let deckID: String
-    let flashcardIndex: Int
-    let onSave: (String, String, String) -> Void
-    let onDelete: () -> Void
+    // MARK: - Properties
+    @Binding var question: String // The question text of the flashcard.
+    @Binding var answer: String   // The answer text of the flashcard.
+    @Binding var color: String    // The background color of the flashcard as a hex string.
+    @State private var showingColorPicker = false // Flag to show the color picker sheet.
+    
+    let deckID: String           // The ID of the deck containing the flashcard.
+    let flashcardIndex: Int      // The index of the flashcard in the deck.
+    let onSave: (String, String, String) -> Void // Closure to handle saving the updated flashcard.
+    let onDelete: () -> Void     // Closure to handle deleting the flashcard.
 
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss) private var dismiss // Environment variable to dismiss the current view.
 
+    // MARK: - Body
     var body: some View {
         ZStack {
-            Color.yellow.edgesIgnoringSafeArea(.all)
-
+            Color.yellow.edgesIgnoringSafeArea(.all) // Background color
+            
             VStack(spacing: 20) {
-
+                // Header
                 Text("Edit Current Flashcard")
                     .font(.largeTitle)
                     .fontWeight(.bold)
@@ -38,6 +46,7 @@ struct editCurrentCardView: View {
                         .font(.headline)
                         .foregroundColor(.black)
                         .padding(.bottom, 5)
+                    
                     TextEditor(text: $question)
                         .padding()
                         .frame(height: 160)
@@ -57,6 +66,7 @@ struct editCurrentCardView: View {
                         .font(.headline)
                         .foregroundColor(.black)
                         .padding(.bottom, 5)
+                    
                     TextEditor(text: $answer)
                         .padding()
                         .frame(height: 160)
@@ -75,7 +85,6 @@ struct editCurrentCardView: View {
                 VStack(spacing: 20) {
                     // Change Card Color Button
                     Button(action: {
-                        // Toggle the visibility of the color picker
                         showingColorPicker.toggle()
                     }) {
                         Text("Change Card Color")
@@ -88,10 +97,11 @@ struct editCurrentCardView: View {
                             .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 2)
                     }
                     .padding(.bottom, 10)
+
                     // Save Button
                     Button(action: {
-                        onSave(question, answer, color) // Save action
-                        dismiss() // Return to existingDeckView
+                        onSave(question, answer, color)
+                        dismiss() // Dismiss the view
                     }) {
                         Text("Save")
                             .font(.headline)
@@ -105,8 +115,8 @@ struct editCurrentCardView: View {
 
                     // Delete Button
                     Button(action: {
-                        onDelete() // Delete action
-                        dismiss() // Return to existingDeckView
+                        onDelete()
+                        dismiss() // Dismiss the view
                     }) {
                         Text("Delete")
                             .font(.headline)
@@ -129,18 +139,13 @@ struct editCurrentCardView: View {
                             .padding(.bottom, 8)
                         
                         ColorPicker("Select Color", selection: Binding(
-                            get: {
-                                Color(hex: color)
-                            },
-                            set: { newColor in
-                                color = newColor.toHex() ?? "#FFFFFF"
-                            }
+                            get: { Color(hex: color) },
+                            set: { newColor in color = newColor.toHex() ?? "#FFFFFF" }
                         ))
                         .padding()
                         
                         Button("Done") {
-                            // Close the color picker sheet
-                            showingColorPicker = false
+                            showingColorPicker = false // Close the color picker
                         }
                         .padding()
                         .background(Color.green)
@@ -154,6 +159,8 @@ struct editCurrentCardView: View {
         }
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     editCurrentCardView(

@@ -55,6 +55,10 @@ enum QuizError: Error, LocalizedError {
 // MARK: - OpenAI Service
 
 /// A service for interacting with the OpenAI API.
+///
+/// - Purpose:
+///   - Sends prompts to the OpenAI API for generating content or quiz questions.
+///   - Processes API responses and returns the relevant results.
 class OpenAIService {
     private let apiKey: String
     private let baseURL = "https://api.openai.com/v1/chat/completions"
@@ -80,7 +84,7 @@ class OpenAIService {
         ]
         
         let requestBody: [String: Any] = [
-            "model": "gpt-3.5-turbo",
+            "model": "gpt-4o-mini",
             "messages": messages,
             "temperature": 0.7
         ]
@@ -135,10 +139,10 @@ extension OpenAIService {
         Generate \(questionCount) multiple choice questions related to these topics: \(questions.joined(separator: ", "))
         
         Follow these rules:
-        1. Each question should test understanding of the topics
-        2. Include 4 options for each question
-        3. Options should be clear and distinct
-        4. Provide a brief explanation for the correct answer
+        1. Each question should test understanding of the topics.
+        2. Include 4 options for each question.
+        3. Options should be clear and distinct.
+        4. Provide a brief explanation for the correct answer.
         
         Respond with a JSON object in this exact format:
         {
