@@ -99,6 +99,7 @@ struct userProfileView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear {
+            selectedImage = authViewModel.user?.profileImage ?? "UserImage1"
             fetchVoiceModels()
             loadSelectedVoice()
             NotificationCenter.default.addObserver(
