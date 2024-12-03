@@ -1,5 +1,6 @@
-![App Icon](quizzybee/quizzybee/Assets.xcassets/AppIcon.appiconset/QuizzyBee.png)
 # Welcome to QuizzyBee
+<img src="quizzybee/quizzybee/Assets.xcassets/AppIcon.appiconset/QuizzyBee.png" width = 500>
+
 
 We are so happy to welcome you to QuizzyBee. If you do not have time to read the below please see the follow video which includes: Team Introductions, Brief App Description, and an App Demo! https://youtu.be/qDWL-hlDum4
 
