@@ -19,6 +19,9 @@ struct deckCardSummaryRow: View {
     /// State to show or hide the share sheet.
     @State private var showShareSheet = false
 
+    
+    @EnvironmentObject private var authViewModel: AuthViewModel
+    
     /// Initializes the row with a given deck.
     /// - Parameter deckCard: The deck to display in this row.
     init(deckCard: Set) {
@@ -79,7 +82,7 @@ struct deckCardSummaryRow: View {
             .buttonStyle(BorderlessButtonStyle())
             .sheet(isPresented: $showShareSheet) {
                 ShareSheet(deckCard: deckCard, isPresented: $showShareSheet)
-                    .environmentObject(AuthViewModel())
+                    .environmentObject(authViewModel)
             }
         }
     }

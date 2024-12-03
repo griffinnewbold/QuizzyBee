@@ -65,6 +65,7 @@ struct deckCardSummaryList: View {
                                 authViewModel.deleteDeck(setId: targetDecks[index].id)
                             }
                         )
+                        .environmentObject(authViewModel)
 
                         // Navigation link to the detailed deck view
                         NavigationLink(

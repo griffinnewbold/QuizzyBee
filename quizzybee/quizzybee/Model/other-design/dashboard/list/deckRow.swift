@@ -33,6 +33,8 @@ struct deckRow: View {
 
     /// The frame of the deck row, used for positioning onboarding animations.
     @Binding var defaultDeckFrame: CGRect
+    
+    @EnvironmentObject var authViewModel: AuthViewModel
 
     /// Closure to handle the tap action on the row.
     let onTap: () -> Void
@@ -43,6 +45,7 @@ struct deckRow: View {
     /// The body of the row, containing the deck information and actions.
     var body: some View {
         deckCardSummaryRow(deckCard: deckCard)
+            .environmentObject(authViewModel)
             .contentShape(Rectangle()) // Makes the entire row tappable.
             .onTapGesture(perform: onTap) // Handles tap gestures.
 
