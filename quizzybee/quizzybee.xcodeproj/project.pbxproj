@@ -1,0 +1,638 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8514791E2CE52D51003F91FE /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 8514791D2CE52D51003F91FE /* FirebaseAnalytics */; };
+		851479202CE52D51003F91FE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 8514791F2CE52D51003F91FE /* FirebaseAuth */; };
+		851479222CE52D51003F91FE /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 851479212CE52D51003F91FE /* FirebaseAuthCombine-Community */; };
+		851479242CE52D51003F91FE /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 851479232CE52D51003F91FE /* FirebaseDatabase */; };
+		851479262CE52D51003F91FE /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 851479252CE52D51003F91FE /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42A239D72CDDD27F0055333F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42A239B72CDDD27D0055333F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42A239BE2CDDD27D0055333F;
+			remoteInfo = quizzybee;
+		};
+		42A239E12CDDD27F0055333F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42A239B72CDDD27D0055333F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42A239BE2CDDD27D0055333F;
+			remoteInfo = quizzybee;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		42A239BF2CDDD27D0055333F /* quizzybee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = quizzybee.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42A239D62CDDD27F0055333F /* quizzybeeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42A239E02CDDD27F0055333F /* quizzybeeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = quizzybeeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		42A239E82CDDD27F0055333F /* Exceptions for "quizzybee" folder in "quizzybee" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 42A239BE2CDDD27D0055333F /* quizzybee */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		42A239C12CDDD27D0055333F /* quizzybee */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				42A239E82CDDD27F0055333F /* Exceptions for "quizzybee" folder in "quizzybee" target */,
+			);
+			path = quizzybee;
+			sourceTree = "<group>";
+		};
+		42A239D92CDDD27F0055333F /* quizzybeeTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = quizzybeeTests;
+			sourceTree = "<group>";
+		};
+		42A239E32CDDD27F0055333F /* quizzybeeUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = quizzybeeUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42A239BC2CDDD27D0055333F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8514791E2CE52D51003F91FE /* FirebaseAnalytics in Frameworks */,
+				851479222CE52D51003F91FE /* FirebaseAuthCombine-Community in Frameworks */,
+				851479242CE52D51003F91FE /* FirebaseDatabase in Frameworks */,
+				851479262CE52D51003F91FE /* FirebaseFirestore in Frameworks */,
+				851479202CE52D51003F91FE /* FirebaseAuth in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42A239D32CDDD27F0055333F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42A239DD2CDDD27F0055333F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		42A239B62CDDD27D0055333F = {
+			isa = PBXGroup;
+			children = (
+				42A239C12CDDD27D0055333F /* quizzybee */,
+				42A239D92CDDD27F0055333F /* quizzybeeTests */,
+				42A239E32CDDD27F0055333F /* quizzybeeUITests */,
+				42A239C02CDDD27D0055333F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		42A239C02CDDD27D0055333F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42A239BF2CDDD27D0055333F /* quizzybee.app */,
+				42A239D62CDDD27F0055333F /* quizzybeeTests.xctest */,
+				42A239E02CDDD27F0055333F /* quizzybeeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42A239BE2CDDD27D0055333F /* quizzybee */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42A239E92CDDD27F0055333F /* Build configuration list for PBXNativeTarget "quizzybee" */;
+			buildPhases = (
+				42A239BB2CDDD27D0055333F /* Sources */,
+				42A239BC2CDDD27D0055333F /* Frameworks */,
+				42A239BD2CDDD27D0055333F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				42A239C12CDDD27D0055333F /* quizzybee */,
+			);
+			name = quizzybee;
+			packageProductDependencies = (
+				8514791D2CE52D51003F91FE /* FirebaseAnalytics */,
+				8514791F2CE52D51003F91FE /* FirebaseAuth */,
+				851479212CE52D51003F91FE /* FirebaseAuthCombine-Community */,
+				851479232CE52D51003F91FE /* FirebaseDatabase */,
+				851479252CE52D51003F91FE /* FirebaseFirestore */,
+			);
+			productName = quizzybee;
+			productReference = 42A239BF2CDDD27D0055333F /* quizzybee.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42A239D52CDDD27F0055333F /* quizzybeeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42A239EE2CDDD27F0055333F /* Build configuration list for PBXNativeTarget "quizzybeeTests" */;
+			buildPhases = (
+				42A239D22CDDD27F0055333F /* Sources */,
+				42A239D32CDDD27F0055333F /* Frameworks */,
+				42A239D42CDDD27F0055333F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42A239D82CDDD27F0055333F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				42A239D92CDDD27F0055333F /* quizzybeeTests */,
+			);
+			name = quizzybeeTests;
+			packageProductDependencies = (
+			);
+			productName = quizzybeeTests;
+			productReference = 42A239D62CDDD27F0055333F /* quizzybeeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		42A239DF2CDDD27F0055333F /* quizzybeeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42A239F12CDDD27F0055333F /* Build configuration list for PBXNativeTarget "quizzybeeUITests" */;
+			buildPhases = (
+				42A239DC2CDDD27F0055333F /* Sources */,
+				42A239DD2CDDD27F0055333F /* Frameworks */,
+				42A239DE2CDDD27F0055333F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42A239E22CDDD27F0055333F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				42A239E32CDDD27F0055333F /* quizzybeeUITests */,
+			);
+			name = quizzybeeUITests;
+			packageProductDependencies = (
+			);
+			productName = quizzybeeUITests;
+			productReference = 42A239E02CDDD27F0055333F /* quizzybeeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42A239B72CDDD27D0055333F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					42A239BE2CDDD27D0055333F = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					42A239D52CDDD27F0055333F = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 42A239BE2CDDD27D0055333F;
+					};
+					42A239DF2CDDD27F0055333F = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 42A239BE2CDDD27D0055333F;
+					};
+				};
+			};
+			buildConfigurationList = 42A239BA2CDDD27D0055333F /* Build configuration list for PBXProject "quizzybee" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 42A239B62CDDD27D0055333F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 42A239C02CDDD27D0055333F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42A239BE2CDDD27D0055333F /* quizzybee */,
+				42A239D52CDDD27F0055333F /* quizzybeeTests */,
+				42A239DF2CDDD27F0055333F /* quizzybeeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		42A239BD2CDDD27D0055333F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42A239D42CDDD27F0055333F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42A239DE2CDDD27F0055333F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42A239BB2CDDD27D0055333F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42A239D22CDDD27F0055333F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42A239DC2CDDD27F0055333F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42A239D82CDDD27F0055333F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42A239BE2CDDD27D0055333F /* quizzybee */;
+			targetProxy = 42A239D72CDDD27F0055333F /* PBXContainerItemProxy */;
+		};
+		42A239E22CDDD27F0055333F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42A239BE2CDDD27D0055333F /* quizzybee */;
+			targetProxy = 42A239E12CDDD27F0055333F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		42A239EA2CDDD27F0055333F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = quizzybee/quizzybee.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"quizzybee/Preview Content\"";
+				DEVELOPMENT_TEAM = KSS4YAW25V;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = quizzybee/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = w4995.quizzybee;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42A239EB2CDDD27F0055333F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = quizzybee/quizzybee.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"quizzybee/Preview Content\"";
+				DEVELOPMENT_TEAM = KSS4YAW25V;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = quizzybee/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = w4995.quizzybee;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		42A239EC2CDDD27F0055333F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		42A239ED2CDDD27F0055333F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		42A239EF2CDDD27F0055333F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSS4YAW25V;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = w4995.quizzybeeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quizzybee.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/quizzybee";
+			};
+			name = Debug;
+		};
+		42A239F02CDDD27F0055333F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSS4YAW25V;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = w4995.quizzybeeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/quizzybee.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/quizzybee";
+			};
+			name = Release;
+		};
+		42A239F22CDDD27F0055333F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSS4YAW25V;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = w4995.quizzybeeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = quizzybee;
+			};
+			name = Debug;
+		};
+		42A239F32CDDD27F0055333F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSS4YAW25V;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = w4995.quizzybeeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = quizzybee;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42A239BA2CDDD27D0055333F /* Build configuration list for PBXProject "quizzybee" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42A239EC2CDDD27F0055333F /* Debug */,
+				42A239ED2CDDD27F0055333F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42A239E92CDDD27F0055333F /* Build configuration list for PBXNativeTarget "quizzybee" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42A239EA2CDDD27F0055333F /* Debug */,
+				42A239EB2CDDD27F0055333F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42A239EE2CDDD27F0055333F /* Build configuration list for PBXNativeTarget "quizzybeeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42A239EF2CDDD27F0055333F /* Debug */,
+				42A239F02CDDD27F0055333F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42A239F12CDDD27F0055333F /* Build configuration list for PBXNativeTarget "quizzybeeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42A239F22CDDD27F0055333F /* Debug */,
+				42A239F32CDDD27F0055333F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8514791D2CE52D51003F91FE /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		8514791F2CE52D51003F91FE /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		851479212CE52D51003F91FE /* FirebaseAuthCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAuthCombine-Community";
+		};
+		851479232CE52D51003F91FE /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		851479252CE52D51003F91FE /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8514791C2CE52D51003F91FE /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 42A239B72CDDD27D0055333F /* Project object */;
+}
