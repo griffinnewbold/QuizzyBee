@@ -19,6 +19,7 @@ struct dashboardView: View {
     @EnvironmentObject var authViewModel: AuthViewModel         // Manages user authentication and data.
     @EnvironmentObject var networkMonitor: NetworkMonitor       // Tracks network connectivity.
     @EnvironmentObject var tourGuide: onboardingModel           // Handles onboarding and tour steps.
+    @EnvironmentObject var envLoader: EnvironmentLoader         // Manages environment variables
 
     // MARK: - State Properties
     @State private var searchText = ""                          // The search query entered by the user.
@@ -92,6 +93,7 @@ struct dashboardView: View {
                     deckCardSummaryList(targetDecks: filteredDecks)
                         .environmentObject(authViewModel)
                         .environmentObject(tourGuide)
+                        .environmentObject(envLoader)
                     
                     // Add new deck button
                     addNewDeck()

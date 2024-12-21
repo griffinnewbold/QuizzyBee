@@ -12,11 +12,11 @@ import FirebaseDatabase
 
 struct existingDeckView: View {
     let set: Set
-    let openAIAPIKey: String = "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"
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var tourGuide: onboardingModel
+    @EnvironmentObject var envLoader: EnvironmentLoader
     
     @State private var currentQuestionIndex = 0
     @State private var searchText = ""
@@ -262,7 +262,7 @@ struct existingDeckView: View {
                         HStack(spacing: 10) {
                             NavigationLink(destination: quizView(
                                 deckTitle: set.title,
-                                apiKey: openAIAPIKey,
+                                apiKey: envLoader.get("OPEN_AI_SECRETS")!,
                                 questions: $questions,
                                 answers: $answers)
                                 .tint(.black)
@@ -335,7 +335,7 @@ struct existingDeckView: View {
         let existingAnswers = answers
         
         do {
-            let service = OpenAIService(apiKey: openAIAPIKey)
+            let service = OpenAIService(apiKey: envLoader.get("OPEN_AI_SECRETS")!)
             
             // Generate a question and answer prompt based on the existing set
             let prompt = """

@@ -24,6 +24,9 @@ struct quizzybeeApp: App {
     /// Manages the onboarding tour for new users.
     @StateObject private var onboardingViewModel = onboardingModel()
     
+    /// Manages environment variables
+    @StateObject private var envLoader = EnvironmentLoader()
+    
     /// Configures Firebase during app initialization.
     init() {
         FirebaseApp.configure()
@@ -36,6 +39,7 @@ struct quizzybeeApp: App {
                 .environmentObject(networkMonitor)
                 .environmentObject(authViewModel)
                 .environmentObject(onboardingViewModel)
+                .environmentObject(envLoader)
         }
     }
 }

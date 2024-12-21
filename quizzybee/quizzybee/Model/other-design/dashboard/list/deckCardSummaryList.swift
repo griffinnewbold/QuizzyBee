@@ -28,6 +28,9 @@ struct deckCardSummaryList: View {
 
     /// The onboarding model, managing onboarding steps and tips display.
     @EnvironmentObject var tourGuide: onboardingModel
+    
+    /// Manages Environment Variables
+    @EnvironmentObject var envLoader: EnvironmentLoader
 
     /// The frame of the first deck row, used for positioning onboarding tips.
     @State private var defaultDeckFrame: CGRect = .zero
@@ -70,6 +73,7 @@ struct deckCardSummaryList: View {
                         // Navigation link to the detailed deck view
                         NavigationLink(
                             destination: existingDeckView(set: targetDecks[index])
+                                .environmentObject(envLoader)
                                 .environmentObject(authViewModel)
                                 .environmentObject(tourGuide),
                             isActive: Binding(

@@ -33,6 +33,7 @@ struct LoginView: View {
     @EnvironmentObject var authViewModel: AuthViewModel          // ViewModel for handling authentication logic.
     @EnvironmentObject var networkMonitor: NetworkMonitor        // Observes network connectivity.
     @EnvironmentObject var tourGuide: onboardingModel            // Manages onboarding tour logic.
+    @EnvironmentObject var envLoader: EnvironmentLoader          // Manages environment variables
     
     @State private var email = ""                                // User's email input.
     @State private var password = ""                             // User's password input.
@@ -136,6 +137,7 @@ struct LoginView: View {
                     .environmentObject(authViewModel)
                     .environmentObject(networkMonitor)
                     .environmentObject(tourGuide)
+                    .environmentObject(envLoader)
             }
             // Reset Password Sheet
             .sheet(isPresented: $showResetPasswordSheet) {

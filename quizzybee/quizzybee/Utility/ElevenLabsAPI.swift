@@ -13,8 +13,11 @@ import Foundation
 ///   - Provides functionality for fetching voices and synthesizing speech.
 ///   - Handles API requests and responses from the Eleven Labs service.
 struct ElevenLabsAPI {
+    
+    
+    
     /// An instance of the ElevenlabsSwift client for managing API requests.
-    private static let client = ElevenlabsSwift(elevenLabsAPI: "sk_e679145425b292d555754cef0ea7b08382f64c4bb46bd639")
+    private static let client = ElevenlabsSwift(elevenLabsAPI: EnvironmentLoader().get("ELEVEN_LABS_KEY")!)
 
     // MARK: - Fetch Voices
 
